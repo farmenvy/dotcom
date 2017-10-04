@@ -1,0 +1,7 @@
+* Add rspec tests to cibuild (maybe add env variables)
+
+* Add rubocop to cibuild
+
+* Ensure static assets can be seen through nginx
+
+* Create dev docker environments

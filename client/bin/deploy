@@ -1,0 +1,5 @@
+yarn run build
+echo '========================================'
+echo 'deploying to S3'
+echo '========================================'
+aws s3 sync build s3://qa-envy

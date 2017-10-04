@@ -1,0 +1,20 @@
+#!/usr/bin/env ruby
+
+require 'yaml'
+require 'pathname'
+
+path = Pathname.new(File.join('.ebextensions', 'environmentvariables.config'))
+
+raise "${path} does not exist" unless path.exist?
+
+config = YAML.load_file(path).fetch('option_settings')
+
+arr = config.map do |h|
+  "export #{h.fetch('option_name')}=#{h.fetch('value')}"
+end
+
+virtual_env_file = arr.join("\n")
+puts virtual_env_file
+
+
+

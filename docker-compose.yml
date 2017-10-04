@@ -1,0 +1,23 @@
+version: "3"
+services:
+  web:
+    build:
+      context: .
+      dockerfile: config/docker/development/Dockerfile
+    ports:
+      - 80:80
+    volumes:
+      - ./:/home/app/webapp
+      - /usr/local/bundle
+    environment:
+      - BUNDLE_PATH=/usr/local/bundle
+      - RAILS_ENV=development
+      - PORT=80
+    links:
+      - postgres
+  postgres:
+    image: postgres:latest
+    volumes:
+    - /var/lib/postgresql/data
+
+
