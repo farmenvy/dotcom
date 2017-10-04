@@ -8,6 +8,12 @@ ENV WEBAPP /home/app/webapp
 # use baseimage-docker’s init process
 CMD ["/sbin/my_init"]
 
+# setup client dependencies
+RUN curl -sL https://deb.nodesource.com/setup_6.x | bash
+RUN apt-get update -qq && \
+  apt-get install -y --no-install-recommends nodejs && \
+  npm install -g yarn
+
 # 1) start Nginx / Passenger
 # 2) remove the default site
 RUN rm -f /etc/service/nginx/down && \
@@ -23,9 +29,14 @@ RUN mkdir -p ${WEBAPP}
 RUN chown -R app:app ${WEBAPP}
 WORKDIR ${WEBAPP}
 RUN gem install bundler --no-ri --no-rdoc
-ADD ./api/Gemfile* ./
+ADD Gemfile* ./
 # Use --deployment to do nothing if lockfile hasn't changed.
 RUN su -- app bundle install -j 7 --deployment --without development
+
+ADD client/package.json ${WEBAPP}/client/
+ADD client/yarn.lock ${WEBAPP}/client/
+WORKDIR ${WEBAPP}/client
+RUN yarn --pure-lockfile
 
 # add boot script
 RUN mkdir -p /etc/my_init.d
@@ -33,8 +44,12 @@ ADD boot.sh /etc/my_init.d/boot.sh
 RUN chmod +x /etc/my_init.d/boot.sh
 
 # Add the rails app
-ADD ./api ${WEBAPP}
+ADD . ${WEBAPP}
 
+# setup production build
+WORKDIR ${WEBAPP}/client
+
+WORKDIR ${WEBAPP}
 EXPOSE 80
 
 

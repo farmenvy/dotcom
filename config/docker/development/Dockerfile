@@ -6,7 +6,7 @@ WORKDIR ${WEBAPP}
 
 # Run Bundle in a cache efficient way
 RUN gem install bundler --no-ri --no-rdoc
-COPY Gemfile* ./
+COPY ./api/Gemfile* ./
 RUN bundle install -j 7
 
 # Add the rails app

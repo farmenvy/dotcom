@@ -7,7 +7,7 @@ services:
     ports:
       - 80:80
     volumes:
-      - ./:/home/app/webapp
+      - ./api:/home/app/webapp
       - /usr/local/bundle
     environment:
       - BUNDLE_PATH=/usr/local/bundle
