@@ -33,7 +33,9 @@ step() {
 cleanup() {
   echo '---> pruning docker stuff'
   docker stop $(docker ps -aq) > /dev/null
-  docker system prune -f > /dev/null
+  docker system prune -f
+  echo
+  echo '***DONE***'
 }
 
 abort() {
@@ -52,7 +54,7 @@ step set_github_status 'pending' > /dev/null
 
 title 'creating docker image'
 DOCKER_TAG=${BUILD_NUMBER:-unspecified}
-DOCKER_IMAGE="farmenvy/farmenvy:$DOCKER_TAG"
+DOCKER_IMAGE="farmenvy/dotcom:$DOCKER_TAG"
 step docker build -t "$DOCKER_IMAGE" .
 #
 title 'running static analysis on client'
