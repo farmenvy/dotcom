@@ -5,7 +5,7 @@ import './style.css';
 const About = () => (
   <div className="About">
     <h1>
-      About?
+      About??
     </h1>
   </div>
 );
