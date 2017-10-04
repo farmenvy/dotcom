@@ -23,6 +23,9 @@ title() {
   echo
 }
 
+info() {
+  echo "+-- $*"
+}
 
 step() {
   echo "---> $*"
@@ -49,9 +52,10 @@ abort() {
   exit 1
 }
 
-title 'setting github status to pending'
-step set_github_status 'pending' > /dev/null
+VERSION_FILE_PATH='./api/VERSION'
 
+title 'setting github status to pending'
+step 'set_github_status pending > /dev/null'
 
 title 'creating staging client docker image'
 STAGING_DOCKER_CLIENT="farmenvy/client:staging"
@@ -61,29 +65,46 @@ title 'running static analysis on client'
 step docker run --rm "$STAGING_DOCKER_CLIENT" \
   ./node_modules/.bin/eslint ./src
 
-GIT_BRANCH='origin/master'
+# PLEASE CHANGE ME!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+# GIT_BRANCH='origin/master'
 if [ "$GIT_BRANCH" = 'origin/master' ]
 then
+  DEPLOYABLE=true
   echo '+-- on deployable branch'
 
   # changes to client?
-  if ! git diff-index --quiet origin/master^ -- client
-  then
-    echo '+-- found changes made to client'
+  if ! git diff-index --quiet origin/master^ -- client; then
+    info 'found changes made to client'
     title 'adding client production build to public directory'
-    step docker run --rm -v {$PWD}/api/public:client/build \
+    step docker run --rm -v ${PWD}/public/:/usr/src/app/build \
       "$STAGING_DOCKER_CLIENT" yarn build
   else
-    echo '+-- no changes made to client'
+    info 'no changes made to client -- skipping yarn build'
   fi
 else
-  echo '+-- not a deployable branch'
+  DEPLOYABLE=false
+  info 'not a deployable branch'
 fi
 
-title 'verifying contents of public directory'
-
 title 'creating production docker image'
-DOCKER_TAG=${BUILD_NUMBER:-unspecified}
+
+# is there a version bump?
+if ! git diff-index --quiet origin/master^ -- "$VERSION_FILE_PATH"; then
+  DEPLOYING_TO=production
+else
+  DEPLOYING_TO=staging
+fi
+
+if [ "$DEPLOYABLE" == true && "$DEPLOYING_TO" == 'production' ]
+then
+  info 'deploying to production -- checking version file.'
+  DOCKER_TAG=$(cat "$VERSION_FILE_PATH")
+else
+  info 'not deploying to production -- using build number for docker tag'
+  DOCKER_TAG=${BUILD_NUMBER:-unspecified}
+fi
+
+
 DOCKER_IMAGE="farmenvy/dotcom:$DOCKER_TAG"
 step docker build -t "$DOCKER_IMAGE" .
 
@@ -99,7 +120,68 @@ step docker run --link my-postgres:postgres \
   $DOCKER_IMAGE /sbin/my_init -- \
   bundle exec rspec spec
 
+if [ "$DEPLOYABLE" == true ]
+then
+  if [ "$DEPLOYING_TO" == production ]
+  then
+    TARGET_IP=$PRODUCTION_IP_ADDRESS
+  else
+    TARGET_IP=$STAGING_IP_ADDRESS
+  fi
+
+  title 'publishing docker image'
+
+  if [ "$DOCKER_TAG" == 'unspecified' ]
+  then
+    abort "trying to push unspecified image to docker hub!"
+  else
+    step docker push "$DOCKER_IMAGE"
+  fi
+
+  title 'deploy'
+  info "deploying to $DEPLOYING_TO @ $TARGET_IP"
+  CANARY_PORT=8675
+  PROD_PORT=80
+
+  docker pull "$DOCKER_IMAGE"
+
+  # Test out latest image
+  docker run -dit --name "$DOCKER_TAG" --restart unless-stopped --rm \
+    -p "$CANARY_PORT":80 -e RAILS_ENV=production -e DATABASE_URL="$DATABASE_URL" \
+    "$DOCKER_IMAGE"
+
+  curl --silent --show-error --fail "$TARGET_IP/canary:$CANARY_PORT"
+
+  # stop all containers
+  docker stop $(docker ps -aq)
+
+  # This time for realz
+  docker run -dit --name "$DOCKER_TAG" --restart unless-stopped --rm \
+    -p "$PROD_PORT":80 -e RAILS_ENV=production -e DATABASE_URL="$DATABASE_URL" \
+    "$DOCKER_IMAGE"
+
+
+  curl --silent --show-error --fail "$TARGET_IP/canary:$PROD_PORT"
+
+  # pull latest docker image
+  # run latest docker image map to new port like 8675:80
+  # run canary check on that port
+  # stop latest container
+  # stop old container
+  # run latest container mapped now to port 80:80
+  # run canary check
+  # ssh to prod
+#   ssh "root@$TARGET_IP" <<EOF
+#
+# EOF
+
+
+
+fi
+
 title 'setting github status to success'
-step set_github_status 'success' > /dev/null
+step 'set_github_status success > /dev/null'
 
 cleanup
+
+echo "SUCCESS!"

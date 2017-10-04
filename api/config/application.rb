@@ -33,5 +33,7 @@ module Api
     config.generators do |g|
       g.controller_specs = false
     end
+
+    config.version = File.read(Rails.root.join('VERSION')).chomp
   end
 end

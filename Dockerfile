@@ -35,6 +35,9 @@ RUN chmod +x /etc/my_init.d/boot.sh
 # Add the rails app
 ADD ./api ${WEBAPP}
 
+# Note that the public directory should only be generated in CI
+ADD ./public ${WEBAPP}/public
+
 EXPOSE 80
 
 
