@@ -1,0 +1,17 @@
+#!/bin/bash
+
+GIT_DIR=/home/deploy/farmenvy/dotcom.git
+WORK_TREE=/home/deploy/dotcom/current
+HOSTNAME=$(hostname)
+
+while read oldrev newrev ref
+do
+  if [[ $ref =~ .*/master$ ]];
+  then
+    echo "Master ref received.  Deploying master branch to $HOSTNAME..."
+    git --work-tree=$WORK_TREE --git-dir=$GIT_DIR checkout -f
+    echo "Git hooks deploy complete."
+  else
+    echo "Ref $ref successfully received.  Doing nothing: only the master branch may be deployed on this server."
+  fi
+done
