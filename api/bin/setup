@@ -17,7 +17,13 @@ chdir APP_ROOT do
 
   puts "== Installing api dependencies =="
   system "gem install bundler --conservative"
-  system "su -- app bundle check || su -- app bundle install"
+
+  # Only install bundle as app if user exists (in prod Docker image)
+  if system('id -u app > /dev/null 2>&1')
+    system "su -- app bundle check || su -- app bundle install"
+  else
+    system "bundle check || bundle install"
+  end
 
   puts "\n== Preparing database =="
   unless system('bin/rails db:migrate 2>/dev/null')

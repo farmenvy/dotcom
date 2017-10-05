@@ -67,46 +67,48 @@ step docker run --rm "$STAGING_DOCKER_CLIENT" \
 
 # PLEASE CHANGE ME!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 # GIT_BRANCH='origin/master'
+title 'making client production build'
 if [ "$GIT_BRANCH" = 'origin/master' ]
 then
   DEPLOYABLE=true
-  echo '+-- on deployable branch'
-
-  # changes to client?
-  if ! git diff-index --quiet origin/master^ -- client; then
-    info 'found changes made to client'
-    title 'adding client production build to public directory'
-    step docker run --rm -v ${PWD}/public/:/usr/src/app/build \
-      "$STAGING_DOCKER_CLIENT" yarn build
-  else
-    info 'no changes made to client -- skipping yarn build'
-  fi
+  info 'on deployable branch'
+  info 'adding client production build to public directory'
+  step docker run --rm -v ${PWD}/public/:/usr/src/app/build \
+    "$STAGING_DOCKER_CLIENT" yarn build
 else
   DEPLOYABLE=false
   info 'not a deployable branch'
 fi
 
-title 'creating production docker image'
 
-# is there a version bump?
-if ! git diff-index --quiet origin/master^ -- "$VERSION_FILE_PATH"; then
-  DEPLOYING_TO=production
-else
-  DEPLOYING_TO=staging
-fi
 
-if [ "$DEPLOYABLE" == true && "$DEPLOYING_TO" == 'production' ]
+if [ "$DEPLOYABLE" == true ]
 then
-  info 'deploying to production -- checking version file.'
-  DOCKER_TAG=$(cat "$VERSION_FILE_PATH")
-else
-  info 'not deploying to production -- using build number for docker tag'
-  DOCKER_TAG=${BUILD_NUMBER:-unspecified}
-fi
+  title 'creating production docker image'
+  # is there a version bump?
+  if ! git diff-index --quiet origin/master^ -- "$VERSION_FILE_PATH"; then
+    DEPLOYING_TO=production
+  else
+    DEPLOYING_TO=staging
+  fi
 
+  if [ "$DEPLOYING_TO" == 'production' ]
+  then
+    info 'deploying to production -- checking version file.'
+    DOCKER_TAG=$(cat "$VERSION_FILE_PATH")
+  else
+    info 'not deploying to production -- using build number for docker tag'
+    DOCKER_TAG=${BUILD_NUMBER:-unspecified}
+  fi
+
+else
+  title 'creating development docker image'
+  DOCKER_TAG=notdeploying
+  DOCKER_ARGS="-f config/docker/development/Dockerfile"
+fi
 
 DOCKER_IMAGE="farmenvy/dotcom:$DOCKER_TAG"
-step docker build -t "$DOCKER_IMAGE" .
+step docker build -t "$DOCKER_IMAGE" "$DOCKER_ARGS" .
 
 title 'running static analysis on API'
 step docker run -w /home/app/webapp $DOCKER_IMAGE bundle exec rubocop app
