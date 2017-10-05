@@ -4,13 +4,13 @@ services:
     build:
       context: .
       dockerfile: config/docker/development/Dockerfile
+    command: bundle exec rails s -b 0.0.0.0
     ports:
       - 80:80
     volumes:
       - ./api:/home/app/webapp
-      - /usr/local/bundle
+      - bundle:/usr/local/bundle
     environment:
-      - BUNDLE_PATH=/usr/local/bundle
       - RAILS_ENV=development
       - PORT=80
     links:
@@ -18,6 +18,9 @@ services:
   postgres:
     image: postgres:latest
     volumes:
-    - /var/lib/postgresql/data
+      - pg_data:/var/lib/postgresql/data
+volumes:
+  bundle:
+  pg_data:
 
 

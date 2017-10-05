@@ -3,19 +3,7 @@
 set -e
 
 GITHUB_REPO='https://api.github.com/repos/farmenvy/client'
-
-set_github_status() {
-  local status=${1:-pending}
-
-  if [ -n "$GITHUB_ACCESS_TOKEN" ]
-  then
-    curl -sS "$GITHUB_REPO/statuses/$GIT_COMMIT?access_token=$GITHUB_ACCESS_TOKEN" \
-      -H "Content-Type: application/json" \
-      -X POST \
-      -d "{\"state\": \"$status\", \"description\": \"Jenkins\", \"target_url\": \"$JENKINS_URL/job/$JOB_NAME/$BUILD_NUMBER/console\"}"
-  fi
-}
-
+VERSION_FILE_PATH='./api/VERSION'
 
 title() {
   echo
@@ -33,32 +21,47 @@ step() {
   echo "OK"
 }
 
+set_github_status() {
+  local status=${1:-pending}
+
+  if [ -n "$GITHUB_ACCESS_TOKEN" ]
+  then
+    curl -sS "$GITHUB_REPO/statuses/$GIT_COMMIT?access_token=$GITHUB_ACCESS_TOKEN" \
+      -H "Content-Type: application/json" \
+      -X POST \
+      -d "{\"state\": \"$status\", \"description\": \"Jenkins\", \"target_url\": \"$JENKINS_URL/job/$JOB_NAME/$BUILD_NUMBER/console\"}" \
+      > /dev/null
+  else
+    info 'no github token -- skipping status notification'
+  fi
+}
+
 cleanup() {
+  echo
+  echo '*** performing cleanup ***'
   echo '---> pruning docker stuff'
   docker stop $(docker ps -aq) > /dev/null
   docker system prune -f
   echo
-  echo '***DONE***'
+  echo '*** DONE ***'
 }
+
+trap "cleanup" EXIT
 
 abort() {
   echo
   echo "!!! FAILURE: '$*'"
   title 'setting github status to failure'
-  set_github_status 'failure' > /dev/null
-  step
-  cleanup
-  echo "!!! FAILED: '$*'"
+  set_github_status 'failure'
+  echo "!!! FAILED: '$*'" >&2
   exit 1
 }
 
-VERSION_FILE_PATH='./api/VERSION'
-
 title 'setting github status to pending'
-step 'set_github_status pending > /dev/null'
+step set_github_status 'pending'
 
 title 'creating staging client docker image'
-STAGING_DOCKER_CLIENT="farmenvy/client:staging"
+STAGING_DOCKER_CLIENT="staging-client"
 step docker build -t "$STAGING_DOCKER_CLIENT" client
 
 title 'running static analysis on client'
@@ -66,7 +69,8 @@ step docker run --rm "$STAGING_DOCKER_CLIENT" \
   ./node_modules/.bin/eslint ./src
 
 # PLEASE CHANGE ME!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-# GIT_BRANCH='origin/master'
+GIT_BRANCH='origin/master'
+BUILD_NUMBER=foo
 title 'making client production build'
 if [ "$GIT_BRANCH" = 'origin/master' ]
 then
@@ -81,11 +85,10 @@ else
 fi
 
 
-
 if [ "$DEPLOYABLE" == true ]
 then
   title 'creating production docker image'
-  # is there a version bump?
+  # only push to production if there is a version bump
   if ! git diff-index --quiet origin/master^ -- "$VERSION_FILE_PATH"; then
     DEPLOYING_TO=production
   else
@@ -100,7 +103,6 @@ then
     info 'not deploying to production -- using build number for docker tag'
     DOCKER_TAG=${BUILD_NUMBER:-unspecified}
   fi
-
 else
   title 'creating development docker image'
   DOCKER_TAG=notdeploying
@@ -111,13 +113,13 @@ DOCKER_IMAGE="farmenvy/dotcom:$DOCKER_TAG"
 step docker build -t "$DOCKER_IMAGE" "$DOCKER_ARGS" .
 
 title 'running static analysis on API'
-step docker run -w /home/app/webapp $DOCKER_IMAGE bundle exec rubocop app
+step docker run -w /home/app/webapp "$DOCKER_IMAGE" bundle exec rubocop app
 
 title 'creating staging postgres container'
-step docker run --rm --name my-postgres -d postgres:latest
+step docker run --rm --name staging-postgres -d postgres:latest
 
 title 'running API tests'
-step docker run --link my-postgres:postgres \
+step docker run --link staging-postgres:postgres \
   -e RAILS_ENV=test \
   $DOCKER_IMAGE /sbin/my_init -- \
   bundle exec rspec spec
@@ -132,7 +134,6 @@ then
   fi
 
   title 'publishing docker image'
-
   if [ "$DOCKER_TAG" == 'unspecified' ]
   then
     abort "trying to push unspecified image to docker hub!"
@@ -140,50 +141,69 @@ then
     step docker push "$DOCKER_IMAGE"
   fi
 
-  title 'deploy'
-  info "deploying to $DEPLOYING_TO @ $TARGET_IP"
+  # REMOVE ME!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+  TARGET_IP='127.0.0.1'
+  SECRET_KEY_BASE=removeme
+
   CANARY_PORT=8675
   PROD_PORT=80
+  CANARY_ENDPOINT="$TARGET_IP:$CANARY_PORT/health"
+  PROD_CANARY_ENDPOINT="$TARGET_IP:$PROD_PORT/health"
 
+  title 'deploy'
+  info "deploying to $DEPLOYING_TO @ $TARGET_IP"
+
+  echo "(server) ==> pulling $DOCKER_IMAGE"
   docker pull "$DOCKER_IMAGE"
 
-  # Test out latest image
-  docker run -dit --name "$DOCKER_TAG" --restart unless-stopped --rm \
-    -p "$CANARY_PORT":80 -e RAILS_ENV=production -e DATABASE_URL="$DATABASE_URL" \
-    "$DOCKER_IMAGE"
+  echo "(server) ==> running $DOCKER_IMAGE on port $CANARY_PORT"
+  docker run --link staging-postgres:postgres \
+    -dit --name "$DOCKER_TAG" --restart unless-stopped \
+    -p "$CANARY_PORT":80 -e PORT=80 \
+    -e SECRET_KEY_BASE="$SECRET_KEY_BASE" -e RAILS_ENV=test \
+    $DOCKER_IMAGE
+  # SAVE THE BELOW FOR PROD:
+  # docker run -dit --name "$DOCKER_TAG" --restart unless-stopped \
+    # -p "$CANARY_PORT":80 -e RAILS_ENV=production -e DATABASE_URL="$DATABASE_URL" \
+    # "$DOCKER_IMAGE"
 
-  curl --silent --show-error --fail "$TARGET_IP/canary:$CANARY_PORT"
+  echo "(server) ==> waiting 10 seconds for server to come online"
+  sleep 10
+  echo "(server) ==> curling endpoint: $CANARY_ENDPOINT"
+  curl --silent --show-error --max-time 30 --fail "$CANARY_ENDPOINT"
+  echo
+  echo "(server) ==> OK"
 
-  # stop all containers
-  docker stop $(docker ps -aq)
+  echo "(server) ==> stopping all docker containers"
+  docker stop $(docker ps -aq) && docker rm $(docker ps -aq)
 
-  # This time for realz
-  docker run -dit --name "$DOCKER_TAG" --restart unless-stopped --rm \
-    -p "$PROD_PORT":80 -e RAILS_ENV=production -e DATABASE_URL="$DATABASE_URL" \
-    "$DOCKER_IMAGE"
+  # TEMPORARY only local
+  step docker run --rm --name staging-postgres -d postgres:latest
 
+  echo "(server) ==> running $DOCKER_IMAGE on port $PROD_PORT"
+  docker run --link staging-postgres:postgres \
+    -dit --name "$DOCKER_TAG" --restart unless-stopped \
+    -p "$PROD_PORT":80 -e PORT=80 \
+    -e SECRET_KEY_BASE="$SECRET_KEY_BASE" -e RAILS_ENV=test \
+    $DOCKER_IMAGE
 
-  curl --silent --show-error --fail "$TARGET_IP/canary:$PROD_PORT"
+  # SAVE THE BELOW FOR PROD:
+  # docker run -dit --name "$DOCKER_TAG" --restart unless-stopped \
+  #   -p "$PROD_PORT":80 -e RAILS_ENV=production -e DATABASE_URL="$DATABASE_URL" \
+  #   "$DOCKER_IMAGE"
 
-  # pull latest docker image
-  # run latest docker image map to new port like 8675:80
-  # run canary check on that port
-  # stop latest container
-  # stop old container
-  # run latest container mapped now to port 80:80
-  # run canary check
-  # ssh to prod
-#   ssh "root@$TARGET_IP" <<EOF
-#
-# EOF
+  echo "(server) ==> waiting 10 seconds for server to come online"
+  sleep 10
+  echo "(server) ==> curling endpoint: $PROD_CANARY_ENDPOINT"
+  curl --silent --show-error --max-time 30 --fail "$PROD_CANARY_ENDPOINT"
+  echo
+  echo "(server) ==> OK"
 
-
-
+  echo "(server) ==> cleanup any old docker stuff"
+  docker system prune -f
 fi
 
 title 'setting github status to success'
-step 'set_github_status success > /dev/null'
-
-cleanup
+step set_github_status 'success'
 
 echo "SUCCESS!"

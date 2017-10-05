@@ -1,4 +1,5 @@
 require_relative 'boot'
+require_relative '../lib/canary'
 
 require "rails"
 # Pick the frameworks you want:
@@ -34,6 +35,7 @@ module Api
       g.controller_specs = false
     end
 
+    config.middleware.insert_before Rails::Rack::Logger, Canary
     config.version = File.read(Rails.root.join('VERSION')).chomp
   end
 end
