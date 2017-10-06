@@ -8,6 +8,10 @@
 
 set -e
 
+# ensure we're at project root
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}"  )" && pwd  )"
+cd "$DIR/.."
+
 abort() {
   echo "!!! $*"
   exit 1
@@ -65,15 +69,21 @@ done
 echo
 
 if [ "$DROPLET_STATUS" == 'active' ]; then
-  echo 'ACTIVE!'
+  echo 'activated! -- waiting 15 seconds for port to come online'
   # give SSH port time to open
-  sleep 5
+  sleep 15
 else
   abort "Droplet did not boot in time. Status: $DROPLET_STATUS"
 fi
 
 
 IP_ADDRESS=$(echo "$RESPONSE" | jq --raw-output '.[0].networks.v4[0].ip_address')
+
+ADDRESS_CONFIG="config/server/addresses/$DROPLET_NAME"
+echo "adding $IP_ADDRESS to $ADDRESS_CONFIG..."
+echo "$IP_ADDRESS" > "$ADDRESS_CONFIG"
+cat "$ADDRESS_CONFIG"
+
 ssh-keygen -R "$IP_ADDRESS"
 SSH_OPTIONS="-o StrictHostKeyChecking=no"
 ssh -i ~/.ssh/digitalocean "$SSH_OPTIONS" "root@$IP_ADDRESS" 'bash -s' < ./script/bootstrap-server
@@ -90,9 +100,3 @@ echo "* Name: $DROPLET_NAME"
 echo "* IP address: $IP_ADDRESS"
 echo "*****************************"
 echo
-
-ADDRESS_CONFIG="config/server/addresses/$DROPLET_NAME"
-echo "adding $IP_ADDRESS to $ADDRESS_CONFIG..."
-echo "$IP_ADDRESS" > "$ADDRESS_CONFIG"
-cat "$ADDRESS_CONFIG"
-

@@ -2,6 +2,10 @@
 
 set -e
 
+# ensure we're at project root
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}"  )" && pwd  )"
+cd "$DIR/.."
+
 GITHUB_REPO='https://api.github.com/repos/farmenvy/client'
 STAGING_IP=$(/bin/bash ./script/determine-staging)
 
@@ -66,6 +70,7 @@ then
   info "Master branch received.  Deploying to staging..."
   step git remote add staging "deploy@$STAGING_IP:farmenvy/dotcom.git"
   step git push staging
+  step ./script/healthcheck "$STAGING_IP"
 else
   info "Not a deployable branch."
 fi
