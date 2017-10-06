@@ -1,0 +1,86 @@
+#!/bin/bash
+
+# Provisions a server in DigitalOcean
+#
+# Usage:
+#
+# ./script/provision [NAME_OF_SERVER]
+
+set -e
+
+abort() {
+  echo "!!! $*"
+  exit 1
+}
+
+fingerprint() {
+  local keyname='digitalocean.pub'
+  local path="$HOME/.ssh/$keyname"
+
+  if [ ! -f "$path" ]
+  then
+    abort "$path not found!"
+  fi
+
+  ssh-keygen -E md5 -lf "$path" | awk '{ print $2 }' | cut -c 5-
+}
+
+doctl() {
+  docker run -e DIGITALOCEAN_ACCESS_TOKEN="$DIGITALOCEAN_ACCESS_TOKEN" farmenvy/doctl compute "$@"
+}
+
+timestamp=$(date +"%Y%m%d-%H%M")
+DROPLET_NAME="${1:-$timestamp}"
+
+echo "Creating droplet: '$DROPLET_NAME'"
+echo
+
+RESPONSE=$(doctl droplet create "$DROPLET_NAME" \
+  --size 1gb \
+  --image docker-16-04 \
+  --region nyc1 \
+  --ssh-keys $(fingerprint) \
+  --output json
+)
+echo "OK"
+
+DROPLET_STATUS=$(echo "$RESPONSE" | jq --raw-output '.[0].status')
+DROPLET_ID=$(echo "$RESPONSE" | jq --raw-output '.[0].id')
+
+echo "droplet ID: '$DROPLET_ID'"
+echo "droplet status: '$DROPLET_STATUS'"
+echo
+
+touch status.debug
+echo "Waiting for droplet to boot"
+for i in {1..60}; do
+  RESPONSE=$(doctl droplet get "$DROPLET_ID" --output json)
+  DROPLET_STATUS=$(echo "$RESPONSE" | jq --raw-output '.[0].status' )
+
+  [ "$DROPLET_STATUS" == active ] && break
+
+  echo -n '.'
+  sleep 5
+done
+echo
+
+if [ "$DROPLET_STATUS" == 'active' ]; then
+  echo 'ACTIVE!'
+  # give SSH port time to open
+  sleep 5
+else
+  abort "Droplet did not boot in time. Status: $DROPLET_STATUS"
+fi
+
+
+IP_ADDRESS=$(echo "$RESPONSE" | jq --raw-output '.[0].networks.v4[0].ip_address')
+ssh-keygen -R "$IP_ADDRESS"
+SSH_OPTIONS="-o StrictHostKeyChecking=no"
+ssh -i ~/.ssh/digitalocean "$SSH_OPTIONS" "root@$IP_ADDRESS" 'bash -s' < ./script/bootstrap-server
+
+echo
+echo "*****************************"
+echo "* Droplet is ready to use!"
+echo "* Name: $DROPLET_NAME"
+echo "* IP address: $IP_ADDRESS"
+echo "*****************************"

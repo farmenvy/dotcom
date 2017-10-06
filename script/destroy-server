@@ -1,0 +1,33 @@
+#!/bin/bash
+#
+# Usage:
+#
+# script/destroy-server DROPLETNAME
+#
+
+DROPLET_NAME="$1"
+
+doctl() {
+  docker run -e DIGITALOCEAN_ACCESS_TOKEN="$DIGITALOCEAN_ACCESS_TOKEN" farmenvy/doctl compute "$@"
+}
+
+lookup_droplet_id() {
+  doctl droplet list | \
+    grep "\s$DROPLET_NAME\s" | \
+    awk '{ print $ 1 }'
+}
+
+destroy_server() {
+  local id=$(lookup_droplet_id)
+
+  if [ -n "$id" ]
+  then
+    echo "destroying $DROPLET_NAME..."
+    doctl droplet delete -f "$id" && echo 'OK'
+  else
+    echo "!! couldn't find droplet named $DROPLET_NAME"
+    exit 1
+  fi
+}
+
+destroy_server
