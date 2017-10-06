@@ -30,4 +30,24 @@ destroy_server() {
   fi
 }
 
+remove_address_file() {
+  local DESTINATION="config/server/addresses/$DROPLET_NAME"
+
+  if [ -z "$DROPLET_NAME" ]
+  then
+    echo 'no droplet name specified!'
+    exit 1
+  elif [ ! -f "$DESTINATION" ]
+  then
+    echo "file does not exist: $DESTINATION"
+    exit 1
+  else
+    echo "removing: $DESTINATION"
+    rm -f "$DESTINATION"
+  fi
+
+  echo "OK"
+}
+
 destroy_server
+remove_address_file

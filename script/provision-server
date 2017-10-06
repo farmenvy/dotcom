@@ -83,10 +83,16 @@ echo
 echo "moving .env.production to $ENV_FILE_DESTINATION"
 scp ./.env.production "$ENV_FILE_DESTINATION"
 
-
 echo
 echo "*****************************"
 echo "* Droplet is ready to use!"
 echo "* Name: $DROPLET_NAME"
 echo "* IP address: $IP_ADDRESS"
 echo "*****************************"
+echo
+
+ADDRESS_CONFIG="config/server/addresses/$DROPLET_NAME"
+echo "adding $IP_ADDRESS to $DESTINATION..."
+echo "$IP_ADDRESS" > "$DESTINATION"
+cat "$DESTINATION"
+
