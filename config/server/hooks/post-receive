@@ -11,7 +11,7 @@ do
     echo "Master ref received.  Deploying master branch to $HOSTNAME..."
     git --work-tree=$WORK_TREE --git-dir=$GIT_DIR checkout -f
     echo "starting boot now..."
-    ./script/boot
+    $WORK_TREE/script/boot
   else
     echo "Ref $ref successfully received.  Doing nothing: only the master branch may be deployed on this server."
   fi
