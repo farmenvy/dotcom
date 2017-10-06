@@ -4,6 +4,9 @@
 
 set -e
 
+# ensure we're at project root
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}"  )" && pwd  )"
+cd "$DIR/.."
 
 # Because client isn't "running" in production, make build first
 # before shutting down other services.
@@ -25,4 +28,6 @@ done
 
 echo
 curl --silent --show-error --max-time 30 --fail "127.0.0.1"
+sleep 1
+echo
 curl --silent --show-error --max-time 30 --fail "127.0.0.1/api/health" | jq
