@@ -1,0 +1,78 @@
+#!/bin/bash
+
+set -e
+
+git fetch
+
+uncommitted_changes() {
+  test -n "$(git status --porcelain)"
+}
+
+diff_besides_version() {
+  git diff origin/master --name-only | grep -v '^api/VERSION'
+}
+
+no_version_file_diff() {
+  test -z "$(git diff origin/master --name-only | grep '^api/VERSION')"
+}
+
+if uncommitted_changes; then
+  echo 'There are uncommitted changes.'
+  echo 'Exiting...'
+  echo
+  git status --porcelain
+
+  exit 1
+fi
+
+if diff_besides_version; then
+  cat <<EOF
+^^^^^^^^^^^^^^^^^^^^^^^^^
+
+HOLD UP!
+
+There are changes besides just the VERSION file!
+
+Please update your branch to be even with origin/master and
+have latest commit locally only be updated VERSION file.
+EOF
+
+  exit 1
+elif no_version_file_diff; then
+
+  echo "No change made to VERSION file"
+  exit 1
+fi
+
+VERSION=$(cat ./api/VERSION)
+if git tag | grep "$VERSION" > /dev/null; then
+  echo "tag '$VERSION' already exists"
+  exit 1
+fi
+
+CURRENT_STAGING=$(cat ./STAGING)
+
+if [ "$CURRENT_STAGING" == green ]; then
+  MESSAGE="changing STAGING from $CURRENT_STAGING to blue"
+  echo "---> $MESSAGE"
+  echo 'blue' > STAGING
+elif [ "$CURRENT_STAGING" == blue ]; then
+  MESSAGE="changing STAGING from $CURRENT_STAGING to green"
+  echo "---> $MESSAGE"
+  echo 'green' > STAGING
+else
+  echo "unrecognized staging variable: '$CURRENT_STAGING'"
+  exit 1
+fi
+
+git add . --verbose
+git commit --amend --no-edit
+
+echo "---> creating tag $VERSION"
+git tag "$VERSION"
+
+echo "---> pushing new version of branch"
+git push origin master
+
+echo "---> pushing tag $VERSION"
+git push origin "$VERSION"
