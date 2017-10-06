@@ -23,6 +23,8 @@ docker run busybox /bin/echo '*** It works! ***'
 
 echo '=== Creating deploy user ==='
 adduser --disabled-password --gecos "" deploy
+usermod -aG docker deploy
+
 
 su -- deploy <<EOF
   echo '=== Adding authorized keys ==='

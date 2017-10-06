@@ -92,7 +92,7 @@ echo "*****************************"
 echo
 
 ADDRESS_CONFIG="config/server/addresses/$DROPLET_NAME"
-echo "adding $IP_ADDRESS to $DESTINATION..."
-echo "$IP_ADDRESS" > "$DESTINATION"
-cat "$DESTINATION"
+echo "adding $IP_ADDRESS to $ADDRESS_CONFIG..."
+echo "$IP_ADDRESS" > "$ADDRESS_CONFIG"
+cat "$ADDRESS_CONFIG"
 
