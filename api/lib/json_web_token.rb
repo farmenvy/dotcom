@@ -22,7 +22,7 @@ module JSONWebToken
         token,
         SECRET_KEY_BASE,
         true,
-        { algorithm: 'HS256'  }
+        algorithm: 'HS256'
       ).first
     end
   end

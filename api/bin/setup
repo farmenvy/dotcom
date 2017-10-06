@@ -15,14 +15,14 @@ chdir APP_ROOT do
   # Add necessary setup steps to this file.
   puts "== Setting up environment:  #{ENV.fetch('RAILS_ENV')} =="
 
-  puts "== Installing api dependencies =="
-  system "gem install bundler --conservative"
+  puts '== Installing api dependencies =='
+  system 'gem install bundler --conservative'
 
   # Only install bundle as app if user exists (in prod Docker image)
   if system('id -u app > /dev/null 2>&1')
-    system "su -- app bundle check || su -- app bundle install"
+    system 'su -- app bundle check || su -- app bundle install'
   else
-    system "bundle check || bundle install"
+    system 'bundle check || bundle install'
   end
 
   puts "\n== Preparing database =="

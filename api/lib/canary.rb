@@ -1,5 +1,4 @@
 class Canary
-
   def initialize(app)
     @app = app
   end
@@ -24,7 +23,7 @@ class Canary
     [
       401,
       { 'Content-Type' => 'application/json' },
-      [{status: 'not authorized'}.to_json]
+      [{ status: 'not authorized' }.to_json]
     ]
   end
 
@@ -33,7 +32,7 @@ class Canary
   end
 
   def status
-    json_body.all? { |k, v| v == true } ? 200 : 500
+    json_body.all? { |_k, v| v == true } ? 200 : 500
   end
 
   def json_body
@@ -46,4 +45,3 @@ class Canary
     error
   end
 end
-

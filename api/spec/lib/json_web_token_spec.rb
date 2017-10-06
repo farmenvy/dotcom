@@ -15,10 +15,9 @@ RSpec.describe JSONWebToken do
     end
 
     it 'accepts a payload' do
-      expect { subject.encode({foo: 'bar'}) }.to_not raise_error
+      expect { subject.encode(foo: 'bar') }.to_not raise_error
     end
   end
-
 
   describe '.decode' do
     it 'responds_to :decode' do

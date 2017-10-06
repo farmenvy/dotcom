@@ -2,12 +2,12 @@ require 'rails_helper'
 
 RSpec.describe User, type: :model do
   describe 'attributes' do
-    %i(
+    %i[
       first_name
       last_name
       email_address
       password_digest
-    ).each do |attr|
+    ].each do |attr|
       it "responds_to #{attr}" do
         expect(subject).to respond_to attr
       end
@@ -23,7 +23,7 @@ RSpec.describe User, type: :model do
       password_confirmation: password_confirmation
     }
   end
-  
+
   let(:first_name) { 'bob' }
   let(:last_name) { 'jones' }
   let(:email_address) { 'email@email.com' }

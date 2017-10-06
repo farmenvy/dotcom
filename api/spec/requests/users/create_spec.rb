@@ -1,12 +1,12 @@
-require "rails_helper"
+require 'rails_helper'
 
-RSpec.describe "POST /users", type: :request do
+RSpec.describe 'POST /users', type: :request do
   let(:headers) do
-    { "ACCEPT" => "application/json" }
+    { 'ACCEPT' => 'application/json' }
   end
 
   before do
-    post "/users", params: params, headers: headers
+    post '/users', params: params, headers: headers
   end
 
   let(:params) do
@@ -28,11 +28,11 @@ RSpec.describe "POST /users", type: :request do
   let(:password_confirmation) { 'thisisavalidpassword' }
 
   context 'when given valid params' do
-    it "creates a User" do
+    it 'creates a User' do
       expect(response).to have_http_status(:created)
     end
 
-    it "returns the User object" do
+    it 'returns the User object' do
       expect(json.dig('user', 'first_name')).to eq(first_name)
       expect(json.dig('user', 'last_name')).to eq(last_name)
       expect(json.dig('user', 'email_address')).to eq(email_address)

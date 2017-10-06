@@ -1,6 +1,6 @@
-require "rails_helper"
+require 'rails_helper'
 
-RSpec.describe "POST /session", type: :request do
+RSpec.describe 'POST /session', type: :request do
   let(:credentials) do
     ActionController::HttpAuthentication::Basic.encode_credentials(
       credential_email, credential_password
@@ -17,13 +17,13 @@ RSpec.describe "POST /session", type: :request do
 
   let(:headers) do
     {
-      "ACCEPT" => "application/json",
-      "HTTP_AUTHORIZATION" => credentials
+      'ACCEPT' => 'application/json',
+      'HTTP_AUTHORIZATION' => credentials
     }
   end
 
   before do
-    post "/session", params: {}, headers: headers
+    post '/session', params: {}, headers: headers
   end
 
   context 'when given valid http auth headers' do

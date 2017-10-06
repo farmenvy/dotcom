@@ -1,5 +1,8 @@
 AllCops:
   TargetRubyVersion: 2.4
+  Exclude:
+    - spec/spec_helper
+
 
 Documentation:
   Enabled: false
@@ -11,12 +14,10 @@ Metrics/BlockLength:
   Enabled: true
   Exclude:
     - spec/**/*
+    - Guardfile
 
 Metrics/LineLength:
-  Enabled: true
-  Exclude:
-    - spec/**/*
-    - config/routes.rb
+  Enabled: false
 
 Style/FrozenStringLiteralComment:
   Enabled: false
