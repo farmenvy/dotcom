@@ -15,15 +15,6 @@
 
 .byebug_history
 
-# Elastic Beanstalk Files
-.elasticbeanstalk/*
-!.elasticbeanstalk/*.cfg.yml
-!.elasticbeanstalk/*.global.yml
-*.pem
-.ebextensions/environmentvariables.config
-.env
 tmp
 log
-
-# Automatically build via react
-public
+.env*

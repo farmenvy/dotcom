@@ -67,4 +67,3 @@ test:
 production:
   <<: *default
   encoding: utf8
-  url: <%= ENV['DATABASE_URL'] %>

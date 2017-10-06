@@ -26,10 +26,8 @@ chdir APP_ROOT do
   end
 
   puts "\n== Preparing database =="
-  unless system('bin/rails db:migrate 2>/dev/null')
-    puts "\n== Running db:setup =="
-    system('bin/rails db:setup')
-  end
+  system('bin/rails db:create 2>/dev/null')
+  system('bin/rails db:migrate')
 
   puts "\n== Removing old logs and tempfiles =="
   system! 'bin/rails log:clear tmp:clear'

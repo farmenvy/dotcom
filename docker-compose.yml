@@ -19,6 +19,7 @@ services:
     volumes:
       - ./client:/usr/src/app
       - node_modules:/usr/src/app/node_modules
+    env_file: .env
   api:
     build: ./api
     command: bundle exec rails s -p 5000 -b 0.0.0.0
@@ -31,6 +32,7 @@ services:
       - bundle:/usr/local/bundle
     links:
       - postgres
+    env_file: .env
   postgres:
     image: postgres:latest
     volumes:

@@ -17,6 +17,8 @@ services:
       - PORT=5000
     links:
       - postgres
+    env_file: .env.production
+  # Need to replace with RDS.
   postgres:
     image: postgres:latest
     volumes:
