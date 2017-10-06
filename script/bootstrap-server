@@ -16,7 +16,7 @@ ufw status
 echo '=== Installing Kernel with LXC and AUFS Support ==='
 export DEBIAN_FRONTEND=noninteractive
 apt-get -qq update
-apt-get install -qqy linux-image-extra-`uname -r` git curl
+apt-get install -qqy linux-image-extra-`uname -r` git curl jq
 
 echo '=== Verifying Docker Installation ==='
 docker run busybox /bin/echo '*** It works! ***'
@@ -48,7 +48,7 @@ su -- deploy <<EOF
   cat "$GIT_SERVER_DIR/hooks/post-receive" || exit 1
   cd ..
 
-  echo '=== Creating ~/dotcom/current ==='
+  echo "=== Creating $DEPLOYED_DIR ==="
   mkdir -p "$DEPLOYED_DIR"
 EOF
 

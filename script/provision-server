@@ -78,6 +78,12 @@ ssh-keygen -R "$IP_ADDRESS"
 SSH_OPTIONS="-o StrictHostKeyChecking=no"
 ssh -i ~/.ssh/digitalocean "$SSH_OPTIONS" "root@$IP_ADDRESS" 'bash -s' < ./script/bootstrap-server
 
+ENV_FILE_DESTINATION="deploy@$IP_ADDRESS:/home/deploy/current"
+echo
+echo "moving .env.production to $ENV_FILE_DESTINATION"
+scp ./.env.production "$ENV_FILE_DESTINATION"
+
+
 echo
 echo "*****************************"
 echo "* Droplet is ready to use!"

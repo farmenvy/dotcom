@@ -1,0 +1,22 @@
+#!/bin/bash
+#
+# builds latest from code and runs application
+
+set -e
+
+# docker-compose -f staging.yml run --rm client yarn build
+
+docker-compose down
+docker-compose -f production.yml build
+docker-compose -f production.yml run --rm api bin/setup
+
+docker-compose -f production.yml up -d
+
+echo "allowing 10 seconds to boot before checking health"
+for i in {1..10}; do
+  echo -n '.'
+  sleep 1
+done
+
+echo
+curl --silent --show-error --max-time 30 --fail "127.0.0.1:80/api/health" | jq
