@@ -1,0 +1,12 @@
+#!/bin/bash
+
+STAGING=$(cat ./STAGING)
+ADDRESS_FILE="config/server/addresses/$STAGING"
+
+if [ ! -f "$ADDRESS_FILE" ]
+then
+  echo "!!! file does not exist: $ADDRESS_FILE"
+  exit 1
+else
+  cat "$ADDRESS_FILE"
+fi

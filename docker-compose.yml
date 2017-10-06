@@ -28,7 +28,7 @@ services:
     ports:
       - 5000:5000
     volumes:
-      - ./api:/usr/src/api
+      - ./api:/home/app/webapp
       - bundle:/usr/local/bundle
     links:
       - postgres

@@ -2,7 +2,7 @@
 
 set -e
 
-GITHUB_REPO='https://api.github.com/repos/farmenvy/client'
+GITHUB_REPO='https://api.github.com/repos/farmenvy/dotcom'
 
 set_github_status() {
   local status=${1:-pending}
