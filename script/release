@@ -2,6 +2,12 @@
 
 set -e
 
+# ensure we're at project root
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}"  )" && pwd  )"
+cd "$DIR/.."
+
+FLOATING_IP=$(cat ./config/server/addresses/float)
+
 git fetch
 
 uncommitted_changes() {
@@ -15,6 +21,30 @@ diff_besides_version() {
 no_version_file_diff() {
   test -z "$(git diff origin/master --name-only | grep '^api/VERSION')"
 }
+
+doctl() {
+  docker run -e DIGITALOCEAN_ACCESS_TOKEN="$DIGITALOCEAN_ACCESS_TOKEN" farmenvy/doctl compute "$@"
+}
+
+unassign_floating_ip() {
+  doctl floating-ip-action unassign "$FLOATING_IP"
+}
+
+assign_floating_ip() {
+  if [ -z "$NEW_PRODUCTION" ]
+  then
+    echo "NEW_PRODUCTION variable is undefined. It should be green or blue."
+    exit 1
+  fi
+
+  STAGING_IP_PATH="./config/server/addresses/$NEW_PRODUCTION"
+  STAGING_IP="$(cat $STAGING_IP_PATH)"
+  DROPLET_ID=$(doctl droplet list | grep "$STAGING_IP" | awk '{ print $1 }')
+
+  doctl floating-ip-action assign "$FLOATING_IP" "$DROPLET_ID"
+  echo "---> assigned floating ip: $FLOATING_IP to: $STAGING_IP ($NEW_PRODUCTION)"
+}
+
 
 if uncommitted_changes; then
   echo 'There are uncommitted changes.'
@@ -53,10 +83,12 @@ fi
 CURRENT_STAGING=$(cat ./STAGING)
 
 if [ "$CURRENT_STAGING" == green ]; then
+  NEW_PRODUCTION=green
   MESSAGE="changing STAGING from $CURRENT_STAGING to blue"
   echo "---> $MESSAGE"
   echo 'blue' > STAGING
 elif [ "$CURRENT_STAGING" == blue ]; then
+  NEW_PRODUCTION=blue
   MESSAGE="changing STAGING from $CURRENT_STAGING to green"
   echo "---> $MESSAGE"
   echo 'green' > STAGING
@@ -64,6 +96,7 @@ else
   echo "unrecognized staging variable: '$CURRENT_STAGING'"
   exit 1
 fi
+
 
 git add . --verbose
 git commit --amend --no-edit
@@ -76,3 +109,13 @@ git push origin master
 
 echo "---> pushing tag $VERSION"
 git push origin "$VERSION"
+
+
+echo "---> unassigning floating ip: $FLOATING_IP"
+unassign_floating_ip
+
+echo "---> waiting 10 seconds for changes to take effect"
+sleep 10
+
+echo "---> reassigning floating ip to: $NEW_PRODUCTION"
+assign_floating_ip

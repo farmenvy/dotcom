@@ -1,0 +1,13 @@
+#!/bin/bash
+
+set -e
+
+# ensure we're at project root
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}"  )" && pwd  )"
+cd "$DIR/.."
+
+doctl() {
+  docker run -e DIGITALOCEAN_ACCESS_TOKEN="$DIGITALOCEAN_ACCESS_TOKEN" farmenvy/doctl compute "$@"
+}
+
+doctl floating-ip create --region nyc1
