@@ -21,7 +21,7 @@ module Auth
     def authenticate!
       authenticate_or_request_with_http_basic do |email, password|
         @user = User.find_by(email_address: email)
-          .try(:authenticate, password)
+                    .try(:authenticate, password)
       end
     end
   end
