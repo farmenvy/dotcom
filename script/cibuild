@@ -59,10 +59,14 @@ step() {
   info "OK"
 }
 
-step docker-compose build
-step docker-compose run --rm client ./node_modules/.bin/eslint ./src
-step docker-compose run --rm api rubocop .
-step docker-compose run -e RAILS_ENV=test --rm api rspec spec
+ci-compose() {
+  docker-compose -f ci.yml "$@"
+}
+
+step ci-compose build
+step ci-compose run --rm client ./node_modules/.bin/eslint ./src
+step ci-compose run --rm api rubocop .
+step ci-compose run -e RAILS_ENV=test --rm api rspec spec
 
 title 'deploy'
 if [[ "$GIT_BRANCH" =~ .*/master$ ]];

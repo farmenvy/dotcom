@@ -1,23 +1,13 @@
 version: "3"
 services:
-  nginx:
-    build:
-      context: .
-      dockerfile: nginx/Dockerfile
-    ports:
-      - 80:80
-    links:
-      - api
   api:
     build: ./api
-    command: bundle exec rails s -b 0.0.0.0
     environment:
-      - RAILS_ENV=production
-      - PORT=5000
+      - RAILS_ENV=test
     links:
       - postgres
     env_file:
-      - .env.production
+      - .env.development
 
   # Need to replace with RDS.
   postgres:
@@ -26,15 +16,10 @@ services:
       - pg_data:/var/lib/postgresql/data
   client:
     build: ./client
-    command: yarn start
-    ports:
-      - 4000:4000
-    environment:
-      - PORT=4000
     volumes:
       - ./client/build:/usr/src/app/build
     env_file:
-      - .env.production
+      - .env.development
 
 volumes:
   pg_data:
