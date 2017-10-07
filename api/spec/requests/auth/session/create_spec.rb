@@ -23,7 +23,7 @@ RSpec.describe 'POST /session', type: :request do
   end
 
   before do
-    post '/session', params: {}, headers: headers
+    post '/auth/session', params: {}, headers: headers
   end
 
   context 'when given valid http auth headers' do
@@ -31,8 +31,12 @@ RSpec.describe 'POST /session', type: :request do
       expect(response).to have_http_status(:created)
     end
 
-    it 'returns a payload that includes a token' do
-      expect(json['token']).to_not be_nil
+    it 'returns a payload that includes an auth token' do
+      expect(json['access_token']).to_not be_nil
+    end
+
+    it 'returns a payload that includes a refresh token' do
+      expect(json['refresh_token']).to_not be_nil
     end
   end
 
