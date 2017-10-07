@@ -5,7 +5,6 @@ RSpec.describe Auth::SessionController do
 
   let(:user) { double(:user, id: 123) }
   let(:request) { double(:request, remote_ip: '127.0.0.1') }
-  let(:ip) { double(:ip) }
 
   before do
     allow(subject).to receive(:user).and_return user
