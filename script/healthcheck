@@ -9,7 +9,7 @@ for i in {1..10}; do
 done
 
 echo
-curl --silent --show-error --max-time 30 --fail "127.0.0.1"
+curl --silent --show-error --max-time 30 --fail "$IP_ADDRESS"
 sleep 1
 echo
-curl --silent --show-error --max-time 30 --fail "127.0.0.1/api/health" | jq
+curl --silent --show-error --max-time 30 --fail "$IP_ADDRESS/api/health"
