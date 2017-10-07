@@ -64,6 +64,8 @@ ci-compose() {
 }
 
 step ci-compose build
+step ci-compose run --rm api bin/setup
+
 step ci-compose run --rm client ./node_modules/.bin/eslint ./src
 step ci-compose run --rm api rubocop .
 step ci-compose run -e RAILS_ENV=test --rm api rspec spec
