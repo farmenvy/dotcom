@@ -9,7 +9,12 @@ for i in {1..10}; do
 done
 
 echo
+echo '==> checking front page'
 curl --silent --show-error --max-time 30 --fail "$IP_ADDRESS"
+
 sleep 1
+
 echo
+echo '==> checking /api/health'
 curl --silent --show-error --max-time 30 --fail "$IP_ADDRESS/api/health"
+echo

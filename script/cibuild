@@ -6,7 +6,7 @@ set -e
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}"  )" && pwd  )"
 cd "$DIR/.."
 
-GITHUB_REPO='https://api.github.com/repos/farmenvy/client'
+GITHUB_REPO='https://api.github.com/repos/farmenvy/dotcom'
 STAGING_IP=$(/bin/bash ./script/determine-staging)
 
 title() {
@@ -19,6 +19,7 @@ info() {
 
 set_github_status() {
   RUN_STATUS=${1:-pending}
+  local payload="{\"state\": \"$RUN_STATUS\", \"description\": \"Jenkins\", \"target_url\": \"$JENKINS_URL/job/$JOB_NAME/$BUILD_NUMBER/console\"}"
 
   if [ -n "$GITHUB_ACCESS_TOKEN" ]
   then
@@ -26,8 +27,7 @@ set_github_status() {
     curl -sS "$GITHUB_REPO/statuses/$GIT_COMMIT?access_token=$GITHUB_ACCESS_TOKEN" \
       -H "Content-Type: application/json" \
       -X POST \
-      -d "{\"state\": \"$status\", \"description\": \"Jenkins\", \"target_url\": \"$JENKINS_URL/job/$JOB_NAME/$BUILD_NUMBER/console\"}" \
-      > /dev/null
+      -d "$payload"
   else
     info 'no github token -- skipping status notification'
   fi
@@ -62,6 +62,8 @@ step() {
 ci-compose() {
   docker-compose -f ci.yml "$@"
 }
+
+set_github_status 'pending'
 
 step ci-compose build
 step ci-compose run --rm api bin/setup
