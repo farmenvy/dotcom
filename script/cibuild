@@ -27,7 +27,7 @@ set_github_status() {
     curl -sS "$GITHUB_REPO/statuses/$GIT_COMMIT?access_token=$GITHUB_ACCESS_TOKEN" \
       -H "Content-Type: application/json" \
       -X POST \
-      -d "$payload"
+      -d "$payload" > /dev/null
   else
     info 'no github token -- skipping status notification'
   fi
@@ -78,9 +78,10 @@ then
   info 'Master branch received.  Deploying to staging...'
 
   info "adding $STAGING_IP as known host"
-  step ssh-keygen -R "$STAGING_IP"
-  step ssh-keyscan "$STAGING_IP" >> ~/.ssh/known_hosts
+  step "ssh-keygen -R $STAGING_IP"
+  step "ssh-keyscan $STAGING_IP >> ~/.ssh/known_hosts"
 
+  info 'setting staging remote'
   step git remote remove staging &>/dev/null || true
   step git remote add staging "deploy@$STAGING_IP:farmenvy/dotcom.git"
   step git push --force staging origin/master
