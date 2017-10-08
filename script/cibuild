@@ -85,8 +85,7 @@ then
   step git remote remove staging &>/dev/null || true
   step git remote add staging "deploy@$STAGING_IP:farmenvy/dotcom.git"
 
-  step git checkout master
-  step git push --force staging master
+  step git push --force staging HEAD:master
 
   step ./script/healthcheck "$STAGING_IP"
 else
