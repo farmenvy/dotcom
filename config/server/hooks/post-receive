@@ -9,7 +9,7 @@ do
   if [[ $ref =~ .*/master$ ]];
   then
     echo "Master ref received.  Deploying master branch to $HOSTNAME..."
-    git --work-tree="$WORK_TREE" --git-dir="$GIT_DIR" checkout -f "$ref"
+    git --work-tree="$WORK_TREE" --git-dir="$GIT_DIR" checkout -f master
     echo "starting boot now..."
     "$WORK_TREE/script/boot"
   else

@@ -8,6 +8,11 @@ set -e
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}"  )" && pwd  )"
 cd "$DIR/.."
 
+if ! cat .env.production | grep SERVER_HOSTNAME; then
+  echo 'hostname is not in .env.production. Adding...'
+  echo "SERVER_HOSTNAME=$(hostname)" >> .env.production
+fi
+
 # Because client isn't "running" in production, make build first
 # before shutting down other services.
 docker-compose -f production.yml build client

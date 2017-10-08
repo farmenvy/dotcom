@@ -35,6 +35,6 @@ module Api
     end
 
     config.version = File.read(Rails.root.join('VERSION')).chomp
-    config.server = `hostname`.chomp
+    config.server = ENV.fetch('SERVER_HOSTNAME') { 'unknown' }
   end
 end
