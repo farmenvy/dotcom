@@ -114,8 +114,5 @@ git push origin "$VERSION"
 echo "---> unassigning floating ip: $FLOATING_IP"
 unassign_floating_ip
 
-echo "---> waiting 10 seconds for changes to take effect"
-sleep 10
-
 echo "---> reassigning floating ip to: $NEW_PRODUCTION"
 assign_floating_ip
