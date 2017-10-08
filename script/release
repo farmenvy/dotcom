@@ -15,11 +15,11 @@ uncommitted_changes() {
 }
 
 diff_besides_version() {
-  git diff origin/master --name-only | grep -v '^api/VERSION'
+  git diff origin/master --name-only | grep -v '^VERSION'
 }
 
 no_version_file_diff() {
-  test -z "$(git diff origin/master --name-only | grep '^api/VERSION')"
+  test -z "$(git diff origin/master --name-only | grep '^VERSION')"
 }
 
 doctl() {
@@ -74,7 +74,7 @@ elif no_version_file_diff; then
   exit 1
 fi
 
-VERSION=$(cat ./api/VERSION)
+VERSION=$(cat ./VERSION)
 if git tag | grep "$VERSION" > /dev/null; then
   echo "tag '$VERSION' already exists"
   exit 1

@@ -4,13 +4,15 @@ ENV WEBAPP /home/app/webapp
 RUN mkdir -p ${WEBAPP}
 WORKDIR ${WEBAPP}
 
+COPY VERSION STAGING ./
+
 # Run Bundle in a cache efficient way
 RUN gem install bundler --no-ri --no-rdoc
-COPY ./Gemfile* ./
+COPY ./api/Gemfile* ./
 RUN bundle install -j 7
 
 # Add the rails app
-ADD ./ ${WEBAPP}
+ADD ./api ${WEBAPP}
 
 EXPOSE 80
 

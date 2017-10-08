@@ -1,7 +1,9 @@
 version: "3"
 services:
   api:
-    build: ./api
+    build:
+      context: .
+      dockerfile: api/Dockerfile
     environment:
       - RAILS_ENV=test
     links:

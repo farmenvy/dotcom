@@ -8,7 +8,8 @@ RSpec.describe 'GET /index', type: :request do
   it 'returns the application version' do
     expect(json).to include(
       'version' => Rails.configuration.version,
-      'server' => Rails.configuration.server
+      'server' => Rails.configuration.server,
+      'staging' => Rails.configuration.staging
     )
   end
 end
