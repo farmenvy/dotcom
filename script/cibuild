@@ -78,7 +78,7 @@ then
   info "Master branch received.  Deploying to staging..."
   step git remote remove staging &>/dev/null || true
   step git remote add staging "deploy@$STAGING_IP:farmenvy/dotcom.git"
-  step git push staging origin/master
+  step git push --force staging origin/master
   step ./script/healthcheck "$STAGING_IP"
 else
   info "Not a deployable branch."
