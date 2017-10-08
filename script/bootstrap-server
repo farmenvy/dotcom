@@ -6,6 +6,7 @@ AUTHORIZED_KEYS_SOURCE='https://raw.githubusercontent.com/farmenvy/dotcom/master
 GIT_SERVER_DIR='/home/deploy/farmenvy/dotcom.git'
 POST_RECEIVE_SOURCE='https://raw.githubusercontent.com/farmenvy/dotcom/master/config/server/hooks/post-receive'
 DEPLOYED_DIR='/home/deploy/current'
+POST_RECEIVE_DIR="$DEPLOYED_DIR/config/server/hooks"
 
 echo '=== Activating Firewall (only SSH allowed) ==='
 ufw --force reset
@@ -42,16 +43,17 @@ su -- deploy <<EOF
   cd "$GIT_SERVER_DIR" || exit 1
   git init --bare
 
-  echo '=== Installing post-receive hook ==='
-  curl --silent --fail \
-    "$POST_RECEIVE_SOURCE" > "$GIT_SERVER_DIR/hooks/post-receive"
+  echo '=== Installing and Symlinking post-receive hook ==='
+  mkdir -p "$POST_RECEIVE_DIR"
 
-  chmod +x "$GIT_SERVER_DIR/hooks/post-receive"
+  curl --silent --fail "$POST_RECEIVE_SOURCE" > "$POST_RECEIVE_DIR/post-receive"
+
+  chmod +x "$POST_RECEIVE_DIR/post-receive"
+
+  ln -s "$POST_RECEIVE_DIR/post-receive" "$GIT_SERVER_DIR/hooks/post-receive"
+
   cat "$GIT_SERVER_DIR/hooks/post-receive" || exit 1
   cd ..
-
-  echo "=== Creating $DEPLOYED_DIR ==="
-  mkdir -p "$DEPLOYED_DIR"
 EOF
 
 echo '*** DONE ***'
