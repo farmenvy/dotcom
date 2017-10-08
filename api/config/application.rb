@@ -35,5 +35,6 @@ module Api
     end
 
     config.version = File.read(Rails.root.join('VERSION')).chomp
+    config.server = `hostname`.chomp
   end
 end

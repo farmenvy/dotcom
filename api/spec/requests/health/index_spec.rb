@@ -6,6 +6,9 @@ RSpec.describe 'GET /index', type: :request do
   end
 
   it 'returns the application version' do
-    expect(json).to include('version' => Rails.configuration.version)
+    expect(json).to include(
+      'version' => Rails.configuration.version,
+      'server' => Rails.configuration.server
+    )
   end
 end
