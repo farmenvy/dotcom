@@ -84,7 +84,10 @@ then
   info 'setting staging remote'
   step git remote remove staging &>/dev/null || true
   step git remote add staging "deploy@$STAGING_IP:farmenvy/dotcom.git"
-  step git push --force staging origin/master
+
+  step git checkout master
+  step git push --force staging master
+
   step ./script/healthcheck "$STAGING_IP"
 else
   info "Not a deployable branch."
