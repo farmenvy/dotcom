@@ -3,7 +3,7 @@ class HealthController < ApplicationController
     render json: {
       version: Rails.configuration.version,
       server: Rails.configuration.server,
-      staging: Rails.configuration.staging
+      last_updated: Rails.configuration.last_updated
     }
   end
 end

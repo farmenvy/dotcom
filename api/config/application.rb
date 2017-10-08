@@ -35,10 +35,7 @@ module Api
     end
 
     config.version = File.read(Rails.root.join('VERSION')).chomp
-    staging = File.read(Rails.root.join('STAGING')).chomp
-    hostname = ENV.fetch('SERVER_HOSTNAME') { 'unknown' }
-
-    config.staging = hostname == staging
-    config.server = hostname
+    config.server = ENV.fetch('SERVER_HOSTNAME') { 'unknown' }
+    config.last_updated = Time.now.to_s # rubocop:disable
   end
 end
