@@ -71,5 +71,14 @@ RSpec.describe Auth::BuildSessionPayload do
     it 'does NOT have an expiration' do
       expect(payload['exp']).to be_nil
     end
+
+    it 'has an iat timestamp' do
+      iat = payload['iat']
+      expect(iat).to_not be_nil
+
+      expect(iat).to be < 2.minutes.from_now.to_i
+      expect(iat).to be > 2.minutes.ago.to_i
+
+    end
   end
 end

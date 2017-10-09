@@ -5,3 +5,10 @@
 #
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
+
+FactoryGirl.create(
+  :user,
+  email_address: 'test@test.com',
+  password: 'thisisapassword',
+  password_confirmation: 'thisisapassword'
+)

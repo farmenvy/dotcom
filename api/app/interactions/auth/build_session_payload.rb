@@ -22,7 +22,11 @@ module Auth
     end
 
     def build_refresh_token
-      JSONWebToken.encode(sub: context.user_id, ip: context.ip)
+      JSONWebToken.encode(
+        sub: context.user_id,
+        ip: context.ip,
+        iat: Time.zone.now.to_i
+      )
     end
 
     def access_token_exp
