@@ -5,7 +5,7 @@ import './style.css';
 const Home = () => (
   <div>
     <p className="Home-intro">
-      To get started, open <code>src/App.js</code> and save to reload.
+      ET phone home.
     </p>
   </div>
 );
