@@ -20,3 +20,5 @@ log
 .env*
 !.env.development
 status.debug
+api/STAGING
+api/VERSION

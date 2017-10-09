@@ -2,7 +2,10 @@ require 'rails_helper'
 
 RSpec.describe 'POST /users', type: :request do
   let(:headers) do
-    { 'ACCEPT' => 'application/json' }
+    {
+      'ACCEPT' => 'application/json',
+      'AUTHORIZATION' => "Bearer #{bearer_token}"
+    }
   end
 
   before do
@@ -26,6 +29,11 @@ RSpec.describe 'POST /users', type: :request do
   let(:email_address) { 'foo@bar.com' }
   let(:password) { 'thisisavalidpassword' }
   let(:password_confirmation) { 'thisisavalidpassword' }
+
+  it_behaves_like 'a protected endpoint' do
+    let(:action) { :post }
+    let(:endpoint) { '/users' }
+  end
 
   context 'when given valid params' do
     it 'creates a User' do

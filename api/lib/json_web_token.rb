@@ -3,6 +3,10 @@ module JSONWebToken
 
   class << self
     def encode(payload = {})
+      payload = HashWithIndifferentAccess.new(payload)
+
+      payload['exp'] = payload['exp'].to_i if payload['exp'].present?
+
       JWT.encode(payload, SECRET_KEY_BASE)
     end
 
