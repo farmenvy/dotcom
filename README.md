@@ -31,6 +31,14 @@ bin/shell client
 bin/console
 ```
 
+### Running ESlint
+```
+bin/eslint
+
+# or add autocorrection
+bin/eslint --fix
+```
+
 ## Deployments
 
 We use blue green deployments.  We have two production servers `blue` and `green`. Only one of them is visible to the public at a time.
