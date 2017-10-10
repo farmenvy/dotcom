@@ -22,3 +22,5 @@ services:
       - ./client/build:/usr/src/app/build
     env_file:
       - .env.development
+volumes:
+  pg_data:
