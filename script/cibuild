@@ -107,7 +107,7 @@ then
   step git push --force staging HEAD:master
 
   step ./script/healthcheck "$STAGING_IP"
-  step ./script/slack-notify
+  step ./script/slack-notify 'success'
 else
   info "Not a deployable branch."
 fi
