@@ -1,0 +1,38 @@
+#!/bin/bash
+#
+# Needs these variables available in environment:
+#
+# CONSOLE_URL=http://google.com
+# RUN_STATUS=failure
+# BUILD_NUMBER=123
+# STAGING_IP=127.0.0.1
+
+if [ "$RUN_STATUS" == success ]
+then
+  COLOR=good
+  SLACK_TEXT="Deployed to <http://$STAGING_IP|Staging>"
+else
+  COLOR=danger
+  SLACK_TEXT='Failed :fire:'
+fi
+
+
+PAYLOAD=$(cat <<EOF
+{
+  "attachments": [
+    {
+      "fallback": "$RUN_STATUS",
+      "color": "$COLOR",
+      "title": "Build: $BUILD_NUMBER",
+      "title_link": "$CONSOLE_URL",
+      "text": "$SLACK_TEXT"
+    }
+  ]
+}
+EOF
+)
+
+curl -X POST \
+  -H 'Content-type: application/json' \
+  --data "$PAYLOAD" \
+  "$SLACK_WEBHOOK_URL"

@@ -7,7 +7,9 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}"  )" && pwd  )"
 cd "$DIR/.."
 
 GITHUB_REPO='https://api.github.com/repos/farmenvy/dotcom'
-STAGING_IP=$(/bin/bash ./script/determine-staging)
+
+export STAGING_IP=$(/bin/bash ./script/determine-staging)
+export CONSOLE_URL="$JENKINS_URL/job/$JOB_NAME/$BUILD_NUMBER/console"
 
 title() {
   echo "---> $*"
@@ -18,8 +20,8 @@ info() {
 }
 
 set_github_status() {
-  RUN_STATUS=${1:-pending}
-  local payload="{\"state\": \"$RUN_STATUS\", \"description\": \"Jenkins\", \"target_url\": \"$JENKINS_URL/job/$JOB_NAME/$BUILD_NUMBER/console\"}"
+  export RUN_STATUS=${1:-pending}
+  local payload="{\"state\": \"$RUN_STATUS\", \"description\": \"Jenkins\", \"target_url\": \"$CONSOLE_URL\"}"
 
   if [ -n "$GITHUB_ACCESS_TOKEN" ]
   then
@@ -48,6 +50,11 @@ trap "cleanup" EXIT
 abort() {
   RUN_STATUS=failure
   info "!!! FAILED: '$*'" >&2
+
+  if [ "$DEPLOYABLE" == true ]; then
+    ./script/slack-notify
+  fi
+
   set_github_status 'failure'
   exit 1
 }
@@ -63,6 +70,19 @@ ci-compose() {
   docker-compose -f ci.yml "$@"
 }
 
+# CONSOLE_URL=http://google.com
+# RUN_STATUS=failure
+# BUILD_NUMBER=123
+# STAGING_IP=127.0.0.1
+
+if [[ "$GIT_BRANCH" =~ .*/master$ ]];
+then
+  info 'Master branch received. Deployable.'
+  DEPLOYABLE=true
+else
+  DEPLOYABLE=false
+fi
+
 set_github_status 'pending'
 
 step ci-compose build
@@ -73,10 +93,9 @@ step ci-compose run --rm api rubocop .
 step ci-compose run -e RAILS_ENV=test --rm api rspec spec
 
 title 'deploy'
-if [[ "$GIT_BRANCH" =~ .*/master$ ]];
+if [ "$DEPLOYABLE" == true ]
 then
-  info 'Master branch received.  Deploying to staging...'
-
+  info 'Deploying to staging...'
   info "adding $STAGING_IP as known host"
   step "ssh-keygen -R $STAGING_IP"
   step "ssh-keyscan $STAGING_IP >> ~/.ssh/known_hosts"
@@ -88,6 +107,7 @@ then
   step git push --force staging HEAD:master
 
   step ./script/healthcheck "$STAGING_IP"
+  step ./script/slack-notify
 else
   info "Not a deployable branch."
 fi
