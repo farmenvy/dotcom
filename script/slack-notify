@@ -36,5 +36,5 @@ EOF
 
 curl -X POST \
   -H 'Content-type: application/json' \
-  --data "$PAYLOAD" \
+  --silent --data "$PAYLOAD" \
   "$SLACK_WEBHOOK_URL"
