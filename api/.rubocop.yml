@@ -2,7 +2,7 @@ AllCops:
   TargetRubyVersion: 2.4
   Exclude:
     - spec/spec_helper
-
+    - db/**/*
 
 Documentation:
   Enabled: false
