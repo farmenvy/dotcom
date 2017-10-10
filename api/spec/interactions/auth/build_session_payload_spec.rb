@@ -78,7 +78,6 @@ RSpec.describe Auth::BuildSessionPayload do
 
       expect(iat).to be < 2.minutes.from_now.to_i
       expect(iat).to be > 2.minutes.ago.to_i
-
     end
   end
 end
