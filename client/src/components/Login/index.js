@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { Redirect, withRouter } from 'react-router-dom';
-import { login } from '../../ducks/login';
+import { login } from '../../interactions/login';
 import logo from '../../assets/imgs/dark_logo.png';
 import styles from './styles';
 

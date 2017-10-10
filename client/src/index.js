@@ -6,7 +6,7 @@ import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap/dist/css/bootstrap-theme.css';
 
 import registerServiceWorker from './registerServiceWorker';
-import { store } from './ducks/index';
+import { store } from './interactions/index';
 import App from './components/App';
 import './index.css';
 

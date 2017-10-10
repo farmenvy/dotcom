@@ -61,7 +61,7 @@ const SideBar = props => (
 SideBar.propTypes = (
   {
     isLoggedIn: PropTypes.bool.isRequired,
-    children: React.PropTypes.element.isRequired,
+    children: PropTypes.arrayOf(PropTypes.element).isRequired,
   }
 );
 
