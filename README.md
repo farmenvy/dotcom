@@ -18,6 +18,19 @@ docker-compose build
 docker-compose up
 ```
 
+### Creating a bash session
+```
+# Usage:
+# bin/shell [SERVICE_NAME]
+
+bin/shell client
+```
+
+### Creating a rails console
+```
+bin/console
+```
+
 ## Deployments
 
 We use blue green deployments.  We have two production servers `blue` and `green`. Only one of them is visible to the public at a time.

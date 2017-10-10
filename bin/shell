@@ -1,0 +1,14 @@
+#!/bin/bash
+#
+# Creates a bash session for service specified.
+#
+# Usage:
+#
+# bin/shell client
+#
+# (default is api)
+# bin/shell
+
+service=${1:-api}
+
+docker-compose run --rm "$service" bash
