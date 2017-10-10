@@ -24,7 +24,7 @@ services:
 
   # Need to replace with RDS.
   postgres:
-    image: postgres:latest
+    image: postgres:9.6
     volumes:
       - pg_data:/var/lib/postgresql/data
   client:
