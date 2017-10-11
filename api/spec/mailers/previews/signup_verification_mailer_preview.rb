@@ -5,4 +5,3 @@ class SignupVerificationMailerPreview < ActionMailer::Preview
     SignupVerificationMailer.verification_email(user)
   end
 end
-

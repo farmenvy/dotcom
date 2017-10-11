@@ -4,8 +4,8 @@ module JSONWebToken
   class << self
     def encode(payload = {})
       payload = HashWithIndifferentAccess.new(payload)
-
       payload['exp'] = payload['exp'].to_i if payload['exp'].present?
+      payload.reverse_merge!(iat: Time.zone.now.to_i)
 
       JWT.encode(payload, SECRET_KEY_BASE)
     end

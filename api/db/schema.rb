@@ -22,7 +22,8 @@ ActiveRecord::Schema.define(version: 20171011140244) do
     t.string "password_digest", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.boolean "pending_verification", default: false
+    t.boolean "pending_verification", default: true
+    t.string "roles", default: [], array: true
     t.index ["email_address"], name: "index_users_on_email_address", unique: true
   end
 

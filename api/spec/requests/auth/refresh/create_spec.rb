@@ -16,7 +16,8 @@ RSpec.describe 'POST /auth/refresh', type: :request do
     JSONWebToken.encode(sub: user_id, ip: my_ip)
   end
 
-  let(:user_id) { 1 }
+  let(:user) { create(:user) }
+  let(:user_id) { user.id }
   let(:my_ip) { '127.0.0.1' }
 
   before do

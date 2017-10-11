@@ -8,7 +8,7 @@ module Auth
     before_action :authenticate_password!
 
     def create
-      result = BuildSessionPayload.call(user_id: user.id, ip: request.remote_ip)
+      result = BuildSessionPayload.call(context)
 
       if result.success?
         render json: result.payload, status: :created
@@ -18,6 +18,10 @@ module Auth
     end
 
     private
+
+    def context
+      { user: user, ip: request.remote_ip }
+    end
 
     def authenticate_password!
       authenticate_or_request_with_http_basic do |email, password|

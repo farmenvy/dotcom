@@ -6,12 +6,22 @@ class ApplicationController < ActionController::API
   before_action :authenticate!
 
   attr_reader :user_id
+  attr_reader :jwt
 
   private
 
   def authenticate!
-    jwt = JSONWebToken.decode bearer_token
-    @user_id = jwt['sub']
+    decode
+    verify_roles! unless skip_roles_verification
+  end
+
+  def decode
+    @jwt = JSONWebToken.decode bearer_token
+    @user_id = @jwt['sub']
+  end
+
+  def verify_roles!
+    raise JWT::DecodeError unless jwt['roles'].present?
   end
 
   def unauthorized

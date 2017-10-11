@@ -5,7 +5,8 @@ module Auth
     def create
       result = validate
       if result.success?
-        payload = build_payload(result.user_id)
+        user = User.find(result.user_id)
+        payload = build_payload(user)
         render json: payload, status: :created
       else
         render json: {}, status: :unprocessable_entity
@@ -20,9 +21,9 @@ module Auth
       )
     end
 
-    def build_payload(user_id)
+    def build_payload(user)
       BuildSessionPayload.call(
-        user_id: user_id, ip: request.remote_ip
+        user: user, ip: request.remote_ip
       ).payload
     end
   end

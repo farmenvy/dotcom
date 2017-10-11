@@ -5,10 +5,13 @@ RSpec.describe Auth::RefreshController do
 
   let(:remote_ip) { '127.0.0.1' }
   let(:request) { double(:request, remote_ip: remote_ip) }
-  let(:user_id) { 1 }
   let(:token) do
-    JSONWebToken.encode(ip: remote_ip, sub: user_id)
+    JSONWebToken.encode(ip: remote_ip, sub: user.id)
   end
+
+  let(:user) { create(:user, roles: roles) }
+
+  let(:roles) { %w[admin public farmer] }
 
   before do
     allow(subject).to receive(:request).and_return request
@@ -26,7 +29,7 @@ RSpec.describe Auth::RefreshController do
 
     context 'when validation succeeds' do
       it 'calls on Auth::BuildSessionPayload with correct args' do
-        expect(Auth::BuildSessionPayload).to receive(:call).with(user_id: user_id, ip: request.remote_ip).and_call_original
+        expect(Auth::BuildSessionPayload).to receive(:call).with(user: user, ip: request.remote_ip).and_call_original
 
         subject.create
       end
@@ -36,7 +39,7 @@ RSpec.describe Auth::RefreshController do
       let(:another_ip) { '10.0.0.1' }
 
       let(:token) do
-        JSONWebToken.encode(ip: another_ip, sub: user_id)
+        JSONWebToken.encode(ip: another_ip, sub: user.id)
       end
 
       it 'does NOT call on Auth::BuildSessionPayload' do
