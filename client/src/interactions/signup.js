@@ -137,8 +137,11 @@ export const signup = () => (
 export const verifySignup = token => (
   (dispatch) => {
     const params = { token };
+    const config = {
+      headers: { Authorization: `Bearer ${token}` },
+    };
 
-    axios.post('/api/auth/signup_verification', params)
+    axios.post('/api/auth/signup_verification', params, config)
       .then(res => dispatch({ type: ACCOUNT_VERIFIED, payload: res.data }))
       .catch((err) => {
         if (err.response) {

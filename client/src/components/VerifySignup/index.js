@@ -8,13 +8,16 @@ import NotFound from '../NotFound';
 
 class VerifySignup extends Component {
   componentDidMount() {
-    this.props.verifySignup(this.props.match.params.token);
+    const token = this.props.match.params.token || '';
+    if (token.split('.').length === 3) {
+      this.props.verifySignup(token);
+    }
   }
 
   render() {
     switch (this.props.verificationStatus) {
       case 'verified':
-        return (<Redirect to="/" />);
+        return (<Redirect to="/verified" />);
       case 'pending':
         return (
           <div>
