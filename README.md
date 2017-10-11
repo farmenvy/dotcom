@@ -12,6 +12,8 @@ This repo uses docker so setting up is as simple as:
 docker-compose build
 ```
 
+All environment variables that you need are in `.env.development`.  If you need to add sensitive data like a password, add to `.env.development.local` which is ignored by git.
+
 ### Running the application
 
 ```
