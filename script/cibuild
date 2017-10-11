@@ -38,8 +38,8 @@ set_github_status() {
 cleanup() {
   info '*** performing cleanup ***'
   info 'pruning docker stuff'
-  docker-compose stop
-  docker-compose down -v
+  ci-compose stop
+  ci-compose down -v
   docker system prune -f
   info '*** DONE ***'
 
@@ -82,11 +82,10 @@ fi
 set_github_status 'pending'
 
 step ci-compose build
-step ci-compose run --rm api bin/setup
-
 step ci-compose run --rm client ./node_modules/.bin/eslint ./src
+step ci-compose run --rm api bin/setup
 step ci-compose run --rm api rubocop .
-step ci-compose run -e RAILS_ENV=test --rm api rspec spec
+step ci-compose run --rm api rspec spec
 
 title 'deploy'
 if [ "$DEPLOYABLE" == true ]
