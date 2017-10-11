@@ -3,16 +3,17 @@ import React from 'react';
 import { Switch, Route } from 'react-router-dom';
 
 import Home from './components/Home';
+import StagingRoute from './components/StagingRoute';
 import SignUp from './components/SignUp';
+import VerifySignup from './components/VerifySignup';
 import NotFound from './components/NotFound';
 
 const Routes = props => (
   <Switch {...props}>
     <Route exact path="/" component={Home} />
-    {
-      'testing' in window.localStorage &&
-        <Route exact path="/signup" component={SignUp} />
-    }
+    <StagingRoute path="/verify/:token" component={VerifySignup} />
+    <StagingRoute path="/verify" component={VerifySignup} />
+    <StagingRoute exact path="/signup" component={SignUp} />
     <Route path="*" component={NotFound} />
   </Switch>
 );

@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { Redirect } from 'react-router-dom';
 import { bindActionCreators } from 'redux';
 import {
   FormGroup,
@@ -35,6 +36,12 @@ const SignUp = (props) => {
     props.passwordConfirmation &&
     Object.values(props.errors).filter(v => (!!v)).length === 0
   );
+
+  if (props.pendingVerification) {
+    return (
+      <Redirect to="/verify" />
+    );
+  }
 
   return (
     <div className="SignUp">
@@ -104,6 +111,7 @@ const SignUp = (props) => {
 SignUp.propTypes = {
   updateField: PropTypes.func.isRequired,
   signup: PropTypes.func.isRequired,
+  pendingVerification: PropTypes.bool.isRequired,
   email: PropTypes.string.isRequired,
   password: PropTypes.string.isRequired,
   passwordConfirmation: PropTypes.string.isRequired,
