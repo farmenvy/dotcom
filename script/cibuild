@@ -39,7 +39,7 @@ cleanup() {
   info '*** performing cleanup ***'
   info 'pruning docker stuff'
   ci-compose stop
-  ci-compose down -v
+  ci-compose down
   docker system prune -f
   info '*** DONE ***'
 
