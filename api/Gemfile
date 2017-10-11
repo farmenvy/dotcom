@@ -36,6 +36,7 @@ group :development, :test do
   gem 'faker'
   gem 'rspec-rails', '~> 3.6'
   gem 'rubocop', require: false
+  gem 'database_cleaner'
 end
 
 group :development do
@@ -44,10 +45,6 @@ group :development do
   gem 'guard-rspec', require: false
   gem 'spring'
   gem 'spring-watcher-listen', '~> 2.0.0'
-end
-
-group :test do
-  gem 'database_cleaner'
 end
 
 gem 'tzinfo-data'

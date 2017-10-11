@@ -3,5 +3,5 @@ class User < ApplicationRecord
 
   has_secure_password
   validates :email_address, format: { with: EMAIL_ADDRESS_REGEX }, uniqueness: true
-  validates :password, length: { minimum: 12, maximum: 100 }
+  validates :password, length: { minimum: 12, maximum: 100 }, if: :password
 end

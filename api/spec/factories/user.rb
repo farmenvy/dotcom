@@ -5,5 +5,6 @@ FactoryGirl.define do
     sequence(:email_address) { |n| "user#{n}@example.com" }
     password { 'thisisavalidpassword' }
     password_confirmation { 'thisisavalidpassword' }
+    pending_verification { false }
   end
 end

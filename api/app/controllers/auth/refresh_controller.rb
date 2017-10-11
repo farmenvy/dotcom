@@ -1,6 +1,6 @@
 module Auth
-  class RefreshController < AuthorizationController
-    include BearerToken
+  class RefreshController < ApplicationController
+    skip_before_action :authenticate!
 
     def create
       result = validate

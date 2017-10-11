@@ -2,7 +2,10 @@ class ApplicationController < ActionController::API
   include BearerToken
 
   rescue_from JWT::DecodeError, with: :unauthorized
+  rescue_from ActiveRecord::RecordNotFound, with: :not_found
   before_action :authenticate!
+
+  attr_reader :user_id
 
   private
 
@@ -13,5 +16,9 @@ class ApplicationController < ActionController::API
 
   def unauthorized
     render json: { status: 'not authorized' }, status: :unauthorized
+  end
+
+  def not_found
+    render json: { status: 'record could not be found' }, status: :not_found
   end
 end
