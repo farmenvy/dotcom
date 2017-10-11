@@ -11,7 +11,7 @@ export const MyStyledDiv = glamorous.div({
 
 export const Background = glamorous.div({
   background: 'linear-gradient(to right bottom, #ffffff 50%, #32B989 50%)',
-  height: '100vh',
+  height: 'auto',
   [mediaQueries.tablet]: {
     background: '#32B989',
   },
@@ -22,7 +22,7 @@ export const Layout = glamorous.div({
   flexDirection: 'column',
   justifyContent: 'space-around',
   alignContent: 'center',
-  height: '100vh',
+  minHeight: '100vh',
   [mediaQueries.tablet]: {
     height: 'auto',
   },
@@ -33,7 +33,7 @@ export const Copy = glamorous.p({
   textAlign: 'left',
 });
 
-export const ImgBox = glamorous.p({
+export const ImgBox = glamorous.div({
   [mediaQueries.tablet]: {
     background: '#ffffff',
     padding: '40px 0px 40px 0px',

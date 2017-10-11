@@ -4,7 +4,7 @@ import logo from '../../assets/imgs/badge.png';
 
 
 const Home = () => (
-  <Background className="homeBackground">
+  <Background>
     <Layout>
       <ImgBox>
         <div className="container">
