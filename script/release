@@ -13,7 +13,7 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}"  )" && pwd  )"
 cd "$DIR/.."
 
 FLOATING_IP=$(cat ./config/server/addresses/float)
-STAGING_SERVER=$(cat ./STAGING)
+CURRENT_STAGING=$(cat ./STAGING)
 GIT_COMMIT=${GIT_COMMIT:-$(git rev-parse HEAD)}
 GIT_SHORT_REF=$(echo "$GIT_COMMIT" | cut -c1-7)
 
@@ -27,7 +27,19 @@ git tag "$GIT_SHORT_REF"
 echo "---> pushing tag $GIT_SHORT_REF"
 git push origin "$GIT_SHORT_REF"
 
-STAGING_IP_PATH="./config/server/addresses/$STAGING_SERVER"
+# Expected use case is user changes STAGING
+# to what they want. Whatever is NOT STAGING
+# should now be production.
+if [ "$CURRENT_STAGING" == green ]; then
+  NEW_PRODUCTION=blue
+elif [ "$CURRENT_STAGING" == blue ]; then
+  NEW_PRODUCTION=green
+else
+  echo "'$CURRENT_STAGING' is invalid.  It should be green or blue."
+  exit 1
+fi
+
+STAGING_IP_PATH="./config/server/addresses/$NEW_PRODUCTION"
 STAGING_IP="$(cat $STAGING_IP_PATH)"
 DROPLET_ID=$(doctl droplet list | grep "$STAGING_IP" | awk '{ print $1 }')
 
@@ -37,12 +49,12 @@ unassign_floating_ip() {
 
 assign_floating_ip() {
   doctl floating-ip-action assign "$FLOATING_IP" "$DROPLET_ID"
-  echo "---> assigned floating ip: $FLOATING_IP to: $STAGING_IP ($STAGING_SERVER)"
+  echo "---> assigned floating ip: $FLOATING_IP to: $STAGING_IP ($NEW_PRODUCTION)"
 }
 
 echo "---> unassigning floating ip: $FLOATING_IP"
 unassign_floating_ip || true
 
-echo "---> reassigning floating ip to: $STAGING_SERVER"
+echo "---> reassigning floating ip to: $NEW_PRODUCTION"
 assign_floating_ip
 

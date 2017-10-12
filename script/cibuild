@@ -19,6 +19,18 @@ info() {
   echo "+ $*"
 }
 
+lint_staging_file() {
+  staging=$(cat ./STAGING)
+
+  if [ "$staging" != blue ] && [ "$staging" != green ]
+  then
+    echo "STAGING file has invalid name: '$staging'. Should only be green or blue."
+    exit 1
+  else
+    echo "STAGING file is valid: $staging"
+  fi
+}
+
 set_github_status() {
   export RUN_STATUS=${1:-pending}
   local payload="{\"state\": \"$RUN_STATUS\", \"description\": \"Jenkins\", \"target_url\": \"$CONSOLE_URL\"}"
@@ -82,6 +94,7 @@ fi
 
 set_github_status 'pending'
 
+step lint_staging_file
 step ci-compose build
 step ci-compose run --rm client ./node_modules/.bin/eslint ./src
 step ci-compose run --rm api bin/setup
