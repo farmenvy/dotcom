@@ -8,7 +8,7 @@
 # STAGING_IP=127.0.0.1
 # GIT_COMMIT=64fd74c172a6697bb72afb8917e8c881a7e10589
 
-GIT_SHORT_REF=$(echo "$GIT_COMMIT" | cut -c1-7)
+GIT_COMMIT_MSG=$(git log -1 --pretty=%B)
 GITHUB_COMMIT_URL="github.com/farmenvy/dotcom/commit/$GIT_COMMIT"
 STAGING=$(cat ./STAGING)
 
@@ -17,7 +17,7 @@ RUN_STATUS=${1:-$RUN_STATUS}
 if [ "$RUN_STATUS" == success ]
 then
   COLOR=good
-  SLACK_TEXT="Deployed <https://$GIHUB_COMMIT_URL|$GIT_SHORT_REF> to <http://$STAGING_IP|$STAGING>"
+  SLACK_TEXT="Deployed <https://$GIHUB_COMMIT_URL|$GITHUB_COMMIT_MSG> to <http://$STAGING_IP|$STAGING>"
 else
   COLOR=danger
   SLACK_TEXT="<$GIHUB_COMMIT_URL|$GIT_SHORT_REF> failed :fire:"
