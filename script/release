@@ -14,14 +14,6 @@ uncommitted_changes() {
   test -n "$(git status --porcelain)"
 }
 
-diff_besides_version() {
-  git diff origin/master --name-only | grep -v '^VERSION'
-}
-
-no_version_file_diff() {
-  test -z "$(git diff origin/master --name-only | grep '^VERSION')"
-}
-
 doctl() {
   docker run -e DIGITALOCEAN_ACCESS_TOKEN="$DIGITALOCEAN_ACCESS_TOKEN" farmenvy/doctl compute "$@"
 }
@@ -55,27 +47,22 @@ if uncommitted_changes; then
   exit 1
 fi
 
-if diff_besides_version; then
+if git diff origin/master --name-only; then
   cat <<EOF
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 
 HOLD UP!
 
-There are changes besides just the VERSION file!
 
-Please update your branch to be even with origin/master and
-have latest commit locally only be updated VERSION file.
+Please update your branch to be even with origin/master before
+performing a release.
 EOF
 
-  exit 1
-elif no_version_file_diff; then
-
-  echo "No change made to VERSION file"
   exit 1
 fi
 
 VERSION=$(cat ./VERSION)
-if git tag | grep "$VERSION" > /dev/null; then
+if git tag | grep -w "$VERSION" > /dev/null; then
   echo "tag '$VERSION' already exists"
   exit 1
 fi
@@ -103,9 +90,6 @@ git commit --amend --no-edit
 
 echo "---> creating tag $VERSION"
 git tag "$VERSION"
-
-echo "---> pushing new version of branch"
-git push origin master
 
 echo "---> pushing tag $VERSION"
 git push origin "$VERSION"
