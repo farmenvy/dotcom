@@ -18,7 +18,7 @@ fi
 docker-compose -f production.yml build client
 docker-compose -f production.yml run --rm client yarn build
 
-docker-compose stop
+docker-compose -f production.yml stop
 docker-compose -f production.yml build api
 docker-compose -f production.yml run --rm api bin/setup
 
