@@ -8,8 +8,6 @@ cd "$DIR/.."
 
 FLOATING_IP=$(cat ./config/server/addresses/float)
 GIT_SHORT_REF=$(echo "$GIT_COMMIT" | cut -c1-7)
-STAGING_IP="$(cat $STAGING_IP_PATH)"
-DROPLET_ID=$(doctl droplet list | grep "$STAGING_IP" | awk '{ print $1 }')
 CURRENT_STAGING=$(cat ./STAGING)
 
 doctl() {
@@ -32,6 +30,8 @@ else
 fi
 
 STAGING_IP_PATH="./config/server/addresses/$NEW_PRODUCTION"
+STAGING_IP="$(cat $STAGING_IP_PATH)"
+DROPLET_ID=$(doctl droplet list | grep "$STAGING_IP" | awk '{ print $1 }')
 
 unassign_floating_ip() {
   doctl floating-ip-action unassign "$FLOATING_IP"
