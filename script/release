@@ -41,28 +41,28 @@ assign_floating_ip() {
   echo "---> assigned floating ip: $FLOATING_IP to: $STAGING_IP ($NEW_PRODUCTION)"
 }
 
-if uncommitted_changes; then
-  echo 'There are uncommitted changes.'
-  echo 'Exiting...'
-  echo
-  git status --porcelain
-
-  exit 1
-fi
-
-if different_than_master; then
-  cat <<EOF
-^^^^^^^^^^^^^^^^^^^^^^^^^
-
-HOLD UP!
-
-
-Please update your branch to be even with origin/master before
-performing a release.
-EOF
-
-  exit 1
-fi
+# if uncommitted_changes; then
+#   echo 'There are uncommitted changes.'
+#   echo 'Exiting...'
+#   echo
+#   git status --porcelain
+#
+#   exit 1
+# fi
+#
+# if different_than_master; then
+#   cat <<EOF
+# ^^^^^^^^^^^^^^^^^^^^^^^^^
+#
+# HOLD UP!
+#
+#
+# Please update your branch to be even with origin/master before
+# performing a release.
+# EOF
+#
+#   exit 1
+# fi
 
 VERSION=$(cat ./VERSION)
 
@@ -72,17 +72,12 @@ git tag "$VERSION"
 echo "---> pushing tag $VERSION"
 git push origin "$VERSION"
 
-echo "---> unassigning floating ip: $FLOATING_IP"
-unassign_floating_ip
-
-echo "---> reassigning floating ip to: $NEW_PRODUCTION"
-assign_floating_ip
-
 CURRENT_STAGING=$(cat ./STAGING)
 
 echo "---> creating new branch to change STAGING"
 GIT_BRANCH_NAME="feature/swap-staging-$VERSION"
-git checkout -b -f "$GIT_BRANCH_NAME"
+git branch -D "$GIT_BRANCH_NAME" 2&>/dev/null || true
+git checkout -b "$GIT_BRANCH_NAME"
 
 if [ "$CURRENT_STAGING" == green ]; then
   NEW_PRODUCTION=green
@@ -98,6 +93,12 @@ else
   echo "unrecognized staging variable: '$CURRENT_STAGING'"
   exit 1
 fi
+
+echo "---> unassigning floating ip: $FLOATING_IP"
+unassign_floating_ip || true
+
+echo "---> reassigning floating ip to: $NEW_PRODUCTION"
+assign_floating_ip
 
 git add . --verbose
 git commit -m "$MESSAGE"
