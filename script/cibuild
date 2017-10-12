@@ -91,7 +91,11 @@ step ci-compose run --rm api rspec spec
 title 'production release'
 if [ "$DEPLOYABLE" == true ]
 then
+  info 'inspecting HEAD with latest tag'
+  step git tag -l | xargs git tag -d
+  step git fetch --tags > /dev/null
   latest_tag_sha="$(git rev-list --tags --max-count=1)"
+  info "latest tag sha is: $latest_tag_sha"
   if test -n "$(git diff HEAD..$latest_tag_sha --name-only | grep '^STAGING')"; then
     info 'STAGING file has been changed!'
     info 'making a release...'
