@@ -90,7 +90,7 @@ step ci-compose run --rm api rspec spec
 title 'production release'
 if [ "$DEPLOYABLE" == true ]
 then
-  if test -n "$(git diff origin/master --name-only | grep '^STAGING')"; then
+  if test -n "$(git diff HEAD..origin/master^ --name-only | grep '^STAGING')"; then
     info 'STAGING file has been changed!'
     info 'making a release...'
     step ./script/release
