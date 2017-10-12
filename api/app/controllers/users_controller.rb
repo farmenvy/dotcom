@@ -4,6 +4,8 @@ class UsersController < ApplicationController
   def create
     user = User.new(user_params)
     if user.save
+      SendVerificationEmailJob.perform_later(user)
+
       render json: {
         user: user.as_json.except('password_digest')
       }, status: :created

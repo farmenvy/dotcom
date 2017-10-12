@@ -1,28 +1,40 @@
-import React from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { Redirect } from 'react-router-dom';
+import { verifySignup } from '../../interactions/signup';
 import NotFound from '../NotFound';
 
-const VerifySignup = (props) => {
-  if (!props.pendingVerification) {
-    return (
-      <NotFound />
-    );
+class VerifySignup extends Component {
+  componentDidMount() {
+    const token = this.props.match.params.token || '';
+    if (token.split('.').length === 3) {
+      this.props.verifySignup(token);
+    }
   }
 
-  return (
-    <div>
-      <h3>You need to get yo ass <em>verified</em>.</h3>
-      <hr />
-      <p>A verification email is on its way.</p>
-      <p>{`token: ${props.match.params.token}`}</p>
-    </div>
-
-  );
-};
+  render() {
+    switch (this.props.verificationStatus) {
+      case 'verified':
+        return (<Redirect to="/verified" />);
+      case 'pending':
+        return (
+          <div>
+            <h3>You need to get yo ass <em>verified</em>.</h3>
+            <hr />
+            <p>A verification email is on its way.</p>
+          </div>
+        );
+      default:
+        return (<NotFound />);
+    }
+  }
+}
 
 VerifySignup.propTypes = ({
-  pendingVerification: PropTypes.bool.isRequired,
+  verificationStatus: PropTypes.string.isRequired,
+  verifySignup: PropTypes.func.isRequired,
   match: PropTypes.shape({
     params: PropTypes.shape({ token: PropTypes.string }),
   }).isRequired,
@@ -30,8 +42,12 @@ VerifySignup.propTypes = ({
 
 const mapStateToProps = state => (
   {
-    pendingVerification: state.signup.pendingVerification,
+    verificationStatus: state.signup.verificationStatus,
   }
 );
 
-export default connect(mapStateToProps, null)(VerifySignup);
+const mapDispatchToProps = dispatch => ({
+  ...bindActionCreators({ verifySignup }, dispatch),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(VerifySignup);

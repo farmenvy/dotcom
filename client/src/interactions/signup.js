@@ -4,14 +4,16 @@ const UPDATE_EMAIL = 'UPDATE_EMAIL';
 const UPDATE_PASSWORD = 'UPDATE_PASSWORD';
 const UPDATE_PASSWORD_CONFIRM = 'UPDATE_PASSWORD_CONFIRM';
 const USER_CREATED = 'USER_CREATED';
+const ACCOUNT_VERIFIED = 'ACCOUNT_VERIFIED';
 const VALIDATION_ERROR = 'VALIDATION_ERROR';
+const FAILED_VERIFICATION = 'FAILED_VERIFICATION';
 
 const initialState = {
   email: '',
   password: '',
   passwordConfirmation: '',
   errors: {},
-  pendingVerification: false,
+  verificationStatus: '',
 };
 
 const handleStateChange = (key, state, action) => (
@@ -33,7 +35,11 @@ export const reducer = (state = initialState, action) => {
     case UPDATE_PASSWORD_CONFIRM:
       return handleStateChange('passwordConfirmation', state, action);
     case USER_CREATED:
-      return { ...state, pendingVerification: true };
+      return { ...state, verificationStatus: 'pending' };
+    case ACCOUNT_VERIFIED:
+      return { ...state, verificationStatus: 'verified' };
+    case FAILED_VERIFICATION:
+      return { ...state, verificationStatus: 'failed' };
     case VALIDATION_ERROR:
       return {
         ...state,
@@ -121,6 +127,25 @@ export const signup = () => (
       .catch((err) => {
         if (err.response) {
           dispatch({ type: VALIDATION_ERROR, payload: err.response.data.errors });
+        } else {
+          throw err;
+        }
+      });
+  }
+);
+
+export const verifySignup = token => (
+  (dispatch) => {
+    const params = { token };
+    const config = {
+      headers: { Authorization: `Bearer ${token}` },
+    };
+
+    axios.post('/api/auth/signup_verification', params, config)
+      .then(res => dispatch({ type: ACCOUNT_VERIFIED, payload: res.data }))
+      .catch((err) => {
+        if (err.response) {
+          dispatch({ type: FAILED_VERIFICATION });
         } else {
           throw err;
         }

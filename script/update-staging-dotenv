@@ -1,0 +1,11 @@
+#!/bin/bash
+
+set -e
+
+# ensure we're at project root
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}"  )" && pwd  )"
+cd "$DIR/.."
+
+TARGET_SERVER=$(/bin/bash ./script/determine-staging)
+echo "copying .env.production to $TARGET_SERVER"
+scp ./.env.production "deploy@$TARGET_SERVER:/home/deploy/current"

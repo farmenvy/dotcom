@@ -14,19 +14,28 @@ module Auth
     private
 
     def valid_args?
-      context.ip.present? && context.user_id.present?
+      context.ip.present? && context.user.present?
     end
 
     def build_access_token
-      JSONWebToken.encode(sub: context.user_id, exp: access_token_exp)
+      JSONWebToken.encode(
+        access_token_payload
+      )
     end
 
     def build_refresh_token
       JSONWebToken.encode(
-        sub: context.user_id,
-        ip: context.ip,
-        iat: Time.zone.now.to_i
+        sub: context.user.id,
+        ip: context.ip
       )
+    end
+
+    def access_token_payload
+      {}.tap do |hsh|
+        hsh[:sub] = context.user.id
+        hsh[:exp] = access_token_exp
+        hsh[:roles] = context.user.roles unless context.user.pending_verification
+      end
     end
 
     def access_token_exp

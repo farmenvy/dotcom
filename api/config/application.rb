@@ -37,5 +37,7 @@ module Api
     config.version = File.read(Rails.root.join('VERSION')).chomp
     config.server = ENV.fetch('SERVER_HOSTNAME') { 'unknown' }
     config.last_updated = Time.now.to_s # rubocop:disable
+
+    config.active_job.queue_adapter = :sucker_punch
   end
 end

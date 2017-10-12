@@ -4,12 +4,16 @@ RSpec.describe Auth::BuildSessionPayload do
   subject { described_class }
 
   let(:perform) do
-    subject.call(ip: ip, user_id: user_id)
+    subject.call(ip: ip, user: user)
   end
 
   let(:ip) { '127.0.0.1' }
-  let(:user_id) { 1 }
 
+  let(:user) do
+    build_stubbed(:user, id: 1, roles: roles)
+  end
+
+  let(:roles) { %w[admin public farmer] }
   let(:result) { perform }
 
   describe 'expected attributes' do
@@ -19,8 +23,12 @@ RSpec.describe Auth::BuildSessionPayload do
   end
 
   describe 'validations' do
-    it 'fails if user_id and ip are not provided' do
-      expect { subject.call }.to raise_error ArgumentError
+    it 'fails if user is not provided' do
+      expect { subject.call.call(ip: ip) }.to raise_error ArgumentError
+    end
+
+    it 'fails if ip is not provided' do
+      expect { subject.call(user: user) }.to raise_error ArgumentError
     end
   end
 
@@ -35,10 +43,28 @@ RSpec.describe Auth::BuildSessionPayload do
     it 'has the correct payload' do
       sub = payload['sub']
       expect(sub).to_not be_nil
-      expect(sub).to eq(user_id)
+      expect(sub).to eq(user.id)
 
       exp = payload['exp']
       expect(exp).to_not be_nil
+    end
+
+    it 'has an iat' do
+      expect(payload['iat']).to_not be_nil
+    end
+
+    it 'has the users roles' do
+      expect(payload['roles']).to eq roles
+    end
+
+    context 'when the user is pending_verification' do
+      let(:user) do
+        build_stubbed(:user, id: 1, pending_verification: true, roles: roles)
+      end
+
+      it 'does NOT include any roles' do
+        expect(payload['roles']).to be_nil
+      end
     end
 
     it 'has an expiration of 3 minutes' do
@@ -65,7 +91,7 @@ RSpec.describe Auth::BuildSessionPayload do
     end
 
     it 'has the user_id as the sub' do
-      expect(payload['sub']).to eq(user_id)
+      expect(payload['sub']).to eq(user.id)
     end
 
     it 'does NOT have an expiration' do

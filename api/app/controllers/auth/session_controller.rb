@@ -1,13 +1,14 @@
 module Auth
-  class SessionController < AuthorizationController
+  class SessionController < ApplicationController
     include ActionController::HttpAuthentication::Basic::ControllerMethods
 
     attr_reader :user
 
-    before_action :authenticate!
+    skip_before_action :authenticate!
+    before_action :authenticate_password!
 
     def create
-      result = BuildSessionPayload.call(user_id: user.id, ip: request.remote_ip)
+      result = BuildSessionPayload.call(context)
 
       if result.success?
         render json: result.payload, status: :created
@@ -18,7 +19,11 @@ module Auth
 
     private
 
-    def authenticate!
+    def context
+      { user: user, ip: request.remote_ip }
+    end
+
+    def authenticate_password!
       authenticate_or_request_with_http_basic do |email, password|
         @user = User.find_by(email_address: email)
                     .try(:authenticate, password)

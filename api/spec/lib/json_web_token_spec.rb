@@ -45,9 +45,16 @@ RSpec.describe JSONWebToken do
       }.with_indifferent_access
     end
 
-    it 'works' do
-      decoded = subject.decode(jwt)
-      expect(decoded).to eq(payload)
+    let(:decoded) do
+      subject.decode jwt
+    end
+
+    it 'has correct user_id' do
+      expect(decoded['user_id']).to eq(payload[:user_id])
+    end
+
+    it 'always has an iat' do
+      expect(decoded['iat']).to_not be_nil
     end
   end
 end

@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.describe Auth::SessionController do
   subject { described_class.new }
 
-  let(:user) { double(:user, id: 123) }
+  let(:user) { build_stubbed(:user, id: 123, roles: []) }
   let(:request) { double(:request, remote_ip: '127.0.0.1') }
 
   before do
@@ -15,7 +15,9 @@ RSpec.describe Auth::SessionController do
 
   describe '#create' do
     it 'calls on Auth::BuildSessionPayload with correct args' do
-      expect(Auth::BuildSessionPayload).to receive(:call).with(user_id: user.id, ip: request.remote_ip).and_call_original
+      expect(Auth::BuildSessionPayload).to receive(:call)
+        .with(user: user, ip: request.remote_ip)
+        .and_call_original
 
       subject.create
     end

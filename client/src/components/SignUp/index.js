@@ -37,7 +37,7 @@ const SignUp = (props) => {
     Object.values(props.errors).filter(v => (!!v)).length === 0
   );
 
-  if (props.pendingVerification) {
+  if (props.verificationStatus === 'pending') {
     return (
       <Redirect to="/verify" />
     );
@@ -111,7 +111,7 @@ const SignUp = (props) => {
 SignUp.propTypes = {
   updateField: PropTypes.func.isRequired,
   signup: PropTypes.func.isRequired,
-  pendingVerification: PropTypes.bool.isRequired,
+  verificationStatus: PropTypes.string.isRequired,
   email: PropTypes.string.isRequired,
   password: PropTypes.string.isRequired,
   passwordConfirmation: PropTypes.string.isRequired,

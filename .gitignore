@@ -22,3 +22,4 @@ log
 status.debug
 api/STAGING
 api/VERSION
+.env.development.local
