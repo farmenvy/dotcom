@@ -31,7 +31,7 @@ module Auth
     end
 
     def access_token_payload
-      Hash.new.tap do |hsh|
+      {}.tap do |hsh|
         hsh[:sub] = context.user.id
         hsh[:exp] = access_token_exp
         hsh[:roles] = context.user.roles unless context.user.pending_verification
