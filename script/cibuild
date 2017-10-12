@@ -40,7 +40,7 @@ cleanup() {
   info 'pruning docker stuff'
   ci-compose stop
   ci-compose down
-  docker system prune -f
+  docker system prune --filter "until=6h" -f
   info '*** DONE ***'
 
   echo "=== $RUN_STATUS ==="
