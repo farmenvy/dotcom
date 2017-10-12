@@ -1,4 +1,10 @@
 #!/bin/bash
+#
+# What this script does:
+#
+# * creates and pushes a tag with current commit SHA as version.
+# * assigns farmenvy's public IP to the current staging environment.
+#
 
 set -e
 
@@ -7,8 +13,9 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}"  )" && pwd  )"
 cd "$DIR/.."
 
 FLOATING_IP=$(cat ./config/server/addresses/float)
+STAGING_SERVER=$(cat ./STAGING)
+GIT_COMMIT=${GIT_COMMIT:-$(git rev-parse HEAD)}
 GIT_SHORT_REF=$(echo "$GIT_COMMIT" | cut -c1-7)
-CURRENT_STAGING=$(cat ./STAGING)
 
 doctl() {
   docker run -e DIGITALOCEAN_ACCESS_TOKEN="$DIGITALOCEAN_ACCESS_TOKEN" farmenvy/doctl compute "$@"
@@ -20,16 +27,7 @@ git tag "$GIT_SHORT_REF"
 echo "---> pushing tag $GIT_SHORT_REF"
 git push origin "$GIT_SHORT_REF"
 
-if [ "$CURRENT_STAGING" == green ]; then
-  NEW_PRODUCTION=green
-elif [ "$CURRENT_STAGING" == blue ]; then
-  NEW_PRODUCTION=blue
-else
-  echo "'$CURRENT_STAGING' is invalid.  It should be green or blue."
-  exit 1
-fi
-
-STAGING_IP_PATH="./config/server/addresses/$NEW_PRODUCTION"
+STAGING_IP_PATH="./config/server/addresses/$STAGING_SERVER"
 STAGING_IP="$(cat $STAGING_IP_PATH)"
 DROPLET_ID=$(doctl droplet list | grep "$STAGING_IP" | awk '{ print $1 }')
 
@@ -39,12 +37,12 @@ unassign_floating_ip() {
 
 assign_floating_ip() {
   doctl floating-ip-action assign "$FLOATING_IP" "$DROPLET_ID"
-  echo "---> assigned floating ip: $FLOATING_IP to: $STAGING_IP ($NEW_PRODUCTION)"
+  echo "---> assigned floating ip: $FLOATING_IP to: $STAGING_IP ($STAGING_SERVER)"
 }
 
 echo "---> unassigning floating ip: $FLOATING_IP"
 unassign_floating_ip || true
 
-echo "---> reassigning floating ip to: $NEW_PRODUCTION"
+echo "---> reassigning floating ip to: $STAGING_SERVER"
 assign_floating_ip
 
