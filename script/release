@@ -14,6 +14,10 @@ uncommitted_changes() {
   test -n "$(git status --porcelain)"
 }
 
+different_than_master() {
+  test -n "$(git diff origin/master --name-only)"
+}
+
 doctl() {
   docker run -e DIGITALOCEAN_ACCESS_TOKEN="$DIGITALOCEAN_ACCESS_TOKEN" farmenvy/doctl compute "$@"
 }
@@ -47,7 +51,7 @@ if uncommitted_changes; then
   exit 1
 fi
 
-if git diff origin/master --name-only; then
+if different_than_master; then
   cat <<EOF
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 
