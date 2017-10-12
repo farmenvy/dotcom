@@ -42,36 +42,50 @@ assign_floating_ip() {
 }
 
 
-if uncommitted_changes; then
-  echo 'There are uncommitted changes.'
-  echo 'Exiting...'
-  echo
-  git status --porcelain
+# if uncommitted_changes; then
+#   echo 'There are uncommitted changes.'
+#   echo 'Exiting...'
+#   echo
+#   git status --porcelain
+#
+#   exit 1
+# fi
+#
+# if different_than_master; then
+#   cat <<EOF
+# ^^^^^^^^^^^^^^^^^^^^^^^^^
+#
+# HOLD UP!
+#
+#
+# Please update your branch to be even with origin/master before
+# performing a release.
+# EOF
+#
+#   exit 1
+# fi
+#
+# VERSION=$(cat ./VERSION)
+#
+# echo "---> creating tag $VERSION"
+# git tag "$VERSION"
+#
+# echo "---> pushing tag $VERSION"
+# git push origin "$VERSION"
+#
+# echo "---> unassigning floating ip: $FLOATING_IP"
+# unassign_floating_ip
+#
+# echo "---> reassigning floating ip to: $NEW_PRODUCTION"
+# assign_floating_ip
 
-  exit 1
-fi
-
-if different_than_master; then
-  cat <<EOF
-^^^^^^^^^^^^^^^^^^^^^^^^^
-
-HOLD UP!
-
-
-Please update your branch to be even with origin/master before
-performing a release.
-EOF
-
-  exit 1
-fi
-
-VERSION=$(cat ./VERSION)
-if git tag | grep -w "$VERSION" > /dev/null; then
-  echo "tag '$VERSION' already exists"
-  exit 1
-fi
 
 CURRENT_STAGING=$(cat ./STAGING)
+
+echo "---> creating new branch to change STAGING"
+GIT_BRANCH_NAME="feature/swap-staging-$VERSION"
+git checkout -b "$GIT_BRANCH_NAME"
+
 
 if [ "$CURRENT_STAGING" == green ]; then
   NEW_PRODUCTION=green
@@ -88,19 +102,11 @@ else
   exit 1
 fi
 
-
 git add . --verbose
-git commit --amend --no-edit
+git commit -m "$MESSAGE"
 
-echo "---> creating tag $VERSION"
-git tag "$VERSION"
-
-echo "---> pushing tag $VERSION"
-git push origin "$VERSION"
+echo "---> pushing new branch: $GIT_BRANCH_NAME"
+git push --force-with-lease "$GIT_BRANCH_NAME"
 
 
-echo "---> unassigning floating ip: $FLOATING_IP"
-unassign_floating_ip
-
-echo "---> reassigning floating ip to: $NEW_PRODUCTION"
-assign_floating_ip
+echo "$GIT_BRANCH_NAME is ready for PR to master"
