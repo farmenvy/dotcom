@@ -5,23 +5,15 @@ git_source(:github) do |repo_name|
   "https://github.com/#{repo_name}.git"
 end
 
-# Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '~> 5.1.4'
-# Use postgresql as the database for Active Record
-gem 'pg', '~> 0.18'
-# Use Puma as the app server
-gem 'puma', '~> 3.7'
-
-gem 'pry-rails'
-
-# Use Redis adapter to run Action Cable in production
-# gem 'redis', '~> 3.0'
 
 gem 'bcrypt', '~> 3.1.7'
-
-gem 'jwt'
-
 gem 'interactor'
+gem 'jwt'
+gem 'pg', '~> 0.18'
+gem 'pry-rails'
+gem 'puma', '~> 3.7'
+gem 'sucker_punch'
 
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development

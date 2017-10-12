@@ -80,13 +80,15 @@ Rails.application.configure do
   # Do not dump schema after migrations.
   config.active_record.dump_schema_after_migration = false
 
+  config.action_mailer.delivery_method = :smtp
+
   config.action_mailer.smtp_settings = {
-    user_name:  ENV['EMAIL_USERNAME'],
-    password:  ENV['EMAIL_PASSWORD'],
-    domain:  'farmenvy.com',
-    address:  ENV['EMAIL_HOST'],
-    port:  587,
-    authentication:  :plain,
-    enable_starttls_auto:  true
+    user_name:            ENV['EMAIL_USERNAME'], # sendgrid username
+    password:             ENV['EMAIL_PASSWORD'], # sendgrid password
+    domain:               ENV['EMAIL_DOMAIN'], # farmenvy.com
+    address:              ENV['EMAIL_SERVER'], # smtp.sendgrid.net
+    port:                 587,
+    authentication:       :plain,
+    enable_starttls_auto: true
   }
 end
