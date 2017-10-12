@@ -18,7 +18,13 @@ RUN_STATUS=${1:-$RUN_STATUS}
 
 if [ "$RUN_STATUS" == success ]
 then
-  COLOR=good
+  if [ "$STAGING" == green ]
+  then
+    COLOR=good
+  else
+    COLOR='#006dfc'
+  fi
+
   SLACK_TEXT="Deployed $GIT_SLACK_LINK to $STAGING_LINK"
 else
   COLOR=danger
