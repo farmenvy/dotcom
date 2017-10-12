@@ -41,7 +41,6 @@ assign_floating_ip() {
   echo "---> assigned floating ip: $FLOATING_IP to: $STAGING_IP ($NEW_PRODUCTION)"
 }
 
-
 if uncommitted_changes; then
   echo 'There are uncommitted changes.'
   echo 'Exiting...'
@@ -66,12 +65,24 @@ EOF
 fi
 
 VERSION=$(cat ./VERSION)
-if git tag | grep -w "$VERSION" > /dev/null; then
-  echo "tag '$VERSION' already exists"
-  exit 1
-fi
+
+echo "---> creating tag $VERSION"
+git tag "$VERSION"
+
+echo "---> pushing tag $VERSION"
+git push origin "$VERSION"
+
+echo "---> unassigning floating ip: $FLOATING_IP"
+unassign_floating_ip
+
+echo "---> reassigning floating ip to: $NEW_PRODUCTION"
+assign_floating_ip
 
 CURRENT_STAGING=$(cat ./STAGING)
+
+echo "---> creating new branch to change STAGING"
+GIT_BRANCH_NAME="feature/swap-staging-$VERSION"
+git checkout -b -f "$GIT_BRANCH_NAME"
 
 if [ "$CURRENT_STAGING" == green ]; then
   NEW_PRODUCTION=green
@@ -88,19 +99,17 @@ else
   exit 1
 fi
 
-
 git add . --verbose
-git commit --amend --no-edit
+git commit -m "$MESSAGE"
 
-echo "---> creating tag $VERSION"
-git tag "$VERSION"
+echo "---> pushing new branch: $GIT_BRANCH_NAME"
+git push --force-with-lease origin "$GIT_BRANCH_NAME"
 
-echo "---> pushing tag $VERSION"
-git push origin "$VERSION"
+if which hub >/dev/null; then
+  echo "---> hub installed.  Creating a PR for you."
+  hub pull-request -m "$MESSAGE" -b master
+else
+  echo "$GIT_BRANCH_NAME is ready for PR to master"
+fi
 
-
-echo "---> unassigning floating ip: $FLOATING_IP"
-unassign_floating_ip
-
-echo "---> reassigning floating ip to: $NEW_PRODUCTION"
-assign_floating_ip
+git checkout master >/dev/null
