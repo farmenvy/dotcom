@@ -10,17 +10,25 @@
 
 GIT_COMMIT_MSG=$(git log -1 --pretty=%B)
 GITHUB_COMMIT_URL="github.com/farmenvy/dotcom/commit/$GIT_COMMIT"
+GIT_SLACK_LINK="<http://$GIHUB_COMMIT_URL|$GITHUB_COMMIT_MSG>"
+STAGING_LINK="<http://$STAGING_IP|$STAGING>"
 STAGING=$(cat ./STAGING)
 
 RUN_STATUS=${1:-$RUN_STATUS}
 
 if [ "$RUN_STATUS" == success ]
 then
-  COLOR=good
-  SLACK_TEXT="Deployed <https://$GIHUB_COMMIT_URL|$GITHUB_COMMIT_MSG> to <http://$STAGING_IP|$STAGING>"
+  if [ "$STAGING" == green ]
+  then
+    COLOR=good
+  else
+    COLOR='#006dfc'
+  fi
+
+  SLACK_TEXT="Deployed $GIT_SLACK_LINK to $STAGING_LINK"
 else
   COLOR=danger
-  SLACK_TEXT="<$GIHUB_COMMIT_URL|$GIT_SHORT_REF> failed :fire:"
+  SLACK_TEXT="$GIT_SLACK_LINK failed :fire:"
 fi
 
 
