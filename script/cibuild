@@ -41,6 +41,7 @@ cleanup() {
   ci-compose stop
   ci-compose down
   docker system prune --filter "until=6h" -f
+  git remote prune origin
   info '*** DONE ***'
 
   echo "=== $RUN_STATUS ==="
