@@ -34,7 +34,6 @@ module Api
       g.controller_specs = false
     end
 
-    config.version = File.read(Rails.root.join('VERSION')).chomp
     config.server = ENV.fetch('SERVER_HOSTNAME') { 'unknown' }
     config.last_updated = Time.now.to_s # rubocop:disable
 

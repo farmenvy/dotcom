@@ -65,7 +65,7 @@ If you want to see which server is currently in production, view the `/api/healt
 
 Because of blue green deployments, a production release is as simple as changing the public IP address of farmenvy.com to the current [staging](./STAGING) server.
 
-To make a release, first make sure your local master branch is even with origin/master.  Then bump the application [version](./VERSION). Make a commit, then run `script/release`.
+To make a release, simple change the [staging](./STAGING) from blue to green or vice versa, and the CI build will handle the rest.
 
-The old production environment will become the new [staging](./STAGING) environment.
+The old production environment will become the new staging environment.
 
