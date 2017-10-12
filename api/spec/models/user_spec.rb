@@ -69,5 +69,11 @@ RSpec.describe User, type: :model do
       subject.email_address = 'foo@bar.co.uk'
       expect(subject).to be_valid
     end
+
+    it 'does NOT except burner emails' do
+      subject.email_address = 'foo@guerrillamail.com'
+      expect(subject).to be_invalid
+      expect(subject.errors.messages).to include(email_address: ['is invalid'])
+    end
   end
 end
