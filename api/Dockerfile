@@ -4,7 +4,7 @@ ENV WEBAPP /home/app/webapp
 RUN mkdir -p ${WEBAPP}
 WORKDIR ${WEBAPP}
 
-COPY VERSION STAGING ./
+COPY STAGING ./
 
 # Run Bundle in a cache efficient way
 RUN gem install bundler --no-ri --no-rdoc

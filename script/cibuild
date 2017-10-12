@@ -87,7 +87,19 @@ step ci-compose run --rm api bin/setup
 step ci-compose run --rm api rubocop .
 step ci-compose run --rm api rspec spec
 
-title 'deploy'
+title 'production release'
+if [ "$DEPLOYABLE" == true ]
+then
+  if test -n "$(git diff origin/master --name-only | grep '^STAGING')"; then
+    info 'STAGING file has been changed!'
+    info 'making a release...'
+    step ./script/release
+  else
+    info 'STAGING has not changed. Skipping release.'
+  fi
+fi
+
+title 'staging deploy'
 if [ "$DEPLOYABLE" == true ]
 then
   info 'Deploying to staging...'

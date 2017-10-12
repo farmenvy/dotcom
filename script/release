@@ -7,16 +7,11 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}"  )" && pwd  )"
 cd "$DIR/.."
 
 FLOATING_IP=$(cat ./config/server/addresses/float)
-
-git fetch
-
-uncommitted_changes() {
-  test -n "$(git status --porcelain)"
-}
-
-different_than_master() {
-  test -n "$(git diff origin/master --name-only)"
-}
+GIT_SHORT_REF=$(echo "$GIT_COMMIT" | cut -c1-7)
+STAGING_IP_PATH="./config/server/addresses/$NEW_PRODUCTION"
+STAGING_IP="$(cat $STAGING_IP_PATH)"
+DROPLET_ID=$(doctl droplet list | grep "$STAGING_IP" | awk '{ print $1 }')
+CURRENT_STAGING=$(cat ./STAGING)
 
 doctl() {
   docker run -e DIGITALOCEAN_ACCESS_TOKEN="$DIGITALOCEAN_ACCESS_TOKEN" farmenvy/doctl compute "$@"
@@ -27,70 +22,22 @@ unassign_floating_ip() {
 }
 
 assign_floating_ip() {
-  if [ -z "$NEW_PRODUCTION" ]
-  then
-    echo "NEW_PRODUCTION variable is undefined. It should be green or blue."
-    exit 1
-  fi
-
-  STAGING_IP_PATH="./config/server/addresses/$NEW_PRODUCTION"
-  STAGING_IP="$(cat $STAGING_IP_PATH)"
-  DROPLET_ID=$(doctl droplet list | grep "$STAGING_IP" | awk '{ print $1 }')
-
   doctl floating-ip-action assign "$FLOATING_IP" "$DROPLET_ID"
   echo "---> assigned floating ip: $FLOATING_IP to: $STAGING_IP ($NEW_PRODUCTION)"
 }
 
-if uncommitted_changes; then
-  echo 'There are uncommitted changes.'
-  echo 'Exiting...'
-  echo
-  git status --porcelain
+echo "---> creating tag $GIT_SHORT_REF"
+git tag "$GIT_SHORT_REF"
 
-  exit 1
-fi
-
-if different_than_master; then
-  cat <<EOF
-^^^^^^^^^^^^^^^^^^^^^^^^^
-
-HOLD UP!
-
-
-Please update your branch to be even with origin/master before
-performing a release.
-EOF
-
-  exit 1
-fi
-
-VERSION=$(cat ./VERSION)
-
-echo "---> creating tag $VERSION"
-git tag "$VERSION"
-
-echo "---> pushing tag $VERSION"
-git push origin "$VERSION"
-
-CURRENT_STAGING=$(cat ./STAGING)
-
-echo "---> creating new branch to change STAGING"
-GIT_BRANCH_NAME="feature/swap-staging-$VERSION"
-git branch -D "$GIT_BRANCH_NAME" 2&>/dev/null || true
-git checkout -b "$GIT_BRANCH_NAME"
+echo "---> pushing tag $GIT_SHORT_REF"
+git push origin "$GIT_SHORT_REF"
 
 if [ "$CURRENT_STAGING" == green ]; then
   NEW_PRODUCTION=green
-  MESSAGE="changing STAGING from $CURRENT_STAGING to blue"
-  echo "---> $MESSAGE"
-  echo 'blue' > STAGING
 elif [ "$CURRENT_STAGING" == blue ]; then
   NEW_PRODUCTION=blue
-  MESSAGE="changing STAGING from $CURRENT_STAGING to green"
-  echo "---> $MESSAGE"
-  echo 'green' > STAGING
 else
-  echo "unrecognized staging variable: '$CURRENT_STAGING'"
+  echo "'$CURRENT_STAGING' is invalid.  It should be green or blue."
   exit 1
 fi
 
@@ -100,17 +47,3 @@ unassign_floating_ip || true
 echo "---> reassigning floating ip to: $NEW_PRODUCTION"
 assign_floating_ip
 
-git add . --verbose
-git commit -m "$MESSAGE"
-
-echo "---> pushing new branch: $GIT_BRANCH_NAME"
-git push --force-with-lease origin "$GIT_BRANCH_NAME"
-
-if which hub >/dev/null; then
-  echo "---> hub installed.  Creating a PR for you."
-  hub pull-request -m "$MESSAGE" -b master
-else
-  echo "$GIT_BRANCH_NAME is ready for PR to master"
-fi
-
-git checkout master >/dev/null
