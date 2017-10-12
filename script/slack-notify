@@ -9,6 +9,7 @@
 # GIT_COMMIT=64fd74c172a6697bb72afb8917e8c881a7e10589
 
 GITHUB_COMMIT_URL="github.com/farmenvy/dotcom/commit/$GIT_COMMIT"
+GIT_COMMIT_MESSAGE=$(git log -1 --pretty=%B)
 STAGING=$(cat ./STAGING)
 GIT_SHORT_REF=$(echo "$GIT_COMMIT" | cut -c1-7)
 
@@ -23,7 +24,7 @@ then
   then
     COLOR=good
   else
-    COLOR='#006dfc'
+    COLOR='#00a1ff'
   fi
 
   SLACK_TEXT="Deployed $GIT_SLACK_LINK to $STAGING_LINK"
@@ -41,7 +42,14 @@ PAYLOAD=$(cat <<EOF
       "color": "$COLOR",
       "title": "Build: $BUILD_NUMBER",
       "title_link": "$CONSOLE_URL",
-      "text": "$SLACK_TEXT"
+      "text": "$SLACK_TEXT",
+      "fields": [
+        {
+          "title": "commit message:",
+          "value": "$GIT_COMMIT_MESSAGE",
+          "short": false
+        }
+      ]
     }
   ]
 }
