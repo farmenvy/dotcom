@@ -1,0 +1,43 @@
+#!/bin/bash
+
+set -e
+
+# ensure we're at project root
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}"  )" && pwd  )"
+cd "$DIR/.."
+
+
+CURRENT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
+STAGING=$(cat ./STAGING)
+STAGING_BRANCH='feature/swap-staging-server'
+
+git fetch
+git branch -D "$STAGING_BRANCH" || true
+git checkout -b "$STAGING_BRANCH"
+git reset --hard origin/master
+
+if [ "$STAGING" == blue ]
+then
+  NEW_STAGING=green
+elif [ "$STAGING" == green ]
+then
+  NEW_STAGING=blue
+else
+  "'$STAGING' is invalid"
+fi
+
+echo "$NEW_STAGING" > ./STAGING
+MESSAGE="change STAGING from $STAGING to $NEW_STAGING"
+git add ./STAGING
+git commit -m "$MESSAGE"
+
+git push -f origin "$STAGING_BRANCH"
+if command -v hub &>/dev/null; then
+  echo 'you have hub installed -- making a PR for you.'
+  hub pull-request -m "$MESSAGE" -b master || true
+else
+  echo "ready for PR to master: $STAGING_BRANCH"
+fi
+
+git checkout "$CURRENT_BRANCH"
+git branch -D "$STAGING_BRANCH" || true
