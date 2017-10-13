@@ -26,7 +26,7 @@ cleanup() {
   docker system prune --filter "until=6h" -f
 
   info 'removing deploy log'
-  rm -rf "$DEPLOY_LOG"
+  rm -f "$DEPLOY_LOG"
 
   info 'pruning git stuff'
   git tag -l | xargs git tag -d
@@ -111,7 +111,6 @@ fi
 title 'deploy to staging'
 if [ "$DEPLOYABLE" == true ]
 then
-  info 'Deploying to staging...'
   info "adding $STAGING_IP as known host"
   step "ssh-keygen -R $STAGING_IP"
   step "ssh-keyscan $STAGING_IP >> ~/.ssh/known_hosts"
