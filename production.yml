@@ -17,10 +17,13 @@ services:
     environment:
       - RAILS_ENV=production
       - PORT=5000
+      - RAILS_LOG_TO_STDOUT=true
     links:
       - postgres
     env_file:
       - .env.production
+    volumes:
+      - ./api/log:/home/app/webapp/log
 
   # Need to replace with RDS.
   postgres:
