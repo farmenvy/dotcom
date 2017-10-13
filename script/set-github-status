@@ -13,7 +13,6 @@ RUN_STATUS=${1:-pending}
 export RUN_STATUS
 
 GITHUB_REPO='https://api.github.com/repos/farmenvy/dotcom'
-CONSOLE_URL="$JENKINS_URL/job/$JOB_NAME/$BUILD_NUMBER/console"
 PAYLOAD=$(cat <<EOF
 {
   "state": "$RUN_STATUS",
