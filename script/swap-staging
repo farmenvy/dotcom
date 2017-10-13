@@ -39,5 +39,5 @@ else
   echo "ready for PR to master: $STAGING_BRANCH"
 fi
 
-git checkout "$CURRENT_BRANCH"
-git branch -D "$STAGING_BRANCH" || true
+git checkout "$CURRENT_BRANCH" &>/dev/null
+git branch -D "$STAGING_BRANCH" &>/dev/null
