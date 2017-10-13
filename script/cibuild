@@ -6,10 +6,7 @@ set -e
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}"  )" && pwd  )"
 cd "$DIR/.."
 
-GITHUB_REPO='https://api.github.com/repos/farmenvy/dotcom'
-
 export STAGING_IP=$(/bin/bash ./script/determine-staging)
-export CONSOLE_URL="$JENKINS_URL/job/$JOB_NAME/$BUILD_NUMBER/console"
 
 title() {
   echo "---> $*"
@@ -19,41 +16,15 @@ info() {
   echo "+ $*"
 }
 
-lint_staging_file() {
-  staging=$(cat ./STAGING)
-
-  if [ "$staging" != blue ] && [ "$staging" != green ]
-  then
-    echo "STAGING file has invalid name: '$staging'. Should only be green or blue."
-    exit 1
-  else
-    echo "STAGING file is valid: $staging"
-  fi
-}
-
-set_github_status() {
-  export RUN_STATUS=${1:-pending}
-  local payload="{\"state\": \"$RUN_STATUS\", \"description\": \"Jenkins\", \"target_url\": \"$CONSOLE_URL\"}"
-
-  if [ -n "$GITHUB_ACCESS_TOKEN" ]
-  then
-    info "setting github status to '$RUN_STATUS'"
-    curl -sS "$GITHUB_REPO/statuses/$GIT_COMMIT?access_token=$GITHUB_ACCESS_TOKEN" \
-      -H "Content-Type: application/json" \
-      -X POST \
-      -d "$payload" > /dev/null
-  else
-    info 'no github token -- skipping status notification'
-  fi
-}
-
 cleanup() {
   info '*** performing cleanup ***'
   info 'pruning docker stuff'
   ci-compose stop
   ci-compose down
-  docker system prune --filter "until=6h" -f
+  git tag -l | xargs git tag -d
   git remote prune origin
+  docker system prune --filter "until=6h" -f
+
   info '*** DONE ***'
 
   echo "=== $RUN_STATUS ==="
@@ -69,7 +40,7 @@ abort() {
     ./script/slack-notify
   fi
 
-  set_github_status 'failure'
+  ./script/set-github-status 'failure'
   exit 1
 }
 
@@ -92,33 +63,45 @@ else
   DEPLOYABLE=false
 fi
 
-set_github_status 'pending'
+step ./script/set-github-status 'pending'
 
-step lint_staging_file
 step ci-compose build
 step ci-compose run --rm client ./node_modules/.bin/eslint ./src
 step ci-compose run --rm api bin/setup
 step ci-compose run --rm api rubocop .
 step ci-compose run --rm api rspec spec
 
-title 'production release'
+title 'release to production'
+
+info 'inspecting HEAD with latest tag'
+latest_tag_sha="$(git rev-list --tags --max-count=1)"
+info "latest tag sha is: $latest_tag_sha"
+if test -n "$(git diff HEAD..$latest_tag_sha --name-only | grep '^STAGING')"; then
+  info 'STAGING file has been changed!'
+  STAGING_CHANGE=true
+else
+  info 'STAGING file has not changed.'
+  STAGING_CHANGE=false
+fi
+
 if [ "$DEPLOYABLE" == true ]
 then
-  info 'inspecting HEAD with latest tag'
-  step 'git tag -l | xargs git tag -d'
-  step 'git fetch --tags > /dev/null'
-  latest_tag_sha="$(git rev-list --tags --max-count=1)"
-  info "latest tag sha is: $latest_tag_sha"
-  if test -n "$(git diff HEAD..$latest_tag_sha --name-only | grep '^STAGING')"; then
-    info 'STAGING file has been changed!'
+  if [ "$STAGING_CHANGE" == true ]
+  then
     info 'making a release...'
     step ./script/release
   else
-    info 'STAGING has not changed. Skipping release.'
+    info 'skipping release'
+  fi
+else
+  if [ "$STAGING_CHANGE" == true ]
+  then
+    info "linting STAGING file"
+    step ./script/lint-staging-file
   fi
 fi
 
-title 'staging deploy'
+title 'deploy to staging'
 if [ "$DEPLOYABLE" == true ]
 then
   info 'Deploying to staging...'
@@ -127,7 +110,7 @@ then
   step "ssh-keyscan $STAGING_IP >> ~/.ssh/known_hosts"
 
   info 'setting staging remote'
-  step git remote remove staging &>/dev/null || true
+  step 'git remote remove staging &>/dev/null || true'
   step git remote add staging "deploy@$STAGING_IP:farmenvy/dotcom.git"
 
   step git push --force staging HEAD:master
@@ -138,4 +121,4 @@ else
   info "Not a deployable branch."
 fi
 
-step set_github_status 'success'
+step ./script/set-github-status 'success'

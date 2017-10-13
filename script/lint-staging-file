@@ -1,0 +1,18 @@
+#!/bin/bash
+
+STAGING=$(cat ./STAGING)
+
+if [ "$STAGING" != blue ] && [ "$STAGING" != green ]; then
+  echo "STAGING file has invalid name: '$STAGING' -- should only be green or blue."
+  exit 1
+fi
+
+badchanges=$(git diff HEAD..origin/master --name-only | grep -v '^STAGING')
+
+if test -n "$badchanges"; then
+  echo '!!! there are more changes than just the STAGING file'
+  echo "$badchanges"
+  exit 1
+fi
+
+echo "STAGING file is valid: $STAGING"
