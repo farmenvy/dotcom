@@ -1,0 +1,35 @@
+#!/bin/bash
+
+# needs:
+#
+# CONSOLE_URL
+# GITHUB_ACCESS_TOKEN
+# GIT_COMMIT
+# RUN_STATUS
+#
+#
+
+RUN_STATUS=${1:-pending}
+export RUN_STATUS
+
+GITHUB_REPO='https://api.github.com/repos/farmenvy/dotcom'
+CONSOLE_URL="$JENKINS_URL/job/$JOB_NAME/$BUILD_NUMBER/console"
+PAYLOAD=$(cat <<EOF
+{
+  "state": "$RUN_STATUS",
+  "description": "Jenkins",
+  "target_url": "$CONSOLE_URL"
+}
+EOF
+)
+
+if [ -n "$GITHUB_ACCESS_TOKEN" ]
+then
+  echo "---> setting github status to '$RUN_STATUS'"
+  curl -sS "$GITHUB_REPO/statuses/$GIT_COMMIT?access_token=$GITHUB_ACCESS_TOKEN" \
+    -H "Content-Type: application/json" \
+    -X POST \
+    -d "$PAYLOAD" > /dev/null
+else
+  info '---> no github token -- skipping status notification'
+fi

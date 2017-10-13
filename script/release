@@ -5,12 +5,19 @@
 # * creates and pushes a tag with current commit SHA as version.
 # * assigns farmenvy's public IP to the current staging environment.
 #
+# it's expected that this script be run from master
 
 set -e
 
 # ensure we're at project root
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}"  )" && pwd  )"
 cd "$DIR/.."
+
+if [[ ! "$GIT_BRANCH" =~ .*/master$ ]];
+then
+  echo "!!! '$GIT_BRANCH' is not the master branch"
+  exit 1
+fi
 
 FLOATING_IP=$(cat ./config/server/addresses/float)
 CURRENT_STAGING=$(cat ./STAGING)
@@ -28,8 +35,8 @@ echo "---> pushing tag $GIT_SHORT_REF"
 git push origin "$GIT_SHORT_REF"
 
 # Expected use case is user changes STAGING
-# to what they want. Whatever is NOT STAGING
-# should now be production.
+# to what they want and that's what triggers this script.
+# Whatever is NOT STAGING should now be production.
 if [ "$CURRENT_STAGING" == green ]; then
   NEW_PRODUCTION=blue
 elif [ "$CURRENT_STAGING" == blue ]; then
@@ -54,6 +61,9 @@ assign_floating_ip() {
 
 echo "---> unassigning floating ip: $FLOATING_IP"
 unassign_floating_ip || true
+
+echo "---> waiting 5 seconds to get out of pending status"
+sleep 5
 
 echo "---> reassigning floating ip to: $NEW_PRODUCTION"
 assign_floating_ip
