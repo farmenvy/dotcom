@@ -21,8 +21,10 @@ cleanup() {
   info 'pruning docker stuff'
   ci-compose stop
   ci-compose down
-  docker system prune --filter "until=6h" -f
+  git tag -l | xargs git tag -d
   git remote prune origin
+  docker system prune --filter "until=6h" -f
+
   info '*** DONE ***'
 
   echo "=== $RUN_STATUS ==="
@@ -72,8 +74,6 @@ step ci-compose run --rm api rspec spec
 title 'release to production'
 
 info 'inspecting HEAD with latest tag'
-step 'git tag -l | xargs git tag -d'
-step 'git fetch --tags &>/dev/null'
 latest_tag_sha="$(git rev-list --tags --max-count=1)"
 info "latest tag sha is: $latest_tag_sha"
 if test -n "$(git diff HEAD..$latest_tag_sha --name-only | grep '^STAGING')"; then
