@@ -20,9 +20,7 @@ const handleStateChange = (key, state, action) => (
   {
     ...state,
     [key]: action.payload.value,
-    errors: {
-      ...state.errors, [key]: action.payload.errors,
-    },
+    errors: action.payload.errors,
   }
 );
 
@@ -57,28 +55,46 @@ export const reducer = (state = initialState, action) => {
 const PASSWORD_MINIMUM_LENGTH = 12;
 const EMAIL_REGEX = /\S+@\S+\.\S+/;
 
-const validateEmail = (email) => {
+const validateEmail = (email, state) => {
   if (!EMAIL_REGEX.test(email)) {
-    return ['invalid email'];
+    return {
+      ...state.errors,
+      email: ['invalid email'],
+    };
   }
 
-  return null;
+  return { ...state.errors, email: null };
 };
 
-const validatePassword = (password) => {
+const validatePassword = (password, state) => {
+  const confirm = state.passwordConfirmation;
+  let passwordErrors;
+  let confirmErrors;
+
   if (password.length < PASSWORD_MINIMUM_LENGTH) {
-    return [`must be at least ${PASSWORD_MINIMUM_LENGTH} characters long`];
+    passwordErrors = [`must be at least ${PASSWORD_MINIMUM_LENGTH} characters long`];
   }
 
-  return null;
+  if (confirm.length > 0 && confirm !== password) {
+    confirmErrors = ['must match password'];
+  }
+
+  return {
+    ...state.errors,
+    password: passwordErrors,
+    passwordConfirmation: confirmErrors,
+  };
 };
 
 const validatePasswordConfirmation = (confirm, state) => {
   if (confirm !== state.password) {
-    return ['must match password'];
+    return {
+      ...state.errors,
+      passwordConfirmation: ['must match password'],
+    };
   }
 
-  return null;
+  return { ...state.errors, passwordConfirmation: null };
 };
 
 const getDispatchObject = (key, value, state) => {
@@ -86,12 +102,12 @@ const getDispatchObject = (key, value, state) => {
     case 'email':
       return {
         type: UPDATE_EMAIL,
-        payload: { value, errors: validateEmail(value) },
+        payload: { value, errors: validateEmail(value, state) },
       };
     case 'password':
       return {
         type: UPDATE_PASSWORD,
-        payload: { value, errors: validatePassword(value) },
+        payload: { value, errors: validatePassword(value, state) },
       };
     case 'passwordConfirmation':
       return {
@@ -140,6 +156,7 @@ export const verifySignup = token => (
     const config = {
       headers: { Authorization: `Bearer ${token}` },
     };
+
 
     axios.post('/api/auth/signup_verification', params, config)
       .then(res => dispatch({ type: ACCOUNT_VERIFIED, payload: res.data }))
