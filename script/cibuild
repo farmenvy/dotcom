@@ -8,6 +8,7 @@ cd "$DIR/.."
 
 export STAGING_IP=$(/bin/bash ./script/determine-staging)
 export CONSOLE_URL="$JENKINS_URL/job/$JOB_NAME/$BUILD_NUMBER/console"
+DEPLOY_LOG=deploy.log
 
 title() {
   echo "---> $*"
@@ -22,9 +23,14 @@ cleanup() {
   info 'pruning docker stuff'
   ci-compose stop
   ci-compose down
+  docker system prune --filter "until=6h" -f
+
+  info 'removing deploy log'
+  rm -rf "$DEPLOY_LOG"
+
+  info 'pruning git stuff'
   git tag -l | xargs git tag -d
   git remote prune origin
-  docker system prune --filter "until=6h" -f
 
   info '*** DONE ***'
 
@@ -114,7 +120,13 @@ then
   step 'git remote remove staging &>/dev/null || true'
   step git remote add staging "deploy@$STAGING_IP:farmenvy/dotcom.git"
 
-  step git push --force staging HEAD:master
+  step "git push --force staging HEAD:master | tee $DEPLOY_LOG"
+
+  info 'checking for any deploy errors'
+  if grep -E 'error|critical|kill' $DEPLOY_LOG; then
+    echo 'Deploy failed!'
+    exit 1
+  fi
 
   step ./script/healthcheck "$STAGING_IP"
   step ./script/slack-notify 'success'

@@ -1,7 +1,5 @@
 #!/bin/bash
 
-set -e
-
 GIT_DIR=/home/deploy/farmenvy/dotcom.git
 WORK_TREE=/home/deploy/current
 HOSTNAME=$(hostname)
