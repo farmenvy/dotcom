@@ -60,6 +60,7 @@ We use blue green deployments.  We have two production servers `blue` and `green
 Any code that is merged to master is automatically deployed to whichever server is [staging](./STAGING).
 
 If you want to see which server is currently in production, view the `/api/health` endpoint.
+Production is obviously visible at https://farmenvy.com, and the staging server is available at https://farmenvy.com:8443.
 
 ### Making a production release
 
