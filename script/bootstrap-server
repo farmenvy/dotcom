@@ -1,12 +1,8 @@
-#/bin/bash
-set -e
+#!/bin/bash
+set -eu
 
-DEPLOY_SSH_DIR='/home/deploy/.ssh'
-AUTHORIZED_KEYS_SOURCE='https://raw.githubusercontent.com/farmenvy/dotcom/master/config/server/authorized_keys'
-GIT_SERVER_DIR='/home/deploy/farmenvy/dotcom.git'
-POST_RECEIVE_SOURCE='https://raw.githubusercontent.com/farmenvy/dotcom/master/config/server/hooks/post-receive'
 DEPLOYED_DIR='/home/deploy/current'
-POST_RECEIVE_DIR="$DEPLOYED_DIR/config/server/hooks"
+GIT_SERVER_DIR='/home/deploy/farmenvy/dotcom.git'
 
 echo '=== Activating Firewall (only SSH allowed) ==='
 ufw --force reset
@@ -26,34 +22,18 @@ echo '=== Creating deploy user ==='
 adduser --disabled-password --gecos "" deploy
 usermod -aG docker deploy
 
-
 su -- deploy <<EOF
-  echo '=== Adding authorized keys ==='
-
-  mkdir -p "$DEPLOY_SSH_DIR"
-
-  curl --silent --fail "$AUTHORIZED_KEYS_SOURCE" > "$DEPLOY_SSH_DIR/authorized_keys"
-  chmod 600 "$DEPLOY_SSH_DIR/authorized_keys"
-  chmod 700 "$DEPLOY_SSH_DIR"
-  cat "$DEPLOY_SSH_DIR/authorized_keys" || exit 1
-
   echo '=== Initializing farmenvy/dotcom git repo ==='
-
   mkdir -p "$GIT_SERVER_DIR"
-  cd "$GIT_SERVER_DIR" || exit 1
-  git init --bare
+  git init --bare "$GIT_SERVER_DIR"
 
   echo '=== Installing and Symlinking post-receive hook ==='
-  mkdir -p "$POST_RECEIVE_DIR"
+  git clone --depth 1 https://github.com/farmenvy/dotcom.git "$DEPLOYED_DIR"
+  ln -s "$DEPLOYED_DIR/config/server/hooks/post-receive" "$GIT_SERVER_DIR/hooks/post-receive"
 
-  curl --silent --fail "$POST_RECEIVE_SOURCE" > "$POST_RECEIVE_DIR/post-receive"
-
-  chmod +x "$POST_RECEIVE_DIR/post-receive"
-
-  ln -s "$POST_RECEIVE_DIR/post-receive" "$GIT_SERVER_DIR/hooks/post-receive"
-
-  cat "$GIT_SERVER_DIR/hooks/post-receive" || exit 1
-  cd ..
+  echo '=== Adding authorized keys ==='
+  mkdir -p /home/deploy/.ssh
+  ln -s "$DEPLOYED_DIR/config/server/authorized_keys" /home/deploy/.ssh/authorized_keys
 EOF
 
 echo '*** DONE ***'

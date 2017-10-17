@@ -1,0 +1,26 @@
+#!/bin/bash
+
+# ensure we're at project root
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}"  )" && pwd  )"
+cd "$DIR/.."
+
+
+# REMOVE --staging
+
+docker run -it --rm \
+  -v ${PWD}/certs:/etc/letsencrypt \
+  -v ${PWD}/certs-data:/data/letsencrypt \
+  certbot/certbot \
+  certonly -n \
+  -m 'john@farmenvy.com' --agree-tos \
+  --webroot --webroot-path=/data/letsencrypt \
+  -d farmenvy.com --force-renewal
+
+# docker run --rm \
+# -p 443:443 -p 80:80 --name letsencrypt \
+#   -v ${PWD}/nginx/certs:/etc/letsencrypt \
+#   -v ${PWD}/nginx/certs-data:/data/letsencrypt \
+#   certbot/certbot --staging certonly -n \
+#   -m "john@farmenvy.com" \
+#   -d blue.binarymasonry.com \
+#   --standalone --agree-tos
