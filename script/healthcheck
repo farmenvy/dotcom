@@ -10,11 +10,13 @@ done
 
 echo
 echo '==> checking front page'
-curl --silent --show-error --max-time 30 --fail "$IP_ADDRESS"
-
-sleep 1
-
+curl --silent --show-error --max-time 5 --fail "$IP_ADDRESS"
+res="$?"
+if test "$res" != "0"; then exit 1; fi
 echo
+
 echo '==> checking /api/health'
-curl --silent --show-error --max-time 30 --fail "$IP_ADDRESS/api/health"
+curl --silent --show-error --max-time 5 --fail "$IP_ADDRESS/api/health"
+res="$?"
+if test "$res" != "0"; then exit 1; fi
 echo

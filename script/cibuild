@@ -9,6 +9,8 @@ cd "$DIR/.."
 export STAGING_IP=$(/bin/bash ./script/determine-staging)
 export CONSOLE_URL="$JENKINS_URL/job/$JOB_NAME/$BUILD_NUMBER/console"
 DEPLOY_LOG=deploy.log
+STAGING_LOCATION='https://farmenvy.com:8443'
+PROD_LOCATION='https://farmenvy.com'
 
 title() {
   echo "---> $*"
@@ -98,6 +100,7 @@ then
     info 'making a release...'
     step ./script/switch-staging-loadbalancer
     step ./script/update-loadbalancer
+    step ./script/healthcheck "$PROD_LOCATION"
   else
     info 'skipping release'
   fi
@@ -128,7 +131,7 @@ then
     exit 1
   fi
 
-  step ./script/healthcheck "$STAGING_IP"
+  step ./script/healthcheck "$STAGING_LOCATION"
   step ./script/slack-notify 'success'
 else
   info "Not a deployable branch."

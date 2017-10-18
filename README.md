@@ -54,13 +54,16 @@ bin/eslint --fix
 
 We use blue green deployments.  We have two production servers `blue` and `green`. Only one of them is visible to the public at a time.
 
-* blue server: http://blue.binarymasonry.com
-* green server: http://green.binarymasonry.com
+* production server: https://farmenvy.com
+* staging server: https://farmenvy.com:8443
 
 Any code that is merged to master is automatically deployed to whichever server is [staging](./STAGING).
 
-If you want to see which server is currently in production, view the `/api/health` endpoint.
-Production is obviously visible at https://farmenvy.com, and the staging server is available at https://farmenvy.com:8443.
+If you want to see which server is currently in production:
+
+```
+curl https://farmenvy.com/api/health
+```
 
 ### Making a production release
 
