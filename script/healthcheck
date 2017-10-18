@@ -1,6 +1,24 @@
 #!/bin/bash
 
+set -eu
+
 IP_ADDRESS=${1:-unspecified}
+STAGING=$(cat ./STAGING)
+target=${2:-staging}
+
+if [ "$target" == staging ]; then
+  expected_server="$STAGING"
+elif [ "$target" == production ]; then
+  if [ "$STAGING" == green ]; then
+    expected_server=blue
+  else
+    expected_server=green
+  fi
+else
+  echo "'$target' can only be production or staging"
+  exit 1
+fi
+
 
 echo "allowing 10 seconds to boot before checking health"
 for i in {1..10}; do
@@ -10,13 +28,23 @@ done
 
 echo
 echo '==> checking front page'
-curl --silent --show-error --max-time 5 --fail "$IP_ADDRESS"
+curl -s --show-error --max-time 5 --fail "$IP_ADDRESS"
 res="$?"
 if test "$res" != "0"; then exit 1; fi
 echo
 
 echo '==> checking /api/health'
-curl --silent --show-error --max-time 5 --fail "$IP_ADDRESS/api/health"
+echo "+ target is $target, expecting the server to be '$expected_server'"
+json=$(curl -s --show-error --max-time 5 --fail "$IP_ADDRESS/api/health")
 res="$?"
-if test "$res" != "0"; then exit 1; fi
-echo
+echo "$json"
+if test "$res" != "0"; then
+  exit 1
+fi
+
+server=$(echo $json | jq --raw-output .server)
+
+if [ "$server" != "$expected_server" ]; then
+  echo "!!! $IP_ADDRESS is: $server -- expected: $expected_server!"
+  exit 1
+fi
