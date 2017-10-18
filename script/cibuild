@@ -100,7 +100,7 @@ then
     info 'making a release...'
     step ./script/switch-staging-loadbalancer
     step ./script/update-loadbalancer
-    step ./script/healthcheck "$PROD_LOCATION"
+    step ./script/healthcheck "$PROD_LOCATION" production
   else
     info 'skipping release'
   fi
@@ -131,7 +131,7 @@ then
     exit 1
   fi
 
-  step ./script/healthcheck "$STAGING_LOCATION"
+  step ./script/healthcheck "$STAGING_LOCATION" staging
   step ./script/slack-notify 'success'
 else
   info "Not a deployable branch."
