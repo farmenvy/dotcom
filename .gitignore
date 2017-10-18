@@ -24,3 +24,4 @@ api/STAGING
 api/VERSION
 .env.development.local
 *.bak
+lb/nginx.conf

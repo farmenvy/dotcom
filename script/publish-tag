@@ -1,0 +1,12 @@
+#!/bin/bash
+
+set -eu
+
+GIT_COMMIT=${GIT_COMMIT:-$(git rev-parse HEAD)}
+GIT_SHORT_REF=$(echo "$GIT_COMMIT" | cut -c1-7)
+
+echo "---> creating tag $GIT_SHORT_REF"
+git tag "$GIT_SHORT_REF"
+
+echo "---> pushing tag $GIT_SHORT_REF"
+git push origin "$GIT_SHORT_REF"

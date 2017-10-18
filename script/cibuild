@@ -98,6 +98,7 @@ then
   if [ "$STAGING_CHANGE" == true ]
   then
     info 'making a release...'
+    step ./script/publish-tag
     step ./script/switch-staging-loadbalancer
     step ./script/update-loadbalancer
     step ./script/healthcheck "$PROD_LOCATION" production
