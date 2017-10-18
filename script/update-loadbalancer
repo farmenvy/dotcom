@@ -2,12 +2,17 @@
 
 set -eu
 
-# ensure we're at lb root
+# ensure we're at project root
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}"  )" && pwd  )"
-cd "$DIR/../lb"
+cd "$DIR/.."
 
 LB_IP=$(cat ./config/server/addresses/lb)
 NGINX_CONFIG='./lb/nginx.conf'
+
+if [ ! -f "$NGINX_CONFIG" ]; then
+  echo "$NGINX_CONFIG not found!"
+  exit 1
+fi
 
 echo "+ adding $LB_IP as known host"
 ssh-keygen -R "$LB_IP"

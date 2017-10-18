@@ -4,13 +4,13 @@
 
 set -eu
 
-# ensure we're at lb root
+# ensure we're at project root
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}"  )" && pwd  )"
-cd "$DIR/../lb"
+cd "$DIR/.."
 
-nginx_conf_template='./nginx.template.conf'
+nginx_conf_template='./lb/nginx.template.conf'
 template_backup="$nginx_conf_template.bak"
-staging=$(cat ../STAGING)
+staging=$(cat ./STAGING)
 
 # Make a backup first thing.
 cp "$nginx_conf_template" "$template_backup"
@@ -27,8 +27,8 @@ fi
 sed -i "s/<STAGING>/$staging/g" "$nginx_conf_template"
 sed -i "s/<PRODUCTION>/$new_production/g" "$nginx_conf_template"
 
-mv "$nginx_conf_template" nginx.conf
+mv "$nginx_conf_template" ./lb/nginx.conf
 cp "$template_backup" "$nginx_conf_template"
 
 echo "STAGING file value: $staging"
-cat nginx.conf | grep proxy_pass
+cat ./lb/nginx.conf | grep proxy_pass
