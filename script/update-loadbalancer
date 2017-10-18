@@ -1,0 +1,16 @@
+#!/bin/bash
+
+set -eu
+
+LB_IP=$(cat ./config/server/addresses/lb)
+NGINX_CONFIG='./lb/nginx.conf'
+
+echo "+ adding $LB_IP as known host"
+ssh-keygen -R "$LB_IP"
+ssh-keyscan "$LB_IP" >> ~/.ssh/known_hosts
+
+echo '+ scp latest nginx.conf to loadbalancer'
+scp "$NGINX_CONFIG" "deploy@$LB_IP:/home/deploy/current/lb/nginx.conf"
+
+echo '+ reloading NGINX'
+ssh "deploy@$LB_IP" 'docker kill -s HUP nginx'

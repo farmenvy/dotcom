@@ -96,7 +96,8 @@ then
   if [ "$STAGING_CHANGE" == true ]
   then
     info 'making a release...'
-    step ./script/release
+    step ./script/switch-staging-loadbalancer
+    step ./script/update-loadbalancer
   else
     info 'skipping release'
   fi
