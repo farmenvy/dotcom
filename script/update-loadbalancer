@@ -2,6 +2,10 @@
 
 set -eu
 
+# ensure we're at lb root
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}"  )" && pwd  )"
+cd "$DIR/../lb"
+
 LB_IP=$(cat ./config/server/addresses/lb)
 NGINX_CONFIG='./lb/nginx.conf'
 

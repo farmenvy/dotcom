@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# This script should be run when CI detects the STAGING file has been changed.
+# Swaps staging and production environments.
 
 set -eu
 
@@ -14,12 +14,6 @@ staging=$(cat ../STAGING)
 
 # Make a backup first thing.
 cp "$nginx_conf_template" "$template_backup"
-
-latest_tag_sha="$(git rev-list --tags --max-count=1)"
-if test -z "$(git diff $latest_tag_sha ../STAGING)"; then
-  echo "STAGING file has not been changed.  Exiting."
-  exit 0
-fi
 
 if [ "$staging" == blue ]; then
   new_production=green
