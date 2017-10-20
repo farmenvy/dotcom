@@ -17,7 +17,7 @@ const Copy = styled.div`
 `;
 
 const SignupText = styled.div`
-  margin-top: 3em;
+  margin: 3em 0.5em 0 0.5em;
   opacity: 0.5;
   font-size: 24px;
   font-weight: 300;
@@ -26,6 +26,30 @@ const SignupText = styled.div`
   text-align: center;
   color: #353535;
 `;
+
+const SignupContainer = styled.div`
+  margin-top: 40px;
+`;
+
+const StyledInput = styled.input`
+  display: block;
+  width: 100%;
+  border-radius: 5px;
+  background-color: rgba(0, 0, 0, 0.01);
+  border: solid 1px rgba(0, 0, 0, 0.1);
+  margin: 1.5em 0.5em;
+  padding: 1.25em 0.5em;
+  outline: none;
+
+  ::placeholder {
+    padding: 1em;
+  }
+
+  &:focus {
+    box-shadow: 0 0 0 1pt #42B989;
+  }
+`;
+
 
 const Home = () => (
   <ThemeProvider theme={defaultTheme} >
@@ -66,11 +90,21 @@ const Home = () => (
             </Row>
           </Col>
 
-          <Col md={6} >
-            <SignupText>
-              CSA management made easy.
-              Enter your information below to get early access.
-            </SignupText>
+          <Col md={4} mdOffset={2} >
+            <Row>
+              <SignupText>
+                CSA management made easy.
+                <br />
+                Enter your information below to get early access.
+              </SignupText>
+            </Row>
+
+            <SignupContainer>
+              <StyledInput placeholder="Farm Name" type="text" />
+              <StyledInput placeholder="Email" type="text" />
+              <StyledInput placeholder="Phone Number" type="tel" />
+              <StyledInput placeholder="Zip Code" type="text" />
+            </SignupContainer>
           </Col>
         </Row>
       </Grid>
