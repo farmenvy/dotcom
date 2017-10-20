@@ -39,11 +39,8 @@ const StyledInput = styled.input`
   border: solid 1px rgba(0, 0, 0, 0.1);
   margin: 1.5em 0;
   padding: 1.25em 0;
+  text-indent: 2em;
   outline: none;
-
-  ::placeholder {
-    padding: 1em;
-  }
 
   &:focus {
     box-shadow: 0 0 0 1pt #42B989;
