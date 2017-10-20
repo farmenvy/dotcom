@@ -1,11 +1,11 @@
 import React from 'react';
-import { Col, Row, Grid } from 'react-bootstrap';
+import { Col, Row, Grid, Button } from 'react-bootstrap';
 import styled, { ThemeProvider } from 'styled-components';
 import defaultTheme from '../styles/DefaultTheme';
 import logo from '../../assets/imgs/logo.svg';
 
 const Container = styled.div`
-  padding: 50px 70px;
+  padding: 20px 70px;
 `;
 
 const Copy = styled.div`
@@ -37,8 +37,8 @@ const StyledInput = styled.input`
   border-radius: 5px;
   background-color: rgba(0, 0, 0, 0.01);
   border: solid 1px rgba(0, 0, 0, 0.1);
-  margin: 1.5em 0.5em;
-  padding: 1.25em 0.5em;
+  margin: 1.5em 0;
+  padding: 1.25em 0;
   outline: none;
 
   ::placeholder {
@@ -104,6 +104,10 @@ const Home = () => (
               <StyledInput placeholder="Email" type="text" />
               <StyledInput placeholder="Phone Number" type="tel" />
               <StyledInput placeholder="Zip Code" type="text" />
+
+              <Button bsStyle="primary" bsSize="large" block>
+                Get Access
+              </Button>
             </SignupContainer>
           </Col>
         </Row>
