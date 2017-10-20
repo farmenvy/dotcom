@@ -1,44 +1,66 @@
 import React from 'react';
-import { Header, Layout, Background, Copy, Logo, CopyBox, ImgBox } from './styles';
-import logo from '../../assets/imgs/badge.png';
+import { Col, Row, Grid } from 'react-bootstrap';
+import styled, { ThemeProvider } from 'styled-components';
+import defaultTheme from '../styles/DefaultTheme';
+import logo from '../../assets/imgs/logo.svg';
 
+const Logo = () => (<img src={logo} alt="logo" />);
+const Copy = styled.div`
+  margin: 1em 0em;
+  font-size: 16px;
+  line-height: 1.75;
+  text-align: left;
+  color: #24405d;
+`;
 
 const Home = () => (
-  <Background>
-    <Layout>
-      <ImgBox>
-        <div className="container">
-          <div className="row">
-            <ImgBox className="col-md-6">
-              <Logo src={logo} alt="logo" />
-            </ImgBox>
+  <ThemeProvider theme={defaultTheme} >
+    <Grid fluid style={{ margin: '100px 150px' }}>
+      <Row>
+        <Col md={6} >
+          <div className="pull-left" style={{ marginBottom: '25px' }}>
+            <Logo />
           </div>
-        </div>
-      </ImgBox>
-      <CopyBox>
-        <div className="container">
-          <div className="row">
-            <div className="col-md-6 col-md-offset-6">
-              <Header>Who we are</Header>
+          <Row>
+            <Col md={11} >
+
               <Copy>
-                Farm Envy is a new program that allows you to easily manage all the
-                details of your CSA so that your customers are happy and you have more
-                time for farming. Farm Envy allows your customers to sign up for your
-                CSA online, it will automatically manage payments, organize each pick up
-                day and drop off, and allow you to communicate easily with your members.
-                Your CSA members will love it because your CSA will run smoothly with
-                less mistakes and they can manage most things themselves online!
-                It makes it easy for members to sign up, make changes, pay, and even
-                let you know about special requests. We are farmers so we know
-                how difficult these things are. Farm Envy makes it easy!
+                Who We Are
               </Copy>
-              <Copy>Coming Soon...</Copy>
-            </div>
-          </div>
-        </div>
-      </CopyBox>
-    </Layout>
-  </Background>
+
+              <Copy>
+                The founders of Farm Envy come from both sides of the CSA process.
+                Farmers with more than 10 years of experience running an active CSA
+                and customers that know what is expected from the sign-up process.
+              </Copy>
+
+              <Copy>
+                We understand that growing the produce is often the fun and easy part
+                but managing a successful CSA can be the hardest and most stressful part
+                of all. Farm Envy simplifies this process in one user-friendly site.
+                We have taken all of our frustrations and have created the solution.
+              </Copy>
+
+              <Copy>
+                Get ready because your world is about to get a whole lot easier.
+              </Copy>
+
+              <Copy>
+                Coming Soon…
+              </Copy>
+            </Col>
+          </Row>
+        </Col>
+
+        <Col md={6} >
+          <p>
+            CSA management made easy.
+            Enter your information below to get early access.
+          </p>
+        </Col>
+      </Row>
+    </Grid>
+  </ThemeProvider>
 );
 
 export default Home;
