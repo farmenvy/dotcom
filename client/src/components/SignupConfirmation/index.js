@@ -1,25 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import logo from '../../assets/imgs/logo.svg';
-
-const Logo = styled.img`
-  margin-top: 40px;
-  height: 110px;
-`;
-
-const Box = styled.div`
-  min-width: 150px;
-  max-width: 350px;
-  margin: 50px auto;
-  border-radius: 5px;
-  background-color: #ffffff;
-  box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.05);
-  border: solid 1px rgba(0, 0, 0, 0.01);
-`;
-
-const Container = styled.div`
-  padding: 50px;
-`;
+import SimplePageBox from '../SimplePageBox';
 
 const VerificationText = styled.div`
   color: #212224;
@@ -49,21 +30,16 @@ const ButtonText = styled.span`
 `;
 
 const SignupConfirmation = () => (
-  <div>
-    <Logo className="center" src={logo} alt="logo" />
-    <Box>
-      <Container>
-        <VerificationText>
-          <p>Thanks for signing up!</p>
-          <p>We sent you a confirmation email to verify your account.</p>
-        </VerificationText>
+  <SimplePageBox>
+    <VerificationText>
+      <p>Thanks for signing up!</p>
+      <p>We sent you a confirmation email to verify your account.</p>
+    </VerificationText>
 
-        <Button>
-          <ButtonText>Login to your account</ButtonText>
-        </Button>
-      </Container>
-    </Box>
-  </div>
+    <Button>
+      <ButtonText>Login to your account</ButtonText>
+    </Button>
+  </SimplePageBox>
 );
 
 export default SignupConfirmation;
