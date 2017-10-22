@@ -18,7 +18,7 @@ const Routes = props => (
     <StagingRoute path="/verify" component={VerifySignup} />
     <StagingRoute exact path="/verified" component={SignupVerified} />
     <StagingRoute exact path="/signup" component={SignUp} />
-    <StagingRoute exact path="/signup-confirmation" component={SignupConfirmation} />
+    <Route exact path="/signup-confirmation" component={SignupConfirmation} />
     <Route exact path="/login" component={Login} />
     <Route path="*" component={NotFound} />
   </Switch>

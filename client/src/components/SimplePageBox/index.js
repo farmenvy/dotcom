@@ -22,60 +22,20 @@ const Container = styled.div`
   padding: 50px;
 `;
 
-const Button = styled.button`
-  width: 100%;
-  height: 50px;
-  margin: 20px auto 0px auto;
-  border-radius: 5px;
-  background-color: #33658a;
-  border: none;
-  box-shadow: 0 10px 20px 0 rgba(0, 0, 0, 0.15);
-`;
-
-const ButtonText = styled.span`
-  width: 50%;
-  text-transform: uppercase;
-  font-size: 10px;
-  font-weight: bold;
-  letter-spacing: 1px;
-  text-align: center;
-  color: #ffffff;
-`;
-
-
 const SimplePageBox = props => (
   <div>
     <Logo className="center" src={logo} alt="logo" />
     <Box>
       <Container>
-        {
-          props.buttonText ? (
-            <div>
-              { props.children }
-              <Button>
-                <ButtonText>{props.buttonText}</ButtonText>
-              </Button>
-            </div>
-          ) : (
-            props.children
-          )
-        }
+        { props.children }
       </Container>
     </Box>
   </div>
 );
 
-SimplePageBox.propTypes = (
-  {
-    children: PropTypes.node.isRequired,
-    buttonText: PropTypes.string,
-  }
-);
+SimplePageBox.propTypes = ({
+  children: PropTypes.node.isRequired,
+});
 
-SimplePageBox.defaultProps = (
-  {
-    buttonText: null,
-  }
-);
 
 export default SimplePageBox;

@@ -1,8 +1,9 @@
 import React from 'react';
-// import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { Glyphicon } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
 import SimplePageBox from '../SimplePageBox';
+import Button from '../SimplePageBox/button';
 
 const Header = styled.p`
   font-size: 26px;
@@ -43,7 +44,7 @@ const IconWrapper = styled.span`
 `;
 
 const Login = () => (
-  <SimplePageBox buttonText="Login">
+  <SimplePageBox>
     <Header>Login</Header>
     <InputWrapper>
       <IconWrapper>
@@ -57,6 +58,10 @@ const Login = () => (
       </IconWrapper>
       <Input placeholder="Password" type="password" />
     </InputWrapper>
+
+    <Link to="/">
+      <Button>Login</Button>
+    </Link>
   </SimplePageBox>
 );
 
