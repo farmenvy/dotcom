@@ -2,7 +2,7 @@ import React from 'react';
 import { Col, Row, Grid, Button } from 'react-bootstrap';
 import styled, { ThemeProvider } from 'styled-components';
 import defaultTheme from '../styles/DefaultTheme';
-import { StyledInput, PhoneInput } from '../StyledInputs';
+import { StyledInput, ZipCodeInput, PhoneInput } from '../StyledInputs';
 import logo from '../../assets/imgs/logo.svg';
 
 const Container = styled.div`
@@ -101,7 +101,7 @@ const Home = () => (
               <InputRow><StyledInput placeholder="Farm Name" type="text" /></InputRow>
               <InputRow><StyledInput placeholder="Email" type="text" /></InputRow>
               <InputRow><PhoneInput /></InputRow>
-              <InputRow><StyledInput placeholder="Zip Code" type="text" /></InputRow>
+              <InputRow><ZipCodeInput /></InputRow>
 
               <Button bsStyle="primary" bsSize="large" block>
               Get Access

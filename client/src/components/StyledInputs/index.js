@@ -26,3 +26,9 @@ export const PhoneInput = () => (
   />
 );
 
+export const ZipCodeInput = () => (
+  <StyledInputMask
+    mask={[/\d/, /\d/, /\d/, /\d/, /\d/]}
+    placeholder="Zip Code"
+  />
+);
