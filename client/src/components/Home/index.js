@@ -2,6 +2,7 @@ import React from 'react';
 import { Col, Row, Grid, Button } from 'react-bootstrap';
 import styled, { ThemeProvider } from 'styled-components';
 import defaultTheme from '../styles/DefaultTheme';
+import { StyledInput, ZipCodeInput, PhoneInput } from '../StyledInputs';
 import logo from '../../assets/imgs/logo.svg';
 
 const Container = styled.div`
@@ -31,22 +32,16 @@ const SignupContainer = styled.div`
   margin-top: 40px;
 `;
 
-const StyledInput = styled.input`
-  display: block;
-  width: 100%;
-  border-radius: 5px;
-  background-color: rgba(0, 0, 0, 0.01);
-  border: solid 1px rgba(0, 0, 0, 0.1);
+const InputRow = styled.div`
+  height: 60px;
   margin: 1.5em 0;
-  padding: 1.25em 0;
-  text-indent: 2em;
-  outline: none;
-
-  &:focus {
-    box-shadow: 0 0 0 1pt #42B989;
-  }
 `;
 
+const FlexRow = InputRow.extend`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+`;
 
 const Home = () => (
   <ThemeProvider theme={defaultTheme} >
@@ -97,13 +92,19 @@ const Home = () => (
             </Row>
 
             <SignupContainer>
-              <StyledInput placeholder="Farm Name" type="text" />
-              <StyledInput placeholder="Email" type="text" />
-              <StyledInput placeholder="Phone Number" type="tel" />
-              <StyledInput placeholder="Zip Code" type="text" />
+
+              <FlexRow>
+                <StyledInput inline placeholder="First Name" type="text" />
+                <StyledInput inline placeholder="Last Name" type="text" />
+              </FlexRow>
+
+              <InputRow><StyledInput placeholder="Farm Name" type="text" /></InputRow>
+              <InputRow><StyledInput placeholder="Email" type="text" /></InputRow>
+              <InputRow><PhoneInput /></InputRow>
+              <InputRow><ZipCodeInput /></InputRow>
 
               <Button bsStyle="primary" bsSize="large" block>
-                Get Access
+              Get Access
               </Button>
             </SignupContainer>
           </Col>
