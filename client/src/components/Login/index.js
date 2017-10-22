@@ -1,108 +1,68 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
-import { Redirect, withRouter } from 'react-router-dom';
-import { login } from '../../interactions/login';
-import logo from '../../assets/imgs/dark_logo.png';
-import styles from './styles';
+import React from 'react';
+import styled from 'styled-components';
+import { Glyphicon } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
+import SimplePageBox from '../SimplePageBox';
+import Button from '../SimplePageBox/button';
 
+const Header = styled.p`
+  font-size: 26px;
+  font-weight: 300;
+  text-align: center;
+  color: #393c40;
+  margin-top: -10px;
+`;
 
-class Login extends Component {
-  constructor(props) {
-    super(props);
+const Input = styled.input`
+  margin-top: 10px;
+  width: 100%;
+  height: 50px;
+  border-radius: 5px;
+  border: solid 1px #c6c9cf;
+  text-align: center;
+  font-size: 16px;
+  font-weight: 300;
 
-    this.state = {
-      username: '',
-      password: '',
-    };
-
-    this.handleUsernameChange = this.handleUsernameChange.bind(this);
-    this.handlePasswordChange = this.handlePasswordChange.bind(this);
+  ::placeholder {
+    color: #aaaeb3;
+    font-size: 12px;
+    text-align: center;
+    text-indent: 0;
   }
+`;
 
-  handleUsernameChange(e) {
-    this.setState({ username: e.target.value });
-  }
+const InputWrapper = styled.div`
+  position: relative;
+`;
 
-  handlePasswordChange(e) {
-    this.setState({ password: e.target.value });
-  }
+const IconWrapper = styled.span`
+  position: absolute;
+  left: 1em;
+  color: #c6c9cf;
+  font-size: 12px;
+  top: 47%;
+`;
 
-  render() {
-    const { from } = this.props.location.state || { from: { pathname: '/' } };
+const Login = () => (
+  <SimplePageBox>
+    <Header>Login</Header>
+    <InputWrapper>
+      <IconWrapper>
+        <Glyphicon glyph="envelope" />
+      </IconWrapper>
+      <Input placeholder="Email Address" type="text" />
+    </InputWrapper>
+    <InputWrapper>
+      <IconWrapper>
+        <Glyphicon glyph="lock" />
+      </IconWrapper>
+      <Input placeholder="Password" type="password" />
+    </InputWrapper>
 
-    if (this.props.isLoggedIn) {
-      return (
-        <Redirect to={from} />
-      );
-    }
+    <Link to="/">
+      <Button>Login</Button>
+    </Link>
+  </SimplePageBox>
+);
 
-    return (
-      <div className="row" style={styles.container}>
-        <div className="col-md-12">
-          <img style={styles.logo} src={logo} alt="logo" />
-        </div>
-        <div className="col-md-4 panel panel-default">
-          <div className="panel-body">
-            <form>
-              <h2 style={styles.header}>Sign In</h2>
-              <div className="form-group">
-                <input
-                  className="form-control"
-                  type="text"
-                  value={this.state.username}
-                  onChange={this.handleUsernameChange}
-                  placeholder="Email"
-                />
-              </div>
-              <div className="form-group">
-                <input
-                  className="form-control"
-                  type="password"
-                  value={this.state.password}
-                  onChange={this.handlePasswordChange}
-                  placeholder="Password"
-                />
-              </div>
-              <button
-                style={styles.loginBtn}
-                className="btn btn-success"
-                type="button"
-                onClick={() => this.props.login()}
-              >
-                Login
-              </button>
-              <br />
-              <br />
-              <div className="form-group">
-                <button className="btn btn-default">Forgot Password?</button>
-              </div>
-              <div className="form-group">
-                <button className="btn btn-default">Sign Up</button>
-              </div>
-            </form>
-          </div>
-        </div>
-      </div>
-    );
-  }
-}
-
-Login.propTypes = {
-  location: PropTypes.shape({
-    state: PropTypes.shape({}),
-  }).isRequired,
-  isLoggedIn: PropTypes.bool.isRequired,
-  login: PropTypes.func.isRequired,
-};
-
-const mapStateToProps = state => ({
-  isLoggedIn: state.login.isLoggedIn,
-});
-
-const mapDispatchToProps = dispatch => ({
-  ...bindActionCreators({ login }, dispatch),
-});
-
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Login));
+export default Login;
