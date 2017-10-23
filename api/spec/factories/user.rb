@@ -6,6 +6,7 @@ FactoryGirl.define do
     password { 'thisisavalidpassword' }
     password_confirmation { 'thisisavalidpassword' }
     pending_verification { false }
-    roles { %w[admin] }
+    role { 'farmer' }
+    farm
   end
 end

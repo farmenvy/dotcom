@@ -10,10 +10,10 @@ RSpec.describe Auth::BuildSessionPayload do
   let(:ip) { '127.0.0.1' }
 
   let(:user) do
-    build_stubbed(:user, id: 1, roles: roles)
+    build_stubbed(:user, id: 1, role: role)
   end
 
-  let(:roles) { %w[admin public farmer] }
+  let(:role) { 'admin' }
   let(:result) { perform }
 
   describe 'expected attributes' do
@@ -53,17 +53,17 @@ RSpec.describe Auth::BuildSessionPayload do
       expect(payload['iat']).to_not be_nil
     end
 
-    it 'has the users roles' do
-      expect(payload['roles']).to eq roles
+    it 'has the users role' do
+      expect(payload['role']).to eq role
     end
 
     context 'when the user is pending_verification' do
       let(:user) do
-        build_stubbed(:user, id: 1, pending_verification: true, roles: roles)
+        build_stubbed(:user, id: 1, pending_verification: true, role: role)
       end
 
-      it 'does NOT include any roles' do
-        expect(payload['roles']).to be_nil
+      it 'does NOT include any role' do
+        expect(payload['role']).to be_nil
       end
     end
 

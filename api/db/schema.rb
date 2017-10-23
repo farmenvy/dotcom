@@ -10,10 +10,17 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171011140244) do
+ActiveRecord::Schema.define(version: 20171023142857) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "farms", force: :cascade do |t|
+    t.string "name", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["name"], name: "index_farms_on_name"
+  end
 
   create_table "users", force: :cascade do |t|
     t.string "first_name"
@@ -23,8 +30,11 @@ ActiveRecord::Schema.define(version: 20171011140244) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.boolean "pending_verification", default: true
-    t.string "roles", default: [], array: true
+    t.string "role", default: "user", null: false
+    t.bigint "farm_id"
     t.index ["email_address"], name: "index_users_on_email_address", unique: true
+    t.index ["farm_id"], name: "index_users_on_farm_id"
   end
 
+  add_foreign_key "users", "farms"
 end

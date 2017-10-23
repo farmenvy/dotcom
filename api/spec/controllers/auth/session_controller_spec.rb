@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.describe Auth::SessionController do
   subject { described_class.new }
 
-  let(:user) { build_stubbed(:user, id: 123, roles: []) }
+  let(:user) { build_stubbed(:user, id: 123) }
   let(:request) { double(:request, remote_ip: '127.0.0.1') }
 
   before do
