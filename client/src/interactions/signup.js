@@ -1,8 +1,8 @@
 import axios from 'axios';
 
 const UPDATE_EMAIL = 'UPDATE_EMAIL';
+const UPDATE_NAME = 'UPDATE_NAME';
 const UPDATE_PASSWORD = 'UPDATE_PASSWORD';
-const UPDATE_PASSWORD_CONFIRM = 'UPDATE_PASSWORD_CONFIRM';
 const USER_CREATED = 'USER_CREATED';
 const ACCOUNT_VERIFIED = 'ACCOUNT_VERIFIED';
 const VALIDATION_ERROR = 'VALIDATION_ERROR';
@@ -10,8 +10,10 @@ const FAILED_VERIFICATION = 'FAILED_VERIFICATION';
 
 const initialState = {
   email: '',
+  firstName: '',
+  lastName: '',
+  farmName: '',
   password: '',
-  passwordConfirmation: '',
   errors: {},
   verificationStatus: '',
 };
@@ -26,12 +28,12 @@ const handleStateChange = (key, state, action) => (
 
 export const reducer = (state = initialState, action) => {
   switch (action.type) {
+    case UPDATE_NAME:
+      return handleStateChange(action.payload.key, state, action);
     case UPDATE_EMAIL:
       return handleStateChange('email', state, action);
     case UPDATE_PASSWORD:
       return handleStateChange('password', state, action);
-    case UPDATE_PASSWORD_CONFIRM:
-      return handleStateChange('passwordConfirmation', state, action);
     case USER_CREATED:
       return { ...state, verificationStatus: 'pending' };
     case ACCOUNT_VERIFIED:
@@ -44,7 +46,9 @@ export const reducer = (state = initialState, action) => {
         errors: {
           email: action.payload.email_address,
           password: action.payload.password,
-          passwordConfirmation: action.payload.password_confirmation,
+          firstName: action.payload.first_name,
+          lastName: action.payload.last_name,
+          farmName: action.payload['farm.name'],
         },
       };
     default:
@@ -52,7 +56,7 @@ export const reducer = (state = initialState, action) => {
   }
 };
 
-const PASSWORD_MINIMUM_LENGTH = 12;
+export const PASSWORD_MINIMUM_LENGTH = 12;
 const EMAIL_REGEX = /\S+@\S+\.\S+/;
 
 const validateEmail = (email, state) => {
@@ -67,38 +71,40 @@ const validateEmail = (email, state) => {
 };
 
 const validatePassword = (password, state) => {
-  const confirm = state.passwordConfirmation;
   let passwordErrors;
-  let confirmErrors;
 
   if (password.length < PASSWORD_MINIMUM_LENGTH) {
     passwordErrors = [`must be at least ${PASSWORD_MINIMUM_LENGTH} characters long`];
   }
 
-  if (confirm.length > 0 && confirm !== password) {
-    confirmErrors = ['must match password'];
-  }
 
   return {
     ...state.errors,
     password: passwordErrors,
-    passwordConfirmation: confirmErrors,
   };
 };
 
-const validatePasswordConfirmation = (confirm, state) => {
-  if (confirm !== state.password) {
-    return {
-      ...state.errors,
-      passwordConfirmation: ['must match password'],
-    };
+const validateRequiredField = (key, value, state) => {
+  if (!value) {
+    return { ...state.errors, [key]: ['is required'] };
   }
 
-  return { ...state.errors, passwordConfirmation: null };
+  return { ...state.errors, [key]: null };
 };
 
 const getDispatchObject = (key, value, state) => {
   switch (key) {
+    case 'firstName':
+    case 'lastName':
+    case 'farmName':
+      return {
+        type: UPDATE_NAME,
+        payload: {
+          value,
+          errors: validateRequiredField(key, value, state),
+          key,
+        },
+      };
     case 'email':
       return {
         type: UPDATE_EMAIL,
@@ -108,11 +114,6 @@ const getDispatchObject = (key, value, state) => {
       return {
         type: UPDATE_PASSWORD,
         payload: { value, errors: validatePassword(value, state) },
-      };
-    case 'passwordConfirmation':
-      return {
-        type: UPDATE_PASSWORD_CONFIRM,
-        payload: { value, errors: validatePasswordConfirmation(value, state) },
       };
     default:
       throw new Error(`unknown field to update: ${key}`);
@@ -132,13 +133,17 @@ export const signup = () => (
     const state = getState().signup;
     const params = {
       user: {
+        first_name: state.firstName,
+        last_name: state.lastName,
         email_address: state.email,
         password: state.password,
-        password_confirmation: state.passwordConfirmation,
+        farm_attributes: {
+          name: state.farmName,
+        },
       },
     };
 
-    axios.post('/api/users', params)
+    axios.post('/api/farmers', params)
       .then(res => dispatch({ type: USER_CREATED, payload: res.data }))
       .catch((err) => {
         if (err.response) {

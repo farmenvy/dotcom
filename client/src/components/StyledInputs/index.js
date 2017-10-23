@@ -11,10 +11,7 @@ export const StyledInput = styled.input`
   border: solid 1px rgba(0, 0, 0, 0.1);
   text-indent: 2em;
   outline: none;
-
-  &:focus {
-    box-shadow: 0 0 0 1pt #42B989;
-  }
+  box-shadow: ${props => (props.errors ? '0 0 0 1pt #EEADAD' : 'none')};
 `;
 
 const StyledInputMask = StyledInput.withComponent(MaskedInput);
