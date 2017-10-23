@@ -8,7 +8,7 @@ class User < ApplicationRecord
 
   validate :burner_email
   validates :password, length: { minimum: 12, maximum: 100 }, if: :password
-  validates :role, inclusion: { in: ['farmer', 'user', 'admin'] }
+  validates :role, inclusion: { in: %w[farmer user admin] }
 
   validates :first_name, presence: true
   validates :last_name, presence: true

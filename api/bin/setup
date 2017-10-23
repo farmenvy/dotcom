@@ -20,6 +20,10 @@ chdir APP_ROOT do
   system 'bundle check || bundle install'
 
   puts "\n== Preparing database =="
+  unless ENV['RAILS_ENV'] == 'production'
+    system("bin/rails db:environment:set #{ENV['RAILS_ENV']}")
+    system('bin/rails db:drop')
+  end
   system('bin/rails db:create 2>/dev/null')
   system('bin/rails db:migrate')
 
