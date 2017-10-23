@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
   resources :users, only: [:create]
+  resources :farmers, only: [:create]
 
   namespace :auth do
     post :session, to: 'session#create'

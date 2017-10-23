@@ -7,6 +7,8 @@ RSpec.describe User, type: :model do
       last_name
       email_address
       password_digest
+      role
+      farm
     ].each do |attr|
       it "responds_to #{attr}" do
         expect(subject).to respond_to attr
@@ -20,15 +22,20 @@ RSpec.describe User, type: :model do
       last_name: last_name,
       email_address: email_address,
       password: password,
-      password_confirmation: password_confirmation
+      password_confirmation: password_confirmation,
+      role: role,
+      farm_attributes: { name: farm_name }
     }
   end
+
+  let(:farm_name) { 'some farm name' }
 
   let(:first_name) { 'bob' }
   let(:last_name) { 'jones' }
   let(:email_address) { 'email@email.com' }
   let(:password) { 'thisisaprettygoodpassword' }
   let(:password_confirmation) { 'thisisaprettygoodpassword' }
+  let(:role) { 'user' }
 
   let(:subject) do
     User.new(user_attributes)
@@ -74,6 +81,22 @@ RSpec.describe User, type: :model do
       subject.email_address = 'foo@guerrillamail.com'
       expect(subject).to be_invalid
       expect(subject.errors.messages).to include(email_address: ['is invalid'])
+    end
+  end
+
+  describe 'role validation' do
+    let(:role) { nil }
+
+    it 'only accepts farmer, admin or user' do
+      expect(subject).to be_invalid
+      subject.role = 'farmer'
+      expect(subject).to be_valid
+      subject.role = 'foobar'
+      expect(subject).to be_invalid
+      subject.role = 'user'
+      expect(subject).to be_valid
+      subject.role = 'admin'
+      expect(subject).to be_valid
     end
   end
 end

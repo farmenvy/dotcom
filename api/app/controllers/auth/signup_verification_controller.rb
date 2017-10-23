@@ -6,7 +6,7 @@ module Auth
         user.update!(pending_verification: false)
         render json: session_payload(user), status: :created
       else
-        render json: {}, status: :unprocessable_entity
+        render json: { error: 'invalid request' }, status: :unprocessable_entity
       end
     end
 

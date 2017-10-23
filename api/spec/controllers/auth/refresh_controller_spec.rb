@@ -9,9 +9,9 @@ RSpec.describe Auth::RefreshController do
     JSONWebToken.encode(ip: remote_ip, sub: user.id)
   end
 
-  let(:user) { create(:user, roles: roles) }
+  let(:user) { create(:user, role: role) }
 
-  let(:roles) { %w[admin public farmer] }
+  let(:role) { 'farmer' }
 
   before do
     allow(subject).to receive(:request).and_return request

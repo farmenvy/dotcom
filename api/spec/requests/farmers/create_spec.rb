@@ -9,7 +9,7 @@ RSpec.describe 'POST /users', type: :request do
 
   before do
     allow(SendVerificationEmailJob).to receive(:perform_later)
-    post '/users', params: params, headers: headers
+    post '/farmers', params: params, headers: headers
   end
 
   let(:params) do
@@ -19,23 +19,30 @@ RSpec.describe 'POST /users', type: :request do
         last_name: last_name,
         email_address: email_address,
         password: password,
-        password_confirmation: password_confirmation,
-        farm_id: farm_id
+        farm_attributes: {
+          name: farm_name
+        }
       }
     }
   end
 
   let(:first_name) { 'john' }
   let(:last_name) { 'bob' }
+  let(:farm_name) { 'farm name' }
   let(:email_address) { 'foo@bar.com' }
   let(:password) { 'thisisavalidpassword' }
-  let(:password_confirmation) { 'thisisavalidpassword' }
-  let(:farm) { create(:farm) }
-  let(:farm_id) { farm.id }
 
   context 'when given valid params' do
-    it 'creates a User' do
+    it 'creates a User with role of farmer' do
       expect(response).to have_http_status(:created)
+      expect(User.where(role: 'farmer').count).to eq(1)
+    end
+
+    it 'also creates a Farm' do
+      expect(Farm.count).to eq(1)
+      farm_id = json.dig('user', 'farm_id')
+      farm = Farm.find(farm_id)
+      expect(farm.name).to eq(farm_name)
     end
 
     it 'returns the User object' do
@@ -58,21 +65,22 @@ RSpec.describe 'POST /users', type: :request do
     end
   end
 
-  context 'when given params with passwords that do NOT match' do
-    let(:password_confirmation) { 'thisdoesnotmatch' }
-
-    it 'does NOT create a User' do
-      expect(response).to have_http_status(:unprocessable_entity)
-      expect(json['errors'].keys).to include('password_confirmation')
-    end
-  end
-
   context 'when given params with invalid password' do
     let(:password) { 'toosmall' }
 
     it 'does NOT create a User' do
       expect(response).to have_http_status(:unprocessable_entity)
       expect(json['errors'].keys).to include('password')
+    end
+  end
+
+  context 'when given params with a farm name that already exists' do
+    let(:another_farm) { create(:farm, name: 'another farm') }
+    let(:farm_name) { another_farm.name }
+
+    it 'still creates the User' do
+      expect(response).to have_http_status(:created)
+      expect(json['errors']).to_not be_present
     end
   end
 end
