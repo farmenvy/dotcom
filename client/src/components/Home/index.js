@@ -1,9 +1,9 @@
 import React from 'react';
-import { Col, Row, Grid, Button } from 'react-bootstrap';
+import { Col, Row, Grid } from 'react-bootstrap';
 import styled, { ThemeProvider } from 'styled-components';
 import defaultTheme from '../styles/DefaultTheme';
-import { StyledInput, ZipCodeInput, PhoneInput } from '../StyledInputs';
 import logo from '../../assets/imgs/logo.svg';
+import LandingPageSignup from '../LandingPageSignup';
 
 const Container = styled.div`
   padding: 20px 70px;
@@ -15,32 +15,6 @@ const Copy = styled.div`
   line-height: 1.75;
   text-align: left;
   color: #24405d;
-`;
-
-const SignupText = styled.div`
-  margin: 3em 0.5em 0 0.5em;
-  opacity: 0.5;
-  font-size: 24px;
-  font-weight: 300;
-  line-height: 1.42;
-  letter-spacing: -0.5px;
-  text-align: center;
-  color: #353535;
-`;
-
-const SignupContainer = styled.div`
-  margin-top: 40px;
-`;
-
-const InputRow = styled.div`
-  height: 60px;
-  margin: 1.5em 0;
-`;
-
-const FlexRow = InputRow.extend`
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
 `;
 
 const Home = () => (
@@ -83,30 +57,7 @@ const Home = () => (
           </Col>
 
           <Col md={4} mdOffset={2} >
-            <Row>
-              <SignupText>
-                CSA management made easy.
-                <br />
-                Enter your information below to get early access.
-              </SignupText>
-            </Row>
-
-            <SignupContainer>
-
-              <FlexRow>
-                <StyledInput inline placeholder="First Name" type="text" />
-                <StyledInput inline placeholder="Last Name" type="text" />
-              </FlexRow>
-
-              <InputRow><StyledInput placeholder="Farm Name" type="text" /></InputRow>
-              <InputRow><StyledInput placeholder="Email" type="text" /></InputRow>
-              <InputRow><PhoneInput /></InputRow>
-              <InputRow><ZipCodeInput /></InputRow>
-
-              <Button bsStyle="primary" bsSize="large" block>
-              Get Access
-              </Button>
-            </SignupContainer>
+            <LandingPageSignup />
           </Col>
         </Row>
       </Grid>
