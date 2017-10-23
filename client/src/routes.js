@@ -5,7 +5,6 @@ import { Switch, Route } from 'react-router-dom';
 import Home from './components/Home';
 import StagingRoute from './components/StagingRoute';
 import SignUp from './components/SignUp';
-import VerifySignup from './components/VerifySignup';
 import SignupVerified from './components/SignupVerified';
 import SignupConfirmation from './components/SignupConfirmation';
 import Login from './components/Login';
@@ -13,11 +12,11 @@ import NotFound from './components/NotFound';
 
 const Routes = props => (
   <Switch {...props}>
-    <Route exact path="/" component={Home} />
-    <StagingRoute path="/verify/:token" component={VerifySignup} />
-    <StagingRoute path="/verify" component={VerifySignup} />
-    <StagingRoute exact path="/verified" component={SignupVerified} />
     <StagingRoute exact path="/signup" component={SignUp} />
+    <Route exact path="/" component={Home} />
+    <Route exact path="/verified" component={SignupVerified} />
+    <Route exact path="/verify" component={SignupConfirmation} />
+    <Route path="/verify/:token" component={SignupConfirmation} />
     <Route exact path="/signup-confirmation" component={SignupConfirmation} />
     <Route exact path="/login" component={Login} />
     <Route path="*" component={NotFound} />
