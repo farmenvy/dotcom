@@ -1,4 +1,4 @@
 class ApplicationMailer < ActionMailer::Base
-  default from: 'Farm Envy <noreploy@farmenvy.com>'
+  default from: 'Farm Envy <noreply@farmenvy.com>'
   layout 'mailer'
 end
