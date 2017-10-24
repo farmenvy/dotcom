@@ -3,13 +3,12 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { NavLink } from 'react-router-dom';
 import logo from '../../assets/imgs/white-logo.svg';
-// import SideBar from '../SideBar';
-// import Main from '../Main';
+import anon from '../../assets/imgs/anon.svg';
 
 const Container = styled.div`
   height: 100%;
   display: flex;
-  min-height: 500px;
+  min-height: 525px;
 
   flex-direction: row;
 
@@ -35,6 +34,7 @@ const SideBarHeader = styled.div`
   height: 80px;
   background-color: #379f77;
   padding: 20px 30px;
+  display: flex;
 `;
 
 const SideBarContainer = styled.div`
@@ -108,13 +108,21 @@ const Main = styled.div`
   margin-top: -10em;
 `;
 
+const ProfilePic = styled.img`
+  height: 44px;
+  margin-right: 8px;
+`;
+
 const FarmerView = props => (
   <Container>
     <SideBar>
       <SideBarContainer>
         <SideBarHeader>
-          <FarmerText>Radish Farms</FarmerText>
-          <FarmerText>John D.</FarmerText>
+          <ProfilePic src={anon} alt="profile-picture" />
+          <div>
+            <FarmerText>Radish Farms</FarmerText>
+            <FarmerText>John D.</FarmerText>
+          </div>
         </SideBarHeader>
         <SideBarNavigation>
           <NavHeader>Menu</NavHeader>

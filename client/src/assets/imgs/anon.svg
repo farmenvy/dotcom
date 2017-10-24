@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="100px" height="100px" viewBox="0 0 100 100" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 47.1 (45422) - http://www.bohemiancoding.com/sketch -->
+    <title>BG Copy</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <circle id="path-1" cx="50" cy="50" r="50"></circle>
+    </defs>
+    <g id="Account-Settings" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Admin---Account-Settings-2.1" transform="translate(-385.000000, -123.000000)">
+            <g id="Account-Info" transform="translate(385.000000, 123.000000)">
+                <g id="Avatars">
+                    <g id="Avatar---Default">
+                        <g id="BG-Copy">
+                            <mask id="mask-2" fill="white">
+                                <use xlink:href="#path-1"></use>
+                            </mask>
+                            <use id="Mask" fill="#A9B5C5" xlink:href="#path-1"></use>
+                            <circle id="BG" fill="#EDF1F5" mask="url(#mask-2)" cx="50.5" cy="40.5" r="17.5"></circle>
+                            <path d="M36,65 L64,65 L64,65 C75.045695,65 84,73.954305 84,85 L84,133 L16,133 L16,85 L16,85 C16,73.954305 24.954305,65 36,65 Z" id="Rectangle-6" fill="#EDF1F5" mask="url(#mask-2)"></path>
+                        </g>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>
