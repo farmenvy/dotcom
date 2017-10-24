@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { Redirect } from 'react-router-dom';
+import { Redirect, Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { verifySignup } from '../../interactions/signup';
@@ -17,6 +17,16 @@ const VerificationText = styled.div`
   font-weight: 300;
   font-size: 18px;
   line-height: 26px;
+`;
+
+const LinkContainer = styled.div`
+  margin-top: 2.5em;
+`;
+
+const StyledLink = styled(Link)`
+  font-size: 14px;
+  font-weight: 300;
+  color: #4a90e2;
 `;
 
 class SignupConfirmation extends React.Component {
@@ -39,6 +49,9 @@ class SignupConfirmation extends React.Component {
           <p>Thanks for signing up!</p>
           <p>We sent you a confirmation email to verify your account.</p>
         </VerificationText>
+        <LinkContainer>
+          <StyledLink to="/">Back to Home</StyledLink>
+        </LinkContainer>
       </SimplePageBox>
     );
   }
