@@ -14,6 +14,7 @@ const Container = styled.div`
 
   @media (max-width: 700px) {
     min-height: 200px;
+    flex-direction: column;
   }
 `;
 
@@ -26,7 +27,8 @@ const SideBar = styled.div`
   min-width: 250px;
 
   @media (max-width: 700px) {
-    display: none;
+    order: 2;
+    width: 100%;
   }
 `;
 
@@ -38,6 +40,9 @@ const SideBarHeader = styled.div`
 `;
 
 const SideBarContainer = styled.div`
+  @media (max-width: 700px) {
+    display: none;
+  }
 `;
 
 const SideBarNavigation = styled.div`
@@ -83,6 +88,15 @@ const Logo = styled.img`
   right: 0;
   bottom: 2em;
   width: 30%;
+
+  @media (max-width: 700px) {
+    position: relative;
+    bottom: 0;
+    width: 30%;
+    max-height: 55px;
+    margin-top: 25px;
+    margin-bottom: 25px;
+  }
 `;
 
 const FarmerText = styled.div`
@@ -106,6 +120,12 @@ const Main = styled.div`
   background: #ffffff;
   flex-grow: 1;
   margin-top: -10em;
+
+  @media (max-width: 700px) {
+    margin-top: 0;
+    padding-top: 25px;
+    order: 1;
+  }
 `;
 
 const ProfilePic = styled.img`
@@ -134,9 +154,9 @@ const FarmerView = props => (
           <NavItem to="/labels" disabled >Labels</NavItem>
           <NavItem to="/settings" disabled >Account Settings</NavItem>
           <NavItem to="/logout" disabled >Logout</NavItem>
-          <Logo src={logo} alt="logo" />
         </SideBarNavigation>
       </SideBarContainer>
+      <Logo src={logo} alt="logo" />
     </SideBar>
     <Main>
       {props.children}
