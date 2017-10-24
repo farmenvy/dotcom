@@ -7,7 +7,6 @@ import FarmerView from '../FarmerView';
 const FarmerRoute = (props) => {
   const { component: Component, ...rest } = props;
 
-  console.log(props.isLoggedIn);
   return (
     <Route
       {...rest}
