@@ -1,0 +1,11 @@
+#!/bin/bash
+
+# ensure we're at project root
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}"  )" && pwd  )"
+cd "$DIR/.."
+
+docker run --rm \
+  -v /home/deploy/current/lb/certs:/etc/letsencrypt \
+  -v /home/deploy/current/lb/certs-data:/data/letsencrypt \
+  -v /home/deploy/current/lb/log:/var/log \
+  certbot/certbot renew
