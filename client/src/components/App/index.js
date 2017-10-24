@@ -1,17 +1,49 @@
 import React from 'react';
-import SideBar from '../SideBar';
-import Header from '../Header';
-import Main from '../Main';
+import styled from 'styled-components';
+// import SideBar from '../SideBar';
+// import Main from '../Main';
 
-import './style.css';
+const Container = styled.div`
+  text-align: center;
+  height: 100%;
+  display: flex;
+
+  flex-direction: row;
+  @media (max-width: 700px) {
+    flex-direction: column;
+  }
+`;
+
+const SideBar = styled.div`
+  background: #339871;
+  font-color: #ffffff;
+  width: 25%;
+  min-width: 250px;
+
+  @media (max-width: 700px) {
+    display: none;
+  }
+`;
+
+const Main = styled.div`
+  background: #ffffff;
+  flex-grow: 1;
+`;
 
 const App = () => (
-  <div className="App">
+  <Container>
     <SideBar>
-      <Header />
-      <Main />
+      <p>foo</p>
+      <p>foo</p>
+      <p>foo</p>
     </SideBar>
-  </div>
+    <Main>
+      <p>bar</p>
+      <p>bar</p>
+      <p>bar</p>
+      <p>bar</p>
+    </Main>
+  </Container>
 );
 
 export default App;
