@@ -38,7 +38,7 @@ class SignupConfirmation extends React.Component {
   }
 
   render() {
-    if (!['verified', 'pending'].includes(this.props.verificationStatus)) {
+    if (!['verified', 'pending', ''].includes(this.props.verificationStatus)) {
       return (<Redirect to="/" />);
     }
 

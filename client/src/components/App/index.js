@@ -1,17 +1,9 @@
 import React from 'react';
-import SideBar from '../SideBar';
-import Header from '../Header';
-import Main from '../Main';
+import Routes from '../../routes';
 
-import './style.css';
 
 const App = () => (
-  <div className="App">
-    <SideBar>
-      <Header />
-      <Main />
-    </SideBar>
-  </div>
+  <Routes />
 );
 
 export default App;

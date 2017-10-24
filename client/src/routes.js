@@ -10,6 +10,9 @@ import SignupConfirmation from './components/SignupConfirmation';
 import Login from './components/Login';
 import NotFound from './components/NotFound';
 
+import FarmerRoute from './components/FarmerRoute';
+import LoginWelcome from './components/LoginWelcome';
+
 const Routes = props => (
   <Switch {...props}>
     <StagingRoute exact path="/signup" component={SignUp} />
@@ -19,6 +22,7 @@ const Routes = props => (
     <Route path="/verify/:token" component={SignupConfirmation} />
     <Route exact path="/signup-confirmation" component={SignupConfirmation} />
     <Route exact path="/login" component={Login} />
+    <FarmerRoute exact path="/overview" component={LoginWelcome} />
     <Route path="*" component={NotFound} />
   </Switch>
 );
