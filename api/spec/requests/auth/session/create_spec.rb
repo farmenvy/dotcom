@@ -18,7 +18,7 @@ RSpec.describe 'POST /session', type: :request do
 
   let(:headers) do
     {
-      'ACCEPT' => 'application/json',
+      'ACCEPT' => 'application/json'
     }
   end
 
