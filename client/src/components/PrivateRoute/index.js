@@ -31,7 +31,7 @@ PrivateRoute.propTypes = {
 
 const mapStateToProps = state => (
   {
-    isLoggedIn: state.login.isLoggedIn,
+    isLoggedIn: state.auth.isLoggedIn,
   }
 );
 
