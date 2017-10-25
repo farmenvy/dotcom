@@ -28,7 +28,7 @@ const FarmerRoute = (props) => {
 };
 
 FarmerRoute.propTypes = {
-  component: PropTypes.node.isRequired,
+  component: PropTypes.func.isRequired,
   isLoggedIn: PropTypes.bool.isRequired,
 };
 
