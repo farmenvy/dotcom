@@ -32,11 +32,8 @@ FarmerRoute.propTypes = {
   isLoggedIn: PropTypes.bool.isRequired,
 };
 
-// FIXME
-const mapStateToProps = state => (
-  {
-    isLoggedIn: state.login.isLoggedIn || true,
-  }
-);
+const mapStateToProps = state => ({
+  isLoggedIn: state.auth.isLoggedIn || true, // FIXME
+});
 
 export default connect(mapStateToProps)(FarmerRoute);

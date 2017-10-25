@@ -4,11 +4,11 @@ import thunk from 'redux-thunk';
 
 // import any new reducers here and add to
 // rooReducer below.
-import { reducer as login } from './login';
+import { reducer as auth } from './auth';
 import { reducer as signup } from './signup';
 
 const rootReducer = combineReducers({
-  login,
+  auth,
   signup,
 });
 
