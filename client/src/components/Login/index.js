@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import { Redirect } from 'react-router-dom';
 import { Glyphicon } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
@@ -55,35 +56,46 @@ const IconWrapper = styled.span`
   top: 47%;
 `;
 
-const Login = props => (
-  <SimplePageBox>
-    <Header>Login</Header>
-    <InputWrapper>
-      <IconWrapper>
-        <Glyphicon glyph="envelope" />
-      </IconWrapper>
-      <Input
-        placeholder="Email Address"
-        type="text"
-        value={props.email}
-        onChange={e => props.updateEmail(e.target.value)}
-      />
-    </InputWrapper>
-    <InputWrapper>
-      <IconWrapper>
-        <Glyphicon glyph="lock" />
-      </IconWrapper>
-      <Input
-        placeholder="Password"
-        type="password"
-        value={props.password}
-        onChange={e => props.updatePassword(e.target.value)}
-      />
-    </InputWrapper>
+const Login = (props) => {
+  const { from } = props.location.state || { from: { pathname: '/' } };
 
-    <Button onClick={() => props.login()}>Login</Button>
-  </SimplePageBox>
-);
+  if (props.isLoggedIn) {
+    return (
+      <Redirect to={from} />
+    );
+  }
+
+  return (
+
+    <SimplePageBox>
+      <Header>Login</Header>
+      <InputWrapper>
+        <IconWrapper>
+          <Glyphicon glyph="envelope" />
+        </IconWrapper>
+        <Input
+          placeholder="Email Address"
+          type="text"
+          value={props.email}
+          onChange={e => props.updateEmail(e.target.value)}
+        />
+      </InputWrapper>
+      <InputWrapper>
+        <IconWrapper>
+          <Glyphicon glyph="lock" />
+        </IconWrapper>
+        <Input
+          placeholder="Password"
+          type="password"
+          value={props.password}
+          onChange={e => props.updatePassword(e.target.value)}
+        />
+      </InputWrapper>
+
+      <Button onClick={() => props.login()}>Login</Button>
+    </SimplePageBox>
+  );
+};
 
 Login.propTypes = ({
   email: PropTypes.string.isRequired,
@@ -91,6 +103,10 @@ Login.propTypes = ({
   updateEmail: PropTypes.func.isRequired,
   updatePassword: PropTypes.func.isRequired,
   login: PropTypes.func.isRequired,
+  location: PropTypes.shape({
+    state: PropTypes.shape({}),
+  }).isRequired,
+  isLoggedIn: PropTypes.bool.isRequired,
 });
 
 Login.defaultProps = ({
@@ -101,6 +117,7 @@ Login.defaultProps = ({
 const mapStateToProps = state => ({
   email: state.auth.email,
   password: state.auth.password,
+  isLoggedIn: state.auth.isLoggedIn,
 });
 
 const mapDispatchToProps = dispatch => ({

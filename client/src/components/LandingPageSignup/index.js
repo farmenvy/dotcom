@@ -155,6 +155,8 @@ LandingPageSignup.propTypes = {
 };
 
 LandingPageSignup.defaultProps = {
+  email: '',
+  password: '',
   errors: {},
 };
 
