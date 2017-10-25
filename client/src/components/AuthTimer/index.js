@@ -2,38 +2,39 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import moment from 'moment';
 import { refresh } from '../../interactions/auth';
 
 class AuthTimer extends React.Component {
   constructor(props) {
     super(props);
-    this.tick = this.tick.bind(this);
+    this.timer = null;
+
+    this.setRefreshInterval = this.setRefreshInterval.bind(this);
   }
 
   componentDidMount() {
-    if (!this.props.isLoggedIn) return;
-    this.timer = setInterval(this.tick, 15000);
+    this.setRefreshInterval();
   }
 
-  componentWillUnmount() {
-    if (!this.props.isLoggedIn) return;
-    this.clearInterval(this.timer);
-  }
-
-  tick() {
-    console.log('tick tock'); // eslint-disable-line
-    if (this.props.refreshTime.isSameOrBefore(moment())) {
-      console.log('I should refresh!'); // eslint-disable-line
-      this.props.refresh();
+  // a refresh has been made.
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.refreshTime !== this.props.refreshTime) {
+      this.setRefreshInterval();
     }
   }
 
+  componentWillUnmount() {
+    this.clearTimeout(this.timer);
+  }
+
+  setRefreshInterval() {
+    if (!this.props.isLoggedIn) return;
+    this.timer = setTimeout(this.props.refresh, this.props.refreshTime);
+  }
 
   render() {
     return (
       <div>
-        <h3>{`refresh: ${this.props.refreshTime.calendar()}`}</h3>
         {this.props.children}
       </div>
     );
@@ -44,7 +45,7 @@ AuthTimer.propTypes = ({
   children: PropTypes.node.isRequired,
   isLoggedIn: PropTypes.bool.isRequired,
   refresh: PropTypes.func.isRequired,
-  refreshTime: PropTypes.instanceOf(moment),
+  refreshTime: PropTypes.number,
 });
 
 AuthTimer.defaultProps = ({
@@ -53,7 +54,7 @@ AuthTimer.defaultProps = ({
 
 const mapStateToProps = state => ({
   isLoggedIn: state.auth.isLoggedIn,
-  refreshTime: state.auth.refreshTime,
+  refreshTime: state.auth.refreshInterval.timeoutSeconds,
 });
 
 const mapDispatchToProps = dispatch => ({

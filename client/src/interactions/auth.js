@@ -13,17 +13,21 @@ const getRefreshToken = () => (getLocalStorageItem('refreshToken'));
 
 const getRefreshTime = () => {
   const jwt = getAccessToken();
-  if (!jwt) return null;
+  if (!jwt) return {};
   const payload = jwtDecode(jwt);
   const expiration = parseInt(payload.exp, 10);
-  return moment.unix(expiration).subtract(1, 'minute');
+  const rt = moment.unix(expiration).subtract(1, 'minute');
+  return {
+    timeoutSeconds: rt.diff(moment()),
+    time: rt.format('YYYY-MM-DD:HH:mm:ss'),
+  };
 };
 
 
 const loadAuthState = () => ({
   accessToken: getAccessToken(),
   isLoggedIn: !!getAccessToken(),
-  refreshTime: getRefreshTime(),
+  refreshInterval: getRefreshTime(),
   refreshToken: getRefreshToken(),
 });
 
