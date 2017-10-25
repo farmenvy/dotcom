@@ -1,7 +1,15 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import { Redirect } from 'react-router-dom';
 import { Glyphicon } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import {
+  updateEmail,
+  updatePassword,
+  login,
+} from '../../interactions/auth';
 import SimplePageBox from '../SimplePageBox';
 import Button from '../SimplePageBox/button';
 
@@ -22,6 +30,11 @@ const Input = styled.input`
   text-align: center;
   font-size: 16px;
   font-weight: 300;
+  outline: none;
+
+  &:focus {
+    box-shadow: 0 0 2pt 1pt #2090FD;
+  }
 
   ::placeholder {
     color: #aaaeb3;
@@ -43,26 +56,76 @@ const IconWrapper = styled.span`
   top: 47%;
 `;
 
-const Login = () => (
-  <SimplePageBox>
-    <Header>Login</Header>
-    <InputWrapper>
-      <IconWrapper>
-        <Glyphicon glyph="envelope" />
-      </IconWrapper>
-      <Input placeholder="Email Address" type="text" />
-    </InputWrapper>
-    <InputWrapper>
-      <IconWrapper>
-        <Glyphicon glyph="lock" />
-      </IconWrapper>
-      <Input placeholder="Password" type="password" />
-    </InputWrapper>
+const Login = (props) => {
+  const { from } = props.location.state || { from: { pathname: '/' } };
 
-    <Link to="/">
-      <Button>Login</Button>
-    </Link>
-  </SimplePageBox>
-);
+  if (props.isLoggedIn) {
+    return (
+      <Redirect to={from} />
+    );
+  }
 
-export default Login;
+  return (
+
+    <SimplePageBox>
+      <Header>Login</Header>
+      <InputWrapper>
+        <IconWrapper>
+          <Glyphicon glyph="envelope" />
+        </IconWrapper>
+        <Input
+          placeholder="Email Address"
+          type="text"
+          value={props.email}
+          onChange={e => props.updateEmail(e.target.value)}
+        />
+      </InputWrapper>
+      <InputWrapper>
+        <IconWrapper>
+          <Glyphicon glyph="lock" />
+        </IconWrapper>
+        <Input
+          placeholder="Password"
+          type="password"
+          value={props.password}
+          onChange={e => props.updatePassword(e.target.value)}
+        />
+      </InputWrapper>
+
+      <Button onClick={() => props.login()}>Login</Button>
+    </SimplePageBox>
+  );
+};
+
+Login.propTypes = ({
+  email: PropTypes.string.isRequired,
+  password: PropTypes.string.isRequired,
+  updateEmail: PropTypes.func.isRequired,
+  updatePassword: PropTypes.func.isRequired,
+  login: PropTypes.func.isRequired,
+  location: PropTypes.shape({
+    state: PropTypes.shape({}),
+  }).isRequired,
+  isLoggedIn: PropTypes.bool.isRequired,
+});
+
+Login.defaultProps = ({
+  email: '',
+  password: '',
+});
+
+const mapStateToProps = state => ({
+  email: state.auth.email,
+  password: state.auth.password,
+  isLoggedIn: state.auth.isLoggedIn,
+});
+
+const mapDispatchToProps = dispatch => ({
+  ...bindActionCreators({
+    updateEmail,
+    updatePassword,
+    login,
+  }, dispatch),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Login);

@@ -24,10 +24,9 @@ module Auth
     end
 
     def authenticate_password!
-      authenticate_or_request_with_http_basic do |email, password|
-        @user = User.find_by(email_address: email)
-                    .try(:authenticate, password)
-      end
+      @user = User.find_by(email_address: params[:email])
+
+      return unauthorized unless @user.try(:authenticate, params[:password])
     end
   end
 end
