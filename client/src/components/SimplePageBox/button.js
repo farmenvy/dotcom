@@ -22,13 +22,17 @@ const ButtonText = styled.span`
   color: #ffffff;
 `;
 
-const Button = props => (
-  <ButtonContainer>
-    <ButtonText>
-      { props.children }
-    </ButtonText>
-  </ButtonContainer>
-);
+const Button = (props) => {
+  const { children, ...rest } = props;
+
+  return (
+    <ButtonContainer {...rest} >
+      <ButtonText>
+        { props.children }
+      </ButtonText>
+    </ButtonContainer>
+  );
+};
 
 Button.propTypes = ({
   children: PropTypes.node.isRequired,

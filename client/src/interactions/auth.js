@@ -2,6 +2,8 @@ import axios from 'axios';
 import moment from 'moment';
 import jwtDecode from 'jwt-decode';
 
+const UPDATE_EMAIL = 'UPDATE_EMAIL';
+const UPDATE_PASSWORD = 'UPDATE_PASSWORD';
 const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
 const LOGIN_FAILURE = 'LOGIN_FAILURE';
 const AUTH_REFRESH = 'AUTH_REFRESH';
@@ -49,6 +51,10 @@ const saveTokens = (state, payload) => {
 
 export const reducer = (state = initialState, action) => {
   switch (action.type) {
+    case UPDATE_EMAIL:
+      return { ...state, email: action.payload };
+    case UPDATE_PASSWORD:
+      return { ...state, password: action.payload };
     case LOGIN_SUCCESS:
       return { ...state, isLoggedIn: true };
     case AUTH_REFRESH:
@@ -58,11 +64,20 @@ export const reducer = (state = initialState, action) => {
   }
 };
 
+export const updateEmail = value => (
+  { type: UPDATE_EMAIL, payload: value }
+);
+
+export const updatePassword = value => (
+  { type: UPDATE_PASSWORD, payload: value }
+);
+
 // will use username, password
 export const login = () => (
   (dispatch, getState) => {
     const state = getState().auth;
     const { email, password } = state;
+
     const params = { email, password };
 
     axios.post('/api/auth/session', params)

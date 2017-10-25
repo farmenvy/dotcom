@@ -1,7 +1,14 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { Glyphicon } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import {
+  updateEmail,
+  updatePassword,
+  login,
+} from '../../interactions/auth';
 import SimplePageBox from '../SimplePageBox';
 import Button from '../SimplePageBox/button';
 
@@ -22,6 +29,11 @@ const Input = styled.input`
   text-align: center;
   font-size: 16px;
   font-weight: 300;
+  outline: none;
+
+  &:focus {
+    box-shadow: 0 0 2pt 1pt #2090FD;
+  }
 
   ::placeholder {
     color: #aaaeb3;
@@ -43,26 +55,60 @@ const IconWrapper = styled.span`
   top: 47%;
 `;
 
-const Login = () => (
+const Login = props => (
   <SimplePageBox>
     <Header>Login</Header>
     <InputWrapper>
       <IconWrapper>
         <Glyphicon glyph="envelope" />
       </IconWrapper>
-      <Input placeholder="Email Address" type="text" />
+      <Input
+        placeholder="Email Address"
+        type="text"
+        value={props.email}
+        onChange={e => props.updateEmail(e.target.value)}
+      />
     </InputWrapper>
     <InputWrapper>
       <IconWrapper>
         <Glyphicon glyph="lock" />
       </IconWrapper>
-      <Input placeholder="Password" type="password" />
+      <Input
+        placeholder="Password"
+        type="password"
+        value={props.password}
+        onChange={e => props.updatePassword(e.target.value)}
+      />
     </InputWrapper>
 
-    <Link to="/">
-      <Button>Login</Button>
-    </Link>
+    <Button onClick={() => props.login()}>Login</Button>
   </SimplePageBox>
 );
 
-export default Login;
+Login.propTypes = ({
+  email: PropTypes.string.isRequired,
+  password: PropTypes.string.isRequired,
+  updateEmail: PropTypes.func.isRequired,
+  updatePassword: PropTypes.func.isRequired,
+  login: PropTypes.func.isRequired,
+});
+
+Login.defaultProps = ({
+  email: '',
+  password: '',
+});
+
+const mapStateToProps = state => ({
+  email: state.auth.email,
+  password: state.auth.password,
+});
+
+const mapDispatchToProps = dispatch => ({
+  ...bindActionCreators({
+    updateEmail,
+    updatePassword,
+    login,
+  }, dispatch),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Login);
