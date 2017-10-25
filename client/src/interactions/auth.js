@@ -8,6 +8,7 @@ const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
 const LOGIN_FAILURE = 'LOGIN_FAILURE';
 const AUTH_REFRESH = 'AUTH_REFRESH';
 const AUTH_FAILURE = 'AUTH_FAILURE';
+const LOGOUT_SUCCESS = 'LOGOUT_SUCCESS';
 
 const getLocalStorageItem = item => (window.localStorage.getItem(item));
 const getAccessToken = () => (getLocalStorageItem('accessToken'));
@@ -56,9 +57,10 @@ export const reducer = (state = initialState, action) => {
     case UPDATE_PASSWORD:
       return { ...state, password: action.payload };
     case LOGIN_SUCCESS:
-      return { ...state, isLoggedIn: true };
     case AUTH_REFRESH:
       return saveTokens(state, action.payload);
+    case LOGOUT_SUCCESS:
+      return { isLoggedIn: false };
     default:
       return state;
   }
@@ -81,8 +83,11 @@ export const login = () => (
     const params = { email, password };
 
     axios.post('/api/auth/session', params)
-      .then(() => dispatch({ type: LOGIN_SUCCESS }))
-      .catch(err => dispatch({ type: LOGIN_FAILURE, payload: err }));
+      .then(res => dispatch({ type: LOGIN_SUCCESS, payload: res.data }))
+      .catch((err) => {
+        debugger; // eslint-disable-line
+        dispatch({ type: LOGIN_FAILURE, payload: err });
+      });
   }
 );
 
@@ -100,3 +105,8 @@ export const refresh = () => (
       .catch(err => dispatch({ type: AUTH_FAILURE, payload: err }));
   }
 );
+
+export const logout = () => {
+  window.localStorage.clear();
+  return { type: LOGOUT_SUCCESS };
+};
