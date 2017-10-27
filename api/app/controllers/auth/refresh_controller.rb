@@ -9,7 +9,7 @@ module Auth
         payload = build_payload(user)
         render json: payload, status: :created
       else
-        render json: { error: result.error }, status: :unprocessable_entity
+        render json: { error: result.error }, status: :unauthorized
       end
     end
 

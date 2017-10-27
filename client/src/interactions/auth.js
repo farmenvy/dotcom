@@ -40,12 +40,19 @@ const setLocalStorageItem = (item, value) => (
   window.localStorage.setItem(item, value)
 );
 
-const saveTokens = (state, payload) => {
+const handleLogin = (payload) => {
   const accessToken = payload.access_token;
   const refreshToken = payload.refresh_token;
 
   setLocalStorageItem('accessToken', accessToken);
   setLocalStorageItem('refreshToken', refreshToken);
+
+  return loadAuthState();
+};
+
+const handleRefresh = (payload) => {
+  const accessToken = payload.access_token;
+  setLocalStorageItem('accessToken', accessToken);
 
   return loadAuthState();
 };
@@ -57,8 +64,9 @@ export const reducer = (state = initialState, action) => {
     case UPDATE_PASSWORD:
       return { ...state, password: action.payload };
     case LOGIN_SUCCESS:
+      return handleLogin(action.payload);
     case AUTH_REFRESH:
-      return saveTokens(state, action.payload);
+      return handleRefresh(action.payload);
     case LOGOUT_SUCCESS:
       return { isLoggedIn: false };
     default:

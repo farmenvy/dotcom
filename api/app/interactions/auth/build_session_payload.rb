@@ -6,7 +6,6 @@ module Auth
       raise ArgumentError, 'invalid args' unless context.user.present?
 
       context.cookie_args = refresh_token.build_cookie_args
-
       context.payload = {
         access_token: JSONWebToken.encode(access_token_payload),
         refresh_token: refresh_token.as_jwt
@@ -27,8 +26,9 @@ module Auth
       end
     end
 
+    # TODO FIXME
     def access_token_exp
-      3.minutes.from_now.to_i
+      2.minutes.from_now.to_i
     end
   end
 end
