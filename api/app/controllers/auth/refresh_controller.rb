@@ -6,25 +6,25 @@ module Auth
       result = validate
       if result.success?
         user = User.find(result.user_id)
-        payload = build_payload(user)
+        payload = build_payload(user, result.jti)
         render json: payload, status: :created
       else
-        render json: {}, status: :unprocessable_entity
+        render json: { error: result.error }, status: :unauthorized
       end
     end
 
     private
 
     def validate
-      ValidateRefreshToken.call(
-        refresh_token: bearer_token, ip: request.remote_ip
-      )
+      ValidateRefreshToken.call(refresh_token: bearer_token, client_secret: client_secret)
     end
 
-    def build_payload(user)
-      BuildSessionPayload.call(
-        user: user, ip: request.remote_ip
-      ).payload
+    def client_secret
+      request.cookies['client_secret']
+    end
+
+    def build_payload(user, jti)
+      BuildSessionPayload.call(user: user, jti: jti).payload
     end
   end
 end
