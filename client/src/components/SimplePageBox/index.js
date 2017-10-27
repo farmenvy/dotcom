@@ -1,14 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import logo from '../../assets/imgs/logo.svg';
 
-const Logo = styled.img`
-  margin-top: 40px;
-  height: 110px;
-`;
-
-const Box = styled.div`
+const Container = styled.div`
+  padding: 50px;
   min-width: 150px;
   max-width: 350px;
   margin: 50px auto;
@@ -18,19 +13,10 @@ const Box = styled.div`
   border: solid 1px rgba(0, 0, 0, 0.01);
 `;
 
-const Container = styled.div`
-  padding: 50px;
-`;
-
 const SimplePageBox = props => (
-  <div>
-    <Logo className="center" src={logo} alt="logo" />
-    <Box>
-      <Container>
-        { props.children }
-      </Container>
-    </Box>
-  </div>
+  <Container>
+    { props.children }
+  </Container>
 );
 
 SimplePageBox.propTypes = ({
