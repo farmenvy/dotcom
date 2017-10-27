@@ -77,3 +77,53 @@ script/swap-staging
 The old production environment will become the new staging environment.
 
 
+### Authentication
+
+When a user creates a session via `/auth/session`, they are given a response which consists of:
+
+1) access token
+2) refresh token
+3) `Set-Cookie` header with xsrf token
+
+The refresh token has the following payload:
+```json
+{
+  "sub": "<id>"
+  "jti": "<id>"
+  "iat": "<timestamp>"
+}
+```
+
+Additionally, a refresh token record is created with following attributes:
+```
+id(jti) | client_secret
+```
+
+Example response after logging in:
+```rb
+token = RefreshToken.create(user_id: 1)
+
+token.as_json # => { jti: token.id, sub: token.user_id, iat: 1234566 }
+token.as_jwt # => "eyasdfas.asdasdf.adfasfd"
+token.secret # => asdfaf-asfdasfd-asdfsaf-adfasd
+
+secret = SecureRandom.hex(8)
+encrypted_secret = BCrypt::Password.create(secret)
+
+response.set_cookie(
+  'client_secret',
+  value: token.secret,
+  path: '/api/auth',
+  same_site: :strict,
+  expires: 5.days.from_now,
+  httponly: true,
+)
+
+# profit
+```
+
+When refresh requests are made, the server grabs the `jti` in the refresh token payload,
+finds the appropriate refresh_token record and ensures that the `xsrf_token` matches the cookie that
+is being sent.
+
+If all is well, a new session payload is sent.

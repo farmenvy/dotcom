@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171023142857) do
+ActiveRecord::Schema.define(version: 20171027120955) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -20,6 +20,14 @@ ActiveRecord::Schema.define(version: 20171023142857) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["name"], name: "index_farms_on_name"
+  end
+
+  create_table "refresh_tokens", force: :cascade do |t|
+    t.bigint "user_id"
+    t.string "secret_hash"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_refresh_tokens_on_user_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -36,5 +44,6 @@ ActiveRecord::Schema.define(version: 20171023142857) do
     t.index ["farm_id"], name: "index_users_on_farm_id"
   end
 
+  add_foreign_key "refresh_tokens", "users"
   add_foreign_key "users", "farms"
 end

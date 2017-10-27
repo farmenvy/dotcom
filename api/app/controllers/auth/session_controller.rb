@@ -8,9 +8,10 @@ module Auth
     before_action :authenticate_password!
 
     def create
-      result = BuildSessionPayload.call(context)
+      result = BuildSessionPayload.call(user: user)
 
       if result.success?
+        response.set_cookie('client_secret', result.cookie_args)
         render json: result.payload, status: :created
       else
         render json: result.errors, status: :unprocessable_entity
@@ -18,10 +19,6 @@ module Auth
     end
 
     private
-
-    def context
-      { user: user, ip: request.remote_ip }
-    end
 
     def authenticate_password!
       @user = User.find_by(email_address: params[:email])
