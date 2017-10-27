@@ -10,9 +10,7 @@ import {
   updatePassword,
   login,
 } from '../../interactions/auth';
-import SimplePageBox from '../SimplePageBox';
-import SimplePageLayout from '../SimplePageLayout';
-import Button from '../SimplePageBox/button';
+import { Box, Layout, Button } from '../SimplePage';
 
 const Header = styled.p`
   font-size: 26px;
@@ -95,9 +93,9 @@ const Login = (props) => {
   }
 
   return (
-    <SimplePageLayout>
+    <Layout>
       <Shaker>
-        <SimplePageBox>
+        <Box>
           <Header>Login</Header>
           <InputWrapper>
             <IconWrapper>
@@ -123,9 +121,9 @@ const Login = (props) => {
           </InputWrapper>
 
           <Button onClick={() => props.login()}>Login</Button>
-        </SimplePageBox>
+        </Box>
       </Shaker>
-    </SimplePageLayout>
+    </Layout>
   );
 };
 

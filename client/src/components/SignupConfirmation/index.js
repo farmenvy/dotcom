@@ -5,7 +5,7 @@ import { Redirect, Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { verifySignup } from '../../interactions/signup';
-import SimplePageBox from '../SimplePageBox';
+import { Box, Layout } from '../SimplePage';
 import success from '../../assets/imgs/success.svg';
 
 const SuccessIcon = styled.img`
@@ -43,16 +43,18 @@ class SignupConfirmation extends React.Component {
     }
 
     return (
-      <SimplePageBox>
-        <SuccessIcon className="center" src={success} alt="success" />
-        <VerificationText>
-          <p>Thanks for signing up!</p>
-          <p>We sent you a confirmation email to verify your account.</p>
-        </VerificationText>
-        <LinkContainer>
-          <StyledLink to="/">Back to Home</StyledLink>
-        </LinkContainer>
-      </SimplePageBox>
+      <Layout>
+        <Box>
+          <SuccessIcon className="center" src={success} alt="success" />
+          <VerificationText>
+            <p>Thanks for signing up!</p>
+            <p>We sent you a confirmation email to verify your account.</p>
+          </VerificationText>
+          <LinkContainer>
+            <StyledLink to="/">Back to Home</StyledLink>
+          </LinkContainer>
+        </Box>
+      </Layout>
     );
   }
 }

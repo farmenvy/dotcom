@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import logo from '../../assets/imgs/logo.svg';
+import logo from '../../../assets/imgs/logo.svg';
 
 const Logo = styled.img`
   margin-top: 40px;
