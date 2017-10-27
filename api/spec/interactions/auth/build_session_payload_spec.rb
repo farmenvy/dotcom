@@ -4,17 +4,20 @@ RSpec.describe Auth::BuildSessionPayload do
   subject { described_class }
 
   let(:perform) do
-    subject.call(ip: ip, user: user)
+    subject.call(user: user)
   end
 
-  let(:ip) { '127.0.0.1' }
-
   let(:user) do
-    build_stubbed(:user, id: 1, role: role)
+    build_stubbed(:user, id: 123, role: role)
   end
 
   let(:role) { 'admin' }
   let(:result) { perform }
+  let(:refresh_token) { build_stubbed(:refresh_token) }
+
+  before do
+    allow(RefreshToken).to receive(:create!).and_return refresh_token
+  end
 
   describe 'expected attributes' do
     it "returns a payload that includes an #{attr}" do
@@ -24,11 +27,7 @@ RSpec.describe Auth::BuildSessionPayload do
 
   describe 'validations' do
     it 'fails if user is not provided' do
-      expect { subject.call.call(ip: ip) }.to raise_error ArgumentError
-    end
-
-    it 'fails if ip is not provided' do
-      expect { subject.call(user: user) }.to raise_error ArgumentError
+      expect { subject.call.call() }.to raise_error ArgumentError
     end
   end
 
@@ -59,7 +58,7 @@ RSpec.describe Auth::BuildSessionPayload do
 
     context 'when the user is pending_verification' do
       let(:user) do
-        build_stubbed(:user, id: 1, pending_verification: true, role: role)
+        build_stubbed(:user, pending_verification: true, role: role)
       end
 
       it 'does NOT include any role' do
@@ -79,31 +78,8 @@ RSpec.describe Auth::BuildSessionPayload do
   end
 
   describe 'refresh_token' do
-    let(:refresh_token) { result.payload[:refresh_token] }
-    let(:payload) { JSONWebToken.decode(refresh_token) }
-
-    it 'has a valid refresh_token' do
-      expect { payload }.to_not raise_error
-    end
-
-    it 'has the ip_address as the ip' do
-      expect(payload['ip']).to eq(ip)
-    end
-
-    it 'has the user_id as the sub' do
-      expect(payload['sub']).to eq(user.id)
-    end
-
-    it 'does NOT have an expiration' do
-      expect(payload['exp']).to be_nil
-    end
-
-    it 'has an iat timestamp' do
-      iat = payload['iat']
-      expect(iat).to_not be_nil
-
-      expect(iat).to be < 2.minutes.from_now.to_i
-      expect(iat).to be > 2.minutes.ago.to_i
+    it 'is present in payload' do
+      expect(result.payload[:refresh_token]).to_not be_nil
     end
   end
 end
