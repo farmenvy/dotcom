@@ -6,7 +6,7 @@ module Auth
       result = validate
       if result.success?
         user = User.find(result.user_id)
-        payload = build_payload(user)
+        payload = build_payload(user, result.jti)
         render json: payload, status: :created
       else
         render json: { error: result.error }, status: :unauthorized
@@ -23,8 +23,8 @@ module Auth
       request.cookies['client_secret']
     end
 
-    def build_payload(user)
-      BuildSessionPayload.call(user: user).payload
+    def build_payload(user, jti)
+      BuildSessionPayload.call(user: user, jti: jti).payload
     end
   end
 end

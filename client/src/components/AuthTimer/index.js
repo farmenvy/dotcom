@@ -24,11 +24,10 @@ class AuthTimer extends React.Component {
   }
 
   componentWillUnmount() {
-    this.clearTimeout(this.timer);
+    clearTimeout(this.timer);
   }
 
   setRefreshInterval() {
-    if (!this.props.isLoggedIn) return;
     this.timer = setTimeout(this.props.refresh, this.props.refreshTime);
   }
 
@@ -39,7 +38,6 @@ class AuthTimer extends React.Component {
 
 AuthTimer.propTypes = ({
   children: PropTypes.node.isRequired,
-  isLoggedIn: PropTypes.bool.isRequired,
   refresh: PropTypes.func.isRequired,
   refreshTime: PropTypes.number,
 });
@@ -49,7 +47,6 @@ AuthTimer.defaultProps = ({
 });
 
 const mapStateToProps = state => ({
-  isLoggedIn: state.auth.isLoggedIn,
   refreshTime: state.auth.refreshInterval.timeoutSeconds,
 });
 

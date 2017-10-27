@@ -2,11 +2,12 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
+import AuthTimer from '../AuthTimer';
 import FarmerLayout from '../FarmerLayout';
 
 const FarmerView = props => (
   props.isLoggedIn ? (
-    <FarmerLayout {...props} />
+    <AuthTimer><FarmerLayout {...props} /></AuthTimer>
   ) : (
     <Redirect to="/" />
   )

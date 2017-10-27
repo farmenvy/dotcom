@@ -21,7 +21,6 @@ RSpec.describe 'POST /auth/refresh', type: :request do
   let(:client_secret) { saved_refresh_token.secret }
   let(:user) { create(:user) }
   let(:user_id) { user.id }
-  let(:my_ip) { '127.0.0.1' }
 
   before do
     cookies['client_secret'] = client_secret

@@ -12,7 +12,9 @@ RSpec.describe Auth::RefreshController do
   let(:user) { build_stubbed(:user, id: 1, role: role) }
 
   let(:role) { 'farmer' }
-  let(:result) { double(:result, success?: true, user_id: user.id) }
+  let(:result) do
+    double(:result, success?: true, user_id: user.id, jti: 1)
+  end
   let(:session_payload) { double(:session_payload, payload: {}) }
 
   before do

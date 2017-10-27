@@ -15,7 +15,16 @@ module Auth
     private
 
     def refresh_token
-      @refresh_token ||= RefreshToken.create!(user_id: context.user.id)
+      @refresh_token ||= find_token || create_token
+    end
+
+    def find_token
+      return unless context.jti
+      RefreshToken.find_by(id: context.jti)
+    end
+
+    def create_token
+      RefreshToken.create!(user_id: context.user.id)
     end
 
     def access_token_payload
@@ -26,9 +35,8 @@ module Auth
       end
     end
 
-    # TODO FIXME
     def access_token_exp
-      2.minutes.from_now.to_i
+      3.minutes.from_now.to_i
     end
   end
 end

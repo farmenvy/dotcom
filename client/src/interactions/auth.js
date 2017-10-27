@@ -26,7 +26,6 @@ const getRefreshTime = () => {
   };
 };
 
-
 const loadAuthState = () => ({
   accessToken: getAccessToken(),
   isLoggedIn: !!getAccessToken(),
@@ -57,6 +56,11 @@ const handleRefresh = (payload) => {
   return loadAuthState();
 };
 
+const clearStorage = () => {
+  window.localStorage.clear();
+  return loadAuthState();
+};
+
 export const reducer = (state = initialState, action) => {
   switch (action.type) {
     case UPDATE_EMAIL:
@@ -68,7 +72,8 @@ export const reducer = (state = initialState, action) => {
     case AUTH_REFRESH:
       return handleRefresh(action.payload);
     case LOGOUT_SUCCESS:
-      return { isLoggedIn: false };
+    case AUTH_FAILURE:
+      return clearStorage();
     default:
       return state;
   }
@@ -114,7 +119,4 @@ export const refresh = () => (
   }
 );
 
-export const logout = () => {
-  window.localStorage.clear();
-  return { type: LOGOUT_SUCCESS };
-};
+export const logout = () => ({ type: LOGOUT_SUCCESS });

@@ -6,6 +6,7 @@ module Auth
       validate_args
       decoded = JSONWebToken.decode(context.refresh_token)
       validate_refresh_token(decoded)
+      context.jti = decoded['jti']
       context.user_id = decoded['sub']
     rescue JWT::DecodeError, ActiveRecord::RecordNotFound => e
       context.fail!(error: e.message)
