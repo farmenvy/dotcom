@@ -3,65 +3,59 @@ require 'rails_helper'
 RSpec.describe Auth::ValidateRefreshToken do
   subject { described_class }
 
-  let(:ip_address) { '127.0.0.1' }
-  let(:request_ip) { ip_address }
   let(:user_id) { 1 }
+  let(:jti) { 1 }
+  let(:client_secret) { 'foobar' }
 
   let(:result) do
-    subject.call(refresh_token: token, ip: request_ip)
+    subject.call(refresh_token: token, client_secret: client_secret)
+  end
+
+  let(:token_attributes) do
+    { sub: user_id, jti: jti }
   end
 
   let(:token) do
-    JSONWebToken.encode(ip: ip_address, sub: user_id)
+    JSONWebToken.encode(token_attributes)
   end
 
   it 'softly fails if not given a refresh_token' do
-    expect(subject.call(ip: ip_address)).to be_a_failure
+    expect(subject.call).to be_a_failure
   end
 
-  it 'raises an Exception if not given an ip' do
-    expect { subject.call(refresh_token: 'abc') }.to raise_error ArgumentError
+  context 'when given a refresh token that does not exist in db' do
+    it 'fails' do
+      allow(RefreshToken).to receive(:find).and_raise ActiveRecord::RecordNotFound
+      expect(result).to be_a_failure
+      expect(result.error).to match(/notfound/i)
+    end
   end
 
-  context 'when given a refresh token with same ip' do
+  context 'when given a refresh token that exists in db and client secret matches' do
+    let(:rt) { build_stubbed(:refresh_token, secret: client_secret) }
+
     it 'succeeds' do
+      allow(RefreshToken).to receive(:find).and_return rt
       expect(result).to be_a_success
     end
-
-    it 'returns user_id in response' do
-      expect(result.user_id).to be_present
-    end
   end
 
-  context 'when given an expired refresh token' do
-    let(:token) do
-      JSONWebToken.encode(sub: 1, ip: ip_address, exp: 2.days.ago)
-    end
+  context 'when given refresh token that exists in db but WRONG client secret' do
+    let(:rt) { build_stubbed(:refresh_token, secret: 'thisisdifferent') }
 
     it 'fails' do
+      allow(RefreshToken).to receive(:find).and_return rt
       expect(result).to be_a_failure
+      expect(result.error).to match(/secret/)
     end
   end
 
   context 'when given a refresh token without a sub' do
-    let(:token) do
-      JSONWebToken.encode(ip: ip_address, exp: 2.minutes.from_now.to_i)
-    end
+    let(:token_attributes) { { jti: 123 } }
 
     it 'fails' do
       expect(result).to be_a_failure
-    end
-  end
-
-  context 'when given a refresh token with different ip' do
-    let(:another_ip) { '10.0.0.1' }
-
-    let(:token) do
-      JSONWebToken.encode(ip: another_ip)
-    end
-
-    it 'fails' do
-      expect(result).to be_a_failure
+      expect(result.error).to match(/sub/)
     end
   end
 end

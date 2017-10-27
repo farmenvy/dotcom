@@ -43,9 +43,8 @@ class RefreshToken < ApplicationRecord
   end
 
   def force_immutable
-    if self.changed? && self.persisted?
-      raise ImmutabilityError, 'RefreshTokens are immutable'
-    end
+    return unless changed? && persisted?
+    raise ImmutabilityError, 'RefreshTokens are immutable'
   end
 
   def build_payload

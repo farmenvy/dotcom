@@ -1,6 +1,7 @@
 FactoryGirl.define do
   factory :refresh_token do
-    user nil
-    secret_hash 'MyString'
+    secret 'secret'
+    secret_hash { BCrypt::Password.create(secret) }
+    user
   end
 end

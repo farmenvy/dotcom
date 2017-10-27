@@ -13,14 +13,18 @@ RSpec.describe 'POST /auth/refresh', type: :request do
   end
 
   let(:refresh_token) do
-    JSONWebToken.encode(sub: user_id, ip: my_ip)
+    JSONWebToken.encode(sub: user_id, jti: jti)
   end
 
+  let(:jti) { saved_refresh_token.id }
+  let(:saved_refresh_token) { create(:refresh_token) }
+  let(:client_secret) { saved_refresh_token.secret }
   let(:user) { create(:user) }
   let(:user_id) { user.id }
   let(:my_ip) { '127.0.0.1' }
 
   before do
+    cookies['client_secret'] = client_secret
     post '/auth/refresh', params: {}, headers: headers
   end
 
@@ -38,14 +42,10 @@ RSpec.describe 'POST /auth/refresh', type: :request do
     end
   end
 
-  context 'when given valid refresh token for another ip' do
-    let(:another_ip) { '10.0.0.1' }
+  context 'when NOT given a client_secret' do
+    let(:client_secret) { nil }
 
-    let(:refresh_token) do
-      JSONWebToken.encode(sub: user_id, ip: another_ip)
-    end
-
-    it 'returns unprocessable entity' do
+    it 'returns a 422' do
       expect(response).to have_http_status :unprocessable_entity
     end
   end

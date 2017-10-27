@@ -27,7 +27,7 @@ RSpec.describe Auth::BuildSessionPayload do
 
   describe 'validations' do
     it 'fails if user is not provided' do
-      expect { subject.call.call() }.to raise_error ArgumentError
+      expect { subject.call.call }.to raise_error ArgumentError
     end
   end
 

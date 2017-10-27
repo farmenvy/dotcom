@@ -9,22 +9,22 @@ module Auth
         payload = build_payload(user)
         render json: payload, status: :created
       else
-        render json: {}, status: :unprocessable_entity
+        render json: { error: result.error }, status: :unprocessable_entity
       end
     end
 
     private
 
     def validate
-      ValidateRefreshToken.call(
-        refresh_token: bearer_token, ip: request.remote_ip
-      )
+      ValidateRefreshToken.call(refresh_token: bearer_token, client_secret: client_secret)
+    end
+
+    def client_secret
+      request.cookies['client_secret']
     end
 
     def build_payload(user)
-      BuildSessionPayload.call(
-        user: user, ip: request.remote_ip
-      ).payload
+      BuildSessionPayload.call(user: user).payload
     end
   end
 end

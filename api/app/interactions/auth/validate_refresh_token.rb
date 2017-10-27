@@ -7,20 +7,20 @@ module Auth
       decoded = JSONWebToken.decode(context.refresh_token)
       validate_refresh_token(decoded)
       context.user_id = decoded['sub']
-    rescue JWT::DecodeError
-      context.fail!
+    rescue JWT::DecodeError, ActiveRecord::RecordNotFound => e
+      context.fail!(error: e.message)
     end
 
     private
 
     def validate_args
-      raise ArgumentError, 'no ip given' unless context.ip.present?
-      context.fail! unless context.refresh_token.present?
+      context.fail!(error: 'no refresh token') unless context.refresh_token.present?
     end
 
     def validate_refresh_token(hsh)
-      context.fail! unless hsh['ip'] == context.ip
-      context.fail! unless hsh['sub'].present?
+      context.fail!(error: 'no sub') unless hsh['sub'].present?
+      refresh_token = RefreshToken.find(hsh['jti'])
+      context.fail!(error: 'bad secret') unless refresh_token.secure_compare(context.client_secret)
     end
   end
 end

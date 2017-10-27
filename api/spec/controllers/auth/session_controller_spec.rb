@@ -7,7 +7,6 @@ RSpec.describe Auth::SessionController do
   let(:response) { double(:response) }
   let(:result) { double(:result, success?: true, payload: {}, cookie_args: {}) }
 
-
   before do
     allow(subject).to receive(:user).and_return user
     allow(subject).to receive(:authenticate!).and_return true

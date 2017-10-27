@@ -38,6 +38,10 @@ RSpec.describe 'POST /session', type: :request do
     it 'returns a payload that includes a refresh token' do
       expect(json['refresh_token']).to_not be_nil
     end
+
+    it 'returns a client secret in cookie' do
+      expect(response.cookies).to include('client_secret')
+    end
   end
 
   context 'when given invalid password' do
