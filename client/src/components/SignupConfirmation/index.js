@@ -51,7 +51,7 @@ class SignupConfirmation extends React.Component {
             <p>We sent you a confirmation email to verify your account.</p>
           </VerificationText>
           <LinkContainer>
-            <StyledLink to="/">Back to Home</StyledLink>
+            <StyledLink to="/?noredirect">Back to Home</StyledLink>
           </LinkContainer>
         </Box>
       </Layout>

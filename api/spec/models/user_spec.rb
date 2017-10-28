@@ -52,12 +52,12 @@ RSpec.describe User, type: :model do
       expect(subject.password_digest).to_not be_nil
     end
 
-    it 'has minimal length of 12 characters' do
-      subject.password = 'toosmall'
+    it 'has minimal length of 6 characters' do
+      subject.password = 'small'
       expect(subject).to be_invalid
       expect(subject.errors.keys).to include(:password)
 
-      subject.password = 'thisisover12characters'
+      subject.password = 'thisisover6characters'
       expect(subject).to be_valid
     end
   end
@@ -80,7 +80,7 @@ RSpec.describe User, type: :model do
     it 'does NOT except burner emails' do
       subject.email_address = 'foo@guerrillamail.com'
       expect(subject).to be_invalid
-      expect(subject.errors.messages).to include(email_address: ['is invalid'])
+      expect(subject.errors.messages).to include(:email_address)
     end
   end
 

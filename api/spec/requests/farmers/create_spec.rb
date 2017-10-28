@@ -66,7 +66,7 @@ RSpec.describe 'POST /users', type: :request do
   end
 
   context 'when given params with invalid password' do
-    let(:password) { 'toosmall' }
+    let(:password) { 'small' }
 
     it 'does NOT create a User' do
       expect(response).to have_http_status(:unprocessable_entity)

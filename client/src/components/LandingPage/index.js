@@ -17,7 +17,7 @@ text-align: left;
 color: #24405d;
 `;
 
-const LandingPage = () => (
+const LandingPage = props => (
   <ThemeProvider theme={defaultTheme} >
     <Container>
       <Grid fluid>
@@ -57,7 +57,7 @@ const LandingPage = () => (
           </Col>
 
           <Col md={4} mdOffset={2} >
-            <LandingPageSignup />
+            <LandingPageSignup {...props} />
           </Col>
         </Row>
       </Grid>

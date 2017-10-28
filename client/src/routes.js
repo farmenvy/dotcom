@@ -17,6 +17,7 @@ const Routes = props => (
   <Switch {...props}>
     <StagingRoute exact path="/signup" component={SignUp} />
     <Route exact path="/" component={Home} />
+    <Route exact path="/?noredirect" component={Home} />
     <Route exact path="/verified" component={SignupVerified} />
     <Route exact path="/verify" component={SignupConfirmation} />
     <Route path="/verify/:token" component={SignupConfirmation} />

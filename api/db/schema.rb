@@ -44,6 +44,6 @@ ActiveRecord::Schema.define(version: 20171027120955) do
     t.index ["farm_id"], name: "index_users_on_farm_id"
   end
 
-  add_foreign_key "refresh_tokens", "users"
+  add_foreign_key "refresh_tokens", "users", on_delete: :cascade
   add_foreign_key "users", "farms"
 end
