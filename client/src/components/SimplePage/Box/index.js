@@ -13,11 +13,14 @@ const Container = styled.div`
   border: solid 1px rgba(0, 0, 0, 0.01);
 `;
 
-const SimplePageBox = props => (
-  <Container>
-    { props.children }
-  </Container>
-);
+const SimplePageBox = (props) => {
+  const { children, ...rest } = props;
+  return (
+    <Container {...rest}>
+      { children }
+    </Container>
+  );
+};
 
 SimplePageBox.propTypes = ({
   children: PropTypes.node.isRequired,

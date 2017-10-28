@@ -62,6 +62,13 @@ const LandingPageSignup = (props) => {
     }
   };
 
+  const handleEnter = (e) => {
+    // enter triggers submit
+    if (e.keyCode === 13) {
+      props.signup();
+    }
+  };
+
   if (props.verificationStatus === 'pending' && !props.skipRedirect) {
     return (
       <Redirect to="/signup-confirmation" />
@@ -86,7 +93,7 @@ const LandingPageSignup = (props) => {
           Enter your information below to get early access.
         </SignupText>
       </Row>
-      <FlexRow>
+      <FlexRow >
         <StyledInput
           inline
           placeholder="First Name"
@@ -146,6 +153,7 @@ const LandingPageSignup = (props) => {
           value={props.password}
           errors={props.errors.password}
           onChange={e => handleChange(e)}
+          onKeyUp={e => handleEnter(e)}
         />
 
         <InputError display={props.errors.password ? 'inline-block' : 'none'} />
