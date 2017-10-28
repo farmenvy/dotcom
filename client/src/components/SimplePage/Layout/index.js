@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import { Link } from 'react-router-dom';
 import logo from '../../../assets/imgs/logo.svg';
 
 const Logo = styled.img`
@@ -16,7 +17,7 @@ const LayoutContainer = styled.div`
 
 const SimplePageLayout = props => (
   <div>
-    <Logo className="center" src={logo} alt="logo" />
+    <Link to="/"><Logo className="center" src={logo} alt="logo" /></Link>
     <LayoutContainer>
       { props.children }
     </LayoutContainer>
