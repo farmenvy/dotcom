@@ -117,12 +117,10 @@ const LandingPageSignup = (props) => {
           onChange={e => handleChange(e)}
         />
       </InputRow>
-      <InputRow>
+      <InputRow data-tip data-for="email">
         <StyledInput
           placeholder="Email"
           data-key="email"
-          data-tip
-          data-for="email"
           type="text"
           value={props.email}
           errors={props.errors.email}
@@ -140,12 +138,10 @@ const LandingPageSignup = (props) => {
           {props.errors.email}
         </ReactTooltip>
       </InputRow>
-      <InputRow>
+      <InputRow data-tip data-for="password">
         <StyledInput
           placeholder="Password"
           data-key="password"
-          data-tip
-          data-for="password"
           type="password"
           value={props.password}
           errors={props.errors.password}
