@@ -20,6 +20,8 @@ class User < ApplicationRecord
             }, if: :password
 
   validates :password, presence: { message: PASSWORD_MSG }, on: :create
+  validates_confirmation_of :password, message: "does not match"
+
   validates :role, inclusion: { in: %w[farmer user admin] }
 
   validates :first_name, presence: true
