@@ -102,7 +102,9 @@ export const login = () => (
 
     const params = { email, password };
 
-    axios.post('/api/auth/session', params)
+    Promise.resolve(true)
+      .then(() => dispatch({ type: CLEAR_ERRORS }))
+      .then(() => axios.post('/api/auth/session', params))
       .then(res => dispatch({ type: LOGIN_SUCCESS, payload: res.data }))
       .catch((err) => {
         dispatch({ type: LOGIN_FAILURE, payload: err });
