@@ -12,6 +12,7 @@ import {
   signup,
   PASSWORD_MINIMUM_LENGTH,
 } from '../../interactions/signup';
+import Shaker from '../Shaker';
 
 const SignupText = styled.div`
   margin: 1.5em 0.5em 0.25em 0.5em;
@@ -44,9 +45,9 @@ const IconWrapper = styled.span`
   top: 30%;
 `;
 
-const InputError = () => (
-  <IconWrapper>
-    <Glyphicon glyph="exclamation-sign" />
+const InputError = props => (
+  <IconWrapper {...props} >
+    <Glyphicon glyph="exclamation-sign" style={{ ...props }} />
   </IconWrapper>
 );
 
@@ -124,10 +125,16 @@ const LandingPageSignup = (props) => {
           errors={props.errors.email}
           onChange={e => handleChange(e)}
         />
-        <InputError />
+        <InputError display={props.errors.email ? 'inline-block' : 'none'} />
 
-        <ReactTooltip id="email" place="left" type="error" effect="solid">
-          This email is already in use
+        <ReactTooltip
+          id="email"
+          place="left"
+          type="error"
+          effect="solid"
+          disable={!props.errors.email}
+        >
+          {props.errors.email}
         </ReactTooltip>
       </InputRow>
       <InputRow>
@@ -142,20 +149,28 @@ const LandingPageSignup = (props) => {
           onChange={e => handleChange(e)}
         />
 
-        <InputError />
-        <ReactTooltip id="password" place="left" type="error" effect="solid">
-          Must be at least 6 characters
+        <InputError display={props.errors.password ? 'inline-block' : 'none'} />
+        <ReactTooltip
+          id="password"
+          place="left"
+          type="error"
+          effect="solid"
+          disable={!props.errors.password}
+        >
+          {props.errors.password}
         </ReactTooltip>
       </InputRow>
 
-      <Button
-        bsStyle="primary"
-        bsSize="large"
-        block
-        onClick={() => props.signup()}
-      >
-      Create Account
-      </Button>
+      <Shaker className={Object.keys(props.errors).length > 0 && 'shake'}>
+        <Button
+          bsStyle="primary"
+          bsSize="large"
+          block
+          onClick={() => props.signup()}
+        >
+        Create Account
+        </Button>
+      </Shaker>
     </div>
   );
 };
