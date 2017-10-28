@@ -69,7 +69,7 @@ const validateEmail = (email, state) => {
   if (!EMAIL_REGEX.test(email)) {
     return {
       ...state.errors,
-      email: ['invalid email'],
+      email: ['Please enter a valid email'],
     };
   }
 
@@ -80,7 +80,7 @@ const validatePassword = (password, state) => {
   let passwordErrors;
 
   if (password.length < PASSWORD_MINIMUM_LENGTH) {
-    passwordErrors = [`must be at least ${PASSWORD_MINIMUM_LENGTH} characters long`];
+    passwordErrors = [`Must be at least ${PASSWORD_MINIMUM_LENGTH} characters long`];
   }
 
 
