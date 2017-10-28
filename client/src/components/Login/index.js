@@ -8,6 +8,7 @@ import { bindActionCreators } from 'redux';
 import {
   updateEmail,
   updatePassword,
+  clearErrors,
   login,
 } from '../../interactions/auth';
 import { Box, Layout, Button } from '../SimplePage';
@@ -75,6 +76,7 @@ const Login = (props) => {
               type="text"
               value={props.email}
               onChange={e => props.updateEmail(e.target.value)}
+              onClick={() => (props.isError && props.clearErrors())}
               errors={props.isError}
             />
           </InputWrapper>
@@ -87,6 +89,7 @@ const Login = (props) => {
               type="password"
               value={props.password}
               onChange={e => props.updatePassword(e.target.value)}
+              onClick={() => (props.isError && props.clearErrors())}
               errors={props.isError}
             />
           </InputWrapper>
@@ -104,6 +107,7 @@ Login.propTypes = ({
   updateEmail: PropTypes.func.isRequired,
   updatePassword: PropTypes.func.isRequired,
   login: PropTypes.func.isRequired,
+  clearErrors: PropTypes.func.isRequired,
   location: PropTypes.shape({
     state: PropTypes.shape({}),
   }).isRequired,
@@ -128,6 +132,7 @@ const mapDispatchToProps = dispatch => ({
   ...bindActionCreators({
     updateEmail,
     updatePassword,
+    clearErrors,
     login,
   }, dispatch),
 });

@@ -2,10 +2,10 @@ import axios from 'axios';
 import moment from 'moment';
 import jwtDecode from 'jwt-decode';
 
+const CLEAR_ERRORS = 'CLEAR_ERRORS';
 const UPDATE_EMAIL = 'UPDATE_EMAIL';
 const UPDATE_PASSWORD = 'UPDATE_PASSWORD';
 const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
-const CLICK_LOGIN = 'CLICK_LOGIN';
 const LOGIN_FAILURE = 'LOGIN_FAILURE';
 const AUTH_REFRESH = 'AUTH_REFRESH';
 const AUTH_FAILURE = 'AUTH_FAILURE';
@@ -64,6 +64,8 @@ const clearStorage = () => {
 
 export const reducer = (state = initialState, action) => {
   switch (action.type) {
+    case CLEAR_ERRORS:
+      return { ...state, isError: false };
     case UPDATE_EMAIL:
       return { ...state, email: action.payload };
     case UPDATE_PASSWORD:
@@ -74,8 +76,6 @@ export const reducer = (state = initialState, action) => {
       return handleRefresh(action.payload);
     case LOGIN_FAILURE:
       return { ...state, isError: true };
-    case CLICK_LOGIN:
-      return { ...state, isError: false };
     case LOGOUT_SUCCESS:
     case AUTH_FAILURE:
       return clearStorage();
@@ -92,6 +92,8 @@ export const updatePassword = value => (
   { type: UPDATE_PASSWORD, payload: value }
 );
 
+export const clearErrors = () => ({ type: CLEAR_ERRORS });
+
 // will use username, password
 export const login = () => (
   (dispatch, getState) => {
@@ -100,9 +102,7 @@ export const login = () => (
 
     const params = { email, password };
 
-    Promise.resolve(true)
-      .then(() => dispatch({ type: CLICK_LOGIN }))
-      .then(() => axios.post('/api/auth/session', params))
+    axios.post('/api/auth/session', params)
       .then(res => dispatch({ type: LOGIN_SUCCESS, payload: res.data }))
       .catch((err) => {
         dispatch({ type: LOGIN_FAILURE, payload: err });
