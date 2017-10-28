@@ -5,7 +5,7 @@ import { Redirect } from 'react-router-dom';
 import LandingPage from '../LandingPage';
 
 const Home = props => (
-  props.isLoggedIn ? (
+  (props.isLoggedIn && props.location.search !== '?noredirect') ? (
     <Redirect to="/overview" />
   ) : (
     <LandingPage />
@@ -14,6 +14,9 @@ const Home = props => (
 
 Home.propTypes = ({
   isLoggedIn: PropTypes.bool.isRequired,
+  location: PropTypes.shape({
+    search: PropTypes.string.isRequired,
+  }).isRequired,
 });
 
 const mapStateToProps = state => ({
