@@ -26,15 +26,11 @@ const Input = styled.input`
   width: 100%;
   height: 50px;
   border-radius: 5px;
-  border: solid 1px #c6c9cf;
+  border: solid 1px ${props => (props.errors ? '#EEADAD' : '#c6c9cf')};
   text-align: center;
   font-size: 16px;
   font-weight: 300;
   outline: none;
-
-  &:focus {
-    box-shadow: 0 0 2pt 1pt #2090FD;
-  }
 
   ::placeholder {
     color: #aaaeb3;
@@ -79,6 +75,7 @@ const Login = (props) => {
               type="text"
               value={props.email}
               onChange={e => props.updateEmail(e.target.value)}
+              errors={props.isError}
             />
           </InputWrapper>
           <InputWrapper>
@@ -90,6 +87,7 @@ const Login = (props) => {
               type="password"
               value={props.password}
               onChange={e => props.updatePassword(e.target.value)}
+              errors={props.isError}
             />
           </InputWrapper>
 
