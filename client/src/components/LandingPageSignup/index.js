@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { Redirect } from 'react-router-dom';
-import { Row, Button } from 'react-bootstrap';
+import { Row, Button, Glyphicon } from 'react-bootstrap';
 import ReactTooltip from 'react-tooltip';
 import { StyledInput } from '../StyledInputs';
 import {
@@ -27,6 +27,7 @@ const SignupText = styled.div`
 const InputRow = styled.div`
   height: 60px;
   margin: 1.5em 0;
+  position: relative;
 `;
 
 const FlexRow = InputRow.extend`
@@ -34,6 +35,20 @@ const FlexRow = InputRow.extend`
   flex-direction: row;
   justify-content: space-between;
 `;
+
+const IconWrapper = styled.span`
+  position: absolute;
+  right: 2em;
+  color: ${props => (props.theme.errorColor)};
+  font-size: 16px;
+  top: 30%;
+`;
+
+const InputError = () => (
+  <IconWrapper>
+    <Glyphicon glyph="exclamation-sign" />
+  </IconWrapper>
+);
 
 const LandingPageSignup = (props) => {
   const handleChange = (e) => {
@@ -102,26 +117,35 @@ const LandingPageSignup = (props) => {
         <StyledInput
           placeholder="Email"
           data-key="email"
+          data-tip
+          data-for="email"
           type="text"
           value={props.email}
           errors={props.errors.email}
           onChange={e => handleChange(e)}
         />
+        <InputError />
+
+        <ReactTooltip id="email" place="left" type="error" effect="solid">
+          This email is already in use
+        </ReactTooltip>
       </InputRow>
       <InputRow>
         <StyledInput
           placeholder="Password"
-          data-tip="must be at least 12 characters"
           data-key="password"
+          data-tip
+          data-for="password"
           type="password"
           value={props.password}
           errors={props.errors.password}
           onChange={e => handleChange(e)}
         />
 
-        <ReactTooltip
-          effect="solid"
-        />
+        <InputError />
+        <ReactTooltip id="password" place="left" type="error" effect="solid">
+          Must be at least 6 characters
+        </ReactTooltip>
       </InputRow>
 
       <Button
