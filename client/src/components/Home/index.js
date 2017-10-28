@@ -4,13 +4,17 @@ import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 import LandingPage from '../LandingPage';
 
-const Home = props => (
-  (props.isLoggedIn && props.location.search !== '?noredirect') ? (
-    <Redirect to="/overview" />
-  ) : (
-    <LandingPage />
-  )
-);
+const Home = (props) => {
+  const skipRedirect = props.location.search === '?noredirect';
+
+  return (
+    (props.isLoggedIn && !skipRedirect) ? (
+      <Redirect to="/overview" />
+    ) : (
+      <LandingPage skipRedirect={skipRedirect} />
+    )
+  );
+};
 
 Home.propTypes = ({
   isLoggedIn: PropTypes.bool.isRequired,

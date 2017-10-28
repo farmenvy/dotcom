@@ -1,5 +1,7 @@
 import axios from 'axios';
 
+const CLICKED_SUBMIT = 'CLICKED_SUBMIT';
+const UPDATE_FIELD = 'UPDATE_FIELD';
 const UPDATE_EMAIL = 'UPDATE_EMAIL';
 const UPDATE_NAME = 'UPDATE_NAME';
 const UPDATE_PASSWORD = 'UPDATE_PASSWORD';
@@ -28,6 +30,10 @@ const handleStateChange = (key, state, action) => (
 
 export const reducer = (state = initialState, action) => {
   switch (action.type) {
+    case CLICKED_SUBMIT:
+      return { ...state, errors: {}, clickedSubmit: true };
+    case UPDATE_FIELD:
+      return { ...state, clickedSubmit: false };
     case UPDATE_NAME:
       return handleStateChange(action.payload.key, state, action);
     case UPDATE_EMAIL:
@@ -35,7 +41,7 @@ export const reducer = (state = initialState, action) => {
     case UPDATE_PASSWORD:
       return handleStateChange('password', state, action);
     case USER_CREATED:
-      return { ...state, verificationStatus: 'pending' };
+      return { ...initialState, verificationStatus: 'pending' };
     case ACCOUNT_VERIFIED:
       return { ...state, verificationStatus: 'verified' };
     case FAILED_VERIFICATION:
@@ -56,7 +62,7 @@ export const reducer = (state = initialState, action) => {
   }
 };
 
-export const PASSWORD_MINIMUM_LENGTH = 12;
+export const PASSWORD_MINIMUM_LENGTH = 6;
 const EMAIL_REGEX = /\S+@\S+\.\S+/;
 
 const validateEmail = (email, state) => {
@@ -122,6 +128,7 @@ const getDispatchObject = (key, value, state) => {
 
 export const updateField = (key, value) => (
   (dispatch, getState) => {
+    dispatch({ type: UPDATE_FIELD });
     const state = getState().signup;
     const event = getDispatchObject(key, value, state);
     dispatch(event);
@@ -130,6 +137,7 @@ export const updateField = (key, value) => (
 
 export const signup = () => (
   (dispatch, getState) => {
+    dispatch({ type: CLICKED_SUBMIT });
     const state = getState().signup;
     const params = {
       user: {

@@ -62,7 +62,7 @@ const LandingPageSignup = (props) => {
     }
   };
 
-  if (props.verificationStatus === 'pending') {
+  if (props.verificationStatus === 'pending' && !props.skipRedirect) {
     return (
       <Redirect to="/signup-confirmation" />
     );
@@ -73,6 +73,9 @@ const LandingPageSignup = (props) => {
       <Redirect to="/verified" />
     );
   }
+
+
+  const errorsPresent = Object.values(props.errors).filter(el => !!el).length > 0;
 
   return (
     <div>
@@ -161,7 +164,7 @@ const LandingPageSignup = (props) => {
         </ReactTooltip>
       </InputRow>
 
-      <Shaker className={Object.keys(props.errors).length > 0 && 'shake'}>
+      <Shaker className={(props.clickedSubmit && errorsPresent) && 'shake'}>
         <Button
           bsStyle="primary"
           bsSize="large"
@@ -184,6 +187,7 @@ LandingPageSignup.propTypes = {
   firstName: PropTypes.string.isRequired,
   lastName: PropTypes.string.isRequired,
   farmName: PropTypes.string.isRequired,
+  clickedSubmit: PropTypes.bool.isRequired,
   errors: PropTypes.shape({
     email: PropTypes.arrayOf(PropTypes.string),
     password: PropTypes.arrayOf(PropTypes.string),
@@ -191,12 +195,14 @@ LandingPageSignup.propTypes = {
     lastName: PropTypes.arrayOf(PropTypes.string),
     farmName: PropTypes.arrayOf(PropTypes.string),
   }),
+  skipRedirect: PropTypes.bool.isRequired,
 };
 
 LandingPageSignup.defaultProps = {
   email: '',
   password: '',
   errors: {},
+  clickedSubmit: false,
 };
 
 const mapStateToProps = state => ({
