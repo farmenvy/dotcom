@@ -56,6 +56,13 @@ const IconWrapper = styled.span`
 const Login = (props) => {
   const { from } = props.location.state || { from: { pathname: '/' } };
 
+  const handleEnter = (e) => {
+    // enter triggers submit
+    if (e.keyCode === 13) {
+      props.login();
+    }
+  };
+
   if (props.isLoggedIn) {
     return (
       <Redirect to={from} />
@@ -65,7 +72,7 @@ const Login = (props) => {
   return (
     <Layout>
       <Shaker className={props.isError && 'shake'}>
-        <Box>
+        <Box onKeyUp={e => handleEnter(e)}>
           <Header>Login</Header>
           <InputWrapper>
             <IconWrapper>
