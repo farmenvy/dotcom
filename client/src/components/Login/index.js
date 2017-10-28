@@ -10,8 +10,8 @@ import {
   updatePassword,
   login,
 } from '../../interactions/auth';
-import SimplePageBox from '../SimplePageBox';
-import Button from '../SimplePageBox/button';
+import { Box, Layout, Button } from '../SimplePage';
+import Shaker from '../Shaker';
 
 const Header = styled.p`
   font-size: 26px;
@@ -26,15 +26,11 @@ const Input = styled.input`
   width: 100%;
   height: 50px;
   border-radius: 5px;
-  border: solid 1px #c6c9cf;
+  border: solid 1px ${props => (props.errors ? '#EEADAD' : '#c6c9cf')};
   text-align: center;
   font-size: 16px;
   font-weight: 300;
   outline: none;
-
-  &:focus {
-    box-shadow: 0 0 2pt 1pt #2090FD;
-  }
 
   ::placeholder {
     color: #aaaeb3;
@@ -66,34 +62,39 @@ const Login = (props) => {
   }
 
   return (
+    <Layout>
+      <Shaker className={props.isError && 'shake'}>
+        <Box>
+          <Header>Login</Header>
+          <InputWrapper>
+            <IconWrapper>
+              <Glyphicon glyph="envelope" />
+            </IconWrapper>
+            <Input
+              placeholder="Email Address"
+              type="text"
+              value={props.email}
+              onChange={e => props.updateEmail(e.target.value)}
+              errors={props.isError}
+            />
+          </InputWrapper>
+          <InputWrapper>
+            <IconWrapper>
+              <Glyphicon glyph="lock" />
+            </IconWrapper>
+            <Input
+              placeholder="Password"
+              type="password"
+              value={props.password}
+              onChange={e => props.updatePassword(e.target.value)}
+              errors={props.isError}
+            />
+          </InputWrapper>
 
-    <SimplePageBox>
-      <Header>Login</Header>
-      <InputWrapper>
-        <IconWrapper>
-          <Glyphicon glyph="envelope" />
-        </IconWrapper>
-        <Input
-          placeholder="Email Address"
-          type="text"
-          value={props.email}
-          onChange={e => props.updateEmail(e.target.value)}
-        />
-      </InputWrapper>
-      <InputWrapper>
-        <IconWrapper>
-          <Glyphicon glyph="lock" />
-        </IconWrapper>
-        <Input
-          placeholder="Password"
-          type="password"
-          value={props.password}
-          onChange={e => props.updatePassword(e.target.value)}
-        />
-      </InputWrapper>
-
-      <Button onClick={() => props.login()}>Login</Button>
-    </SimplePageBox>
+          <Button onClick={() => props.login()}>Login</Button>
+        </Box>
+      </Shaker>
+    </Layout>
   );
 };
 
@@ -107,17 +108,20 @@ Login.propTypes = ({
     state: PropTypes.shape({}),
   }).isRequired,
   isLoggedIn: PropTypes.bool.isRequired,
+  isError: PropTypes.bool,
 });
 
 Login.defaultProps = ({
   email: '',
   password: '',
+  isError: false,
 });
 
 const mapStateToProps = state => ({
   email: state.auth.email,
   password: state.auth.password,
   isLoggedIn: state.auth.isLoggedIn,
+  isError: state.auth.isError,
 });
 
 const mapDispatchToProps = dispatch => ({

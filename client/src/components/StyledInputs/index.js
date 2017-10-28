@@ -8,14 +8,9 @@ export const StyledInput = styled.input`
   width: ${props => (props.inline ? '47%' : '100%')};
   height: 100%;
   border-radius: 5px;
-  border: solid 1px rgba(0, 0, 0, 0.1);
+  border: solid 1px ${props => (props.errors ? '#EEADAD' : '#c6c9cf')};
   text-indent: 2em;
   outline: none;
-  box-shadow: ${props => (props.errors ? '0 0 0 1pt #EEADAD' : 'none')};
-
-  &:focus {
-    box-shadow: 0 0 2pt 1pt #2090FD;
-  }
 `;
 
 const StyledInputMask = StyledInput.withComponent(MaskedInput);

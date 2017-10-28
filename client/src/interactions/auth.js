@@ -5,6 +5,7 @@ import jwtDecode from 'jwt-decode';
 const UPDATE_EMAIL = 'UPDATE_EMAIL';
 const UPDATE_PASSWORD = 'UPDATE_PASSWORD';
 const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
+const CLICK_LOGIN = 'CLICK_LOGIN';
 const LOGIN_FAILURE = 'LOGIN_FAILURE';
 const AUTH_REFRESH = 'AUTH_REFRESH';
 const AUTH_FAILURE = 'AUTH_FAILURE';
@@ -71,6 +72,10 @@ export const reducer = (state = initialState, action) => {
       return handleLogin(action.payload);
     case AUTH_REFRESH:
       return handleRefresh(action.payload);
+    case LOGIN_FAILURE:
+      return { ...state, isError: true };
+    case CLICK_LOGIN:
+      return { ...state, isError: false };
     case LOGOUT_SUCCESS:
     case AUTH_FAILURE:
       return clearStorage();
@@ -95,10 +100,11 @@ export const login = () => (
 
     const params = { email, password };
 
-    axios.post('/api/auth/session', params)
+    Promise.resolve(true)
+      .then(() => dispatch({ type: CLICK_LOGIN }))
+      .then(() => axios.post('/api/auth/session', params))
       .then(res => dispatch({ type: LOGIN_SUCCESS, payload: res.data }))
       .catch((err) => {
-        debugger; // eslint-disable-line
         dispatch({ type: LOGIN_FAILURE, payload: err });
       });
   }
