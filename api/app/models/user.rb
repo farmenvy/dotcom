@@ -30,6 +30,8 @@ class User < ApplicationRecord
   belongs_to :farm
   accepts_nested_attributes_for :farm
 
+  has_many :refresh_tokens
+
   private
 
   def burner_email
