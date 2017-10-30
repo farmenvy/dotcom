@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { Redirect } from 'react-router-dom';
+import { Redirect, Link } from 'react-router-dom';
 import { Row, Button, Glyphicon } from 'react-bootstrap';
 import ReactTooltip from 'react-tooltip';
 import { StyledInput } from '../StyledInputs';
@@ -50,6 +50,16 @@ const InputError = props => (
     <Glyphicon glyph="exclamation-sign" style={{ ...props }} />
   </IconWrapper>
 );
+
+const LoginWrapper = styled.div`
+  margin-top: 20px;
+  font-weight: lighter;
+`;
+
+const LoginLink = styled(Link)`
+  font-weight: bold;
+  text-decoration: underline;
+`;
 
 const LandingPageSignup = (props) => {
   const handleChange = (e) => {
@@ -178,6 +188,10 @@ const LandingPageSignup = (props) => {
         Create Account
         </Button>
       </Shaker>
+
+      <LoginWrapper>
+        Already have an account? <LoginLink to="/login">Log in</LoginLink>
+      </LoginWrapper>
     </div>
   );
 };
