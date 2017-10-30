@@ -38,7 +38,7 @@ class SignupConfirmation extends React.Component {
   }
 
   render() {
-    if (!['verified', 'pending', ''].includes(this.props.verificationStatus)) {
+    if (this.props.role && this.props.role !== 'pending') {
       return (<Redirect to="/" />);
     }
 
@@ -60,18 +60,16 @@ class SignupConfirmation extends React.Component {
 }
 
 SignupConfirmation.propTypes = ({
-  verificationStatus: PropTypes.string.isRequired,
+  role: PropTypes.string.isRequired,
   verifySignup: PropTypes.func.isRequired,
   match: PropTypes.shape({
     params: PropTypes.shape({ token: PropTypes.string }),
   }).isRequired,
 });
 
-const mapStateToProps = state => (
-  {
-    verificationStatus: state.signup.verificationStatus,
-  }
-);
+const mapStateToProps = state => ({
+  role: state.auth.role,
+});
 
 const mapDispatchToProps = dispatch => ({
   ...bindActionCreators({ verifySignup }, dispatch),

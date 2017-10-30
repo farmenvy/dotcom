@@ -2,6 +2,8 @@ import axios from 'axios';
 import moment from 'moment';
 import jwtDecode from 'jwt-decode';
 
+import { CLICKED_SIGNUP, USER_CREATED, ACCOUNT_VERIFIED } from './signup';
+
 const CLEAR_ERRORS = 'CLEAR_ERRORS';
 const UPDATE_EMAIL = 'UPDATE_EMAIL';
 const UPDATE_PASSWORD = 'UPDATE_PASSWORD';
@@ -15,10 +17,14 @@ const getLocalStorageItem = item => (window.localStorage.getItem(item));
 const getAccessToken = () => (getLocalStorageItem('accessToken'));
 const getRefreshToken = () => (getLocalStorageItem('refreshToken'));
 
-const getRefreshTime = () => {
+const getAccessTokenPayload = () => {
   const jwt = getAccessToken();
   if (!jwt) return {};
-  const payload = jwtDecode(jwt);
+  return jwtDecode(jwt);
+};
+
+const getRefreshTime = () => {
+  const payload = getAccessTokenPayload();
   const expiration = parseInt(payload.exp, 10);
   const rt = moment.unix(expiration).subtract(1, 'minute');
   return {
@@ -27,11 +33,17 @@ const getRefreshTime = () => {
   };
 };
 
+const getRole = () => {
+  const payload = getAccessTokenPayload();
+  return payload.role || '';
+};
+
 const loadAuthState = () => ({
   accessToken: getAccessToken(),
   isLoggedIn: !!getAccessToken(),
   refreshInterval: getRefreshTime(),
   refreshToken: getRefreshToken(),
+  role: getRole(),
 });
 
 const initialState = loadAuthState();
@@ -70,12 +82,16 @@ export const reducer = (state = initialState, action) => {
       return { ...state, email: action.payload };
     case UPDATE_PASSWORD:
       return { ...state, password: action.payload };
+    case USER_CREATED:
+      return { ...state, role: 'pending' };
+    case ACCOUNT_VERIFIED:
     case LOGIN_SUCCESS:
       return handleLogin(action.payload);
     case AUTH_REFRESH:
       return handleRefresh(action.payload);
     case LOGIN_FAILURE:
       return { ...state, isError: true };
+    case CLICKED_SIGNUP:
     case LOGOUT_SUCCESS:
     case AUTH_FAILURE:
       return clearStorage();

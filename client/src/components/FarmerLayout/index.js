@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { NavLink } from 'react-router-dom';
+import { Link, NavLink, Redirect } from 'react-router-dom';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import logo from '../../assets/imgs/white-logo.svg';
@@ -136,44 +136,55 @@ const ProfilePic = styled.img`
   margin-right: 8px;
 `;
 
-const FarmerView = props => (
-  <Container>
-    <SideBar>
-      <SideBarContainer>
-        <SideBarHeader>
-          <ProfilePic src={anon} alt="profile-picture" />
-          <div>
-            <FarmerText>Radish Farms</FarmerText>
-            <FarmerText>John D.</FarmerText>
-          </div>
-        </SideBarHeader>
-        <SideBarNavigation>
-          <NavHeader>Menu</NavHeader>
-          <NavItem exact to="/overview">Overview</NavItem>
-          <NavItem exact to="/csa-manager" disabled >CSA Manager</NavItem>
-          <NavItem exact to="/billing" disabled >Billing</NavItem>
-          <NavItem exact to="/alerts" disabled >Alerts</NavItem>
-          <NavItem exact to="/email" disabled >Email</NavItem>
-          <NavItem exact to="/labels" disabled >Labels</NavItem>
-          <NavItem exact to="/settings" disabled >Account Settings</NavItem>
-          <NavItem exact to="/" onClick={() => props.logout()}>Logout</NavItem>
-        </SideBarNavigation>
-      </SideBarContainer>
-      <Logo src={logo} alt="logo" />
-    </SideBar>
-    <Main>
-      {props.children}
-    </Main>
-  </Container>
-);
+const FarmerView = (props) => {
+  if (props.role === 'pending') {
+    return (<Redirect to="/verify" />);
+  }
+
+  return (
+    <Container>
+      <SideBar>
+        <SideBarContainer>
+          <SideBarHeader>
+            <ProfilePic src={anon} alt="profile-picture" />
+            <div>
+              <FarmerText>Radish Farms</FarmerText>
+              <FarmerText>John D.</FarmerText>
+            </div>
+          </SideBarHeader>
+          <SideBarNavigation>
+            <NavHeader>Menu</NavHeader>
+            <NavItem exact to="/overview">Overview</NavItem>
+            <NavItem exact to="/csa-manager" disabled >CSA Manager</NavItem>
+            <NavItem exact to="/billing" disabled >Billing</NavItem>
+            <NavItem exact to="/alerts" disabled >Alerts</NavItem>
+            <NavItem exact to="/email" disabled >Email</NavItem>
+            <NavItem exact to="/labels" disabled >Labels</NavItem>
+            <NavItem exact to="/settings" disabled >Account Settings</NavItem>
+            <NavItem exact to="/" onClick={() => props.logout()}>Logout</NavItem>
+          </SideBarNavigation>
+        </SideBarContainer>
+        <Link to="/?noredirect"><Logo src={logo} alt="logo" /></Link>
+      </SideBar>
+      <Main>
+        {props.children}
+      </Main>
+    </Container>
+  );
+};
 
 FarmerView.propTypes = ({
   children: PropTypes.node.isRequired,
+  role: PropTypes.string.isRequired,
   logout: PropTypes.func.isRequired,
+});
+
+const mapStateToProps = state => ({
+  role: state.auth.role,
 });
 
 const mapDispatchToProps = dispatch => ({
   ...bindActionCreators({ logout }, dispatch),
 });
 
-export default connect(null, mapDispatchToProps)(FarmerView);
+export default connect(mapStateToProps, mapDispatchToProps)(FarmerView);

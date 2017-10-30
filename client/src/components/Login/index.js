@@ -63,6 +63,12 @@ const Login = (props) => {
     }
   };
 
+  if (props.role === 'pending') {
+    return (
+      <Redirect to="/verify" />
+    );
+  }
+
   if (props.isLoggedIn) {
     return (
       <Redirect to={from} />
@@ -111,6 +117,7 @@ const Login = (props) => {
 Login.propTypes = ({
   email: PropTypes.string.isRequired,
   password: PropTypes.string.isRequired,
+  role: PropTypes.string,
   updateEmail: PropTypes.func.isRequired,
   updatePassword: PropTypes.func.isRequired,
   login: PropTypes.func.isRequired,
@@ -126,12 +133,14 @@ Login.defaultProps = ({
   email: '',
   password: '',
   isError: false,
+  role: '',
 });
 
 const mapStateToProps = state => ({
   email: state.auth.email,
   password: state.auth.password,
   isLoggedIn: state.auth.isLoggedIn,
+  role: state.auth.role,
   isError: state.auth.isError,
 });
 

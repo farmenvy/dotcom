@@ -21,7 +21,7 @@ class ApplicationController < ActionController::API
   end
 
   def verify_roles!
-    raise JWT::DecodeError unless jwt['roles'].present?
+    raise JWT::DecodeError unless jwt['role'].present? && jwt['role'] != 'pending'
   end
 
   def unauthorized

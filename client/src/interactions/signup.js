@@ -1,14 +1,14 @@
 import axios from 'axios';
 
-const CLICKED_SUBMIT = 'CLICKED_SUBMIT';
-const UPDATE_FIELD = 'UPDATE_FIELD';
+const FAILED_VERIFICATION = 'FAILED_VERIFICATION';
 const UPDATE_EMAIL = 'UPDATE_EMAIL';
+const UPDATE_FIELD = 'UPDATE_FIELD';
 const UPDATE_NAME = 'UPDATE_NAME';
 const UPDATE_PASSWORD = 'UPDATE_PASSWORD';
-const USER_CREATED = 'USER_CREATED';
-const ACCOUNT_VERIFIED = 'ACCOUNT_VERIFIED';
 const VALIDATION_ERROR = 'VALIDATION_ERROR';
-const FAILED_VERIFICATION = 'FAILED_VERIFICATION';
+export const ACCOUNT_VERIFIED = 'ACCOUNT_VERIFIED';
+export const CLICKED_SIGNUP = 'CLICKED_SIGNUP';
+export const USER_CREATED = 'USER_CREATED';
 
 const initialState = {
   email: '',
@@ -17,7 +17,6 @@ const initialState = {
   farmName: '',
   password: '',
   errors: {},
-  verificationStatus: '',
 };
 
 const handleStateChange = (key, state, action) => (
@@ -30,8 +29,10 @@ const handleStateChange = (key, state, action) => (
 
 export const reducer = (state = initialState, action) => {
   switch (action.type) {
-    case CLICKED_SUBMIT:
+    case CLICKED_SIGNUP:
       return { ...state, errors: {}, clickedSubmit: true };
+    case USER_CREATED:
+      return initialState;
     case UPDATE_FIELD:
       return { ...state, clickedSubmit: false };
     case UPDATE_NAME:
@@ -40,12 +41,6 @@ export const reducer = (state = initialState, action) => {
       return handleStateChange('email', state, action);
     case UPDATE_PASSWORD:
       return handleStateChange('password', state, action);
-    case USER_CREATED:
-      return { ...initialState, verificationStatus: 'pending' };
-    case ACCOUNT_VERIFIED:
-      return { ...state, verificationStatus: 'verified' };
-    case FAILED_VERIFICATION:
-      return { ...state, verificationStatus: 'failed' };
     case VALIDATION_ERROR:
       return {
         ...state,
@@ -137,7 +132,7 @@ export const updateField = (key, value) => (
 
 export const signup = () => (
   (dispatch, getState) => {
-    dispatch({ type: CLICKED_SUBMIT });
+    dispatch({ type: CLICKED_SIGNUP });
     const state = getState().signup;
     const params = {
       user: {
