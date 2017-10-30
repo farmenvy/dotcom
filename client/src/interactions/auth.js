@@ -2,7 +2,7 @@ import axios from 'axios';
 import moment from 'moment';
 import jwtDecode from 'jwt-decode';
 
-import { CLICKED_SIGNUP, ACCOUNT_VERIFIED } from './signup';
+import { CLICKED_SIGNUP, USER_CREATED, ACCOUNT_VERIFIED } from './signup';
 
 const CLEAR_ERRORS = 'CLEAR_ERRORS';
 const UPDATE_EMAIL = 'UPDATE_EMAIL';
@@ -35,7 +35,7 @@ const getRefreshTime = () => {
 
 const getRole = () => {
   const payload = getAccessTokenPayload();
-  return payload.role;
+  return payload.role || '';
 };
 
 const loadAuthState = () => ({
@@ -82,6 +82,8 @@ export const reducer = (state = initialState, action) => {
       return { ...state, email: action.payload };
     case UPDATE_PASSWORD:
       return { ...state, password: action.payload };
+    case USER_CREATED:
+      return { ...state, role: 'pending' };
     case ACCOUNT_VERIFIED:
     case LOGIN_SUCCESS:
       return handleLogin(action.payload);

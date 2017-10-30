@@ -72,20 +72,30 @@ const LandingPageSignup = (props) => {
     }
   };
 
+  const handleSubmit = () => {
+    if (props.location.search === '?noredirect') {
+      props.history.push('/');
+    }
+
+    props.signup();
+  };
+
   const handleEnter = (e) => {
     // enter triggers submit
     if (e.keyCode === 13) {
-      props.signup();
+      handleSubmit();
     }
   };
 
-  if (props.verificationStatus === 'pending' && !props.skipRedirect) {
+  const skipRedirect = props.location.search === '?noredirect';
+
+  if (props.role && props.role === 'pending' && !skipRedirect) {
     return (
       <Redirect to="/signup-confirmation" />
     );
   }
 
-  if (props.verificationStatus === 'verified') {
+  if (props.role && props.role !== 'pending' && !skipRedirect) {
     return (
       <Redirect to="/overview" />
     );
@@ -183,7 +193,7 @@ const LandingPageSignup = (props) => {
           bsStyle="primary"
           bsSize="large"
           block
-          onClick={() => props.signup()}
+          onClick={() => handleSubmit()}
         >
         Create Account
         </Button>
@@ -199,13 +209,19 @@ const LandingPageSignup = (props) => {
 LandingPageSignup.propTypes = {
   updateField: PropTypes.func.isRequired,
   signup: PropTypes.func.isRequired,
-  verificationStatus: PropTypes.string.isRequired,
+  role: PropTypes.string.isRequired,
   email: PropTypes.string.isRequired,
   password: PropTypes.string.isRequired,
   firstName: PropTypes.string.isRequired,
   lastName: PropTypes.string.isRequired,
   farmName: PropTypes.string.isRequired,
   clickedSubmit: PropTypes.bool.isRequired,
+  location: PropTypes.shape({
+    search: PropTypes.string.isRequired,
+  }).isRequired,
+  history: PropTypes.shape({
+    push: PropTypes.func.isRequired,
+  }).isRequired,
   errors: PropTypes.shape({
     email: PropTypes.arrayOf(PropTypes.string),
     password: PropTypes.arrayOf(PropTypes.string),
@@ -213,7 +229,6 @@ LandingPageSignup.propTypes = {
     lastName: PropTypes.arrayOf(PropTypes.string),
     farmName: PropTypes.arrayOf(PropTypes.string),
   }),
-  skipRedirect: PropTypes.bool.isRequired,
 };
 
 LandingPageSignup.defaultProps = {
@@ -221,10 +236,12 @@ LandingPageSignup.defaultProps = {
   password: '',
   errors: {},
   clickedSubmit: false,
+  role: '',
 };
 
 const mapStateToProps = state => ({
   ...state.signup,
+  role: state.auth.role,
 });
 
 const mapDispatchToProps = dispatch => ({

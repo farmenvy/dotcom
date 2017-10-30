@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { NavLink, Redirect } from 'react-router-dom';
+import { Link, NavLink, Redirect } from 'react-router-dom';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import logo from '../../assets/imgs/white-logo.svg';
@@ -164,7 +164,7 @@ const FarmerView = (props) => {
             <NavItem exact to="/" onClick={() => props.logout()}>Logout</NavItem>
           </SideBarNavigation>
         </SideBarContainer>
-        <Logo src={logo} alt="logo" />
+        <Link to="/?noredirect"><Logo src={logo} alt="logo" /></Link>
       </SideBar>
       <Main>
         {props.children}
