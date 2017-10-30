@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe 'GET /me', type: :request do
-  let(:endpoint) { "/me" }
+  let(:endpoint) { '/me' }
 
   let(:user) { create(:user) }
 
@@ -12,7 +12,6 @@ RSpec.describe 'GET /me', type: :request do
   let(:params) do
     {}
   end
-
 
   %w[id first_name last_name email_address role].each do |attr|
     it "shows the user's #{attr}" do
