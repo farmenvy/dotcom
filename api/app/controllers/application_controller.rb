@@ -31,4 +31,8 @@ class ApplicationController < ActionController::API
   def not_found
     render json: { status: 'record could not be found' }, status: :not_found
   end
+
+  def skip_roles_verification
+    false
+  end
 end
