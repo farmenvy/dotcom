@@ -4,15 +4,15 @@ module Requests
       JSON.parse(response.body)
     end
 
-    def valid_request_headers
+    def valid_request_headers(user_id = nil)
       {
         'ACCEPT' => 'application/json',
-        'AUTHORIZATION' => "Bearer #{bearer_token}"
+        'AUTHORIZATION' => "Bearer #{bearer_token(user_id)}"
       }
     end
 
-    def bearer_token
-      JSONWebToken.encode(sub: 1, exp: 2.minutes.from_now)
+    def bearer_token(user_id = 1)
+      JSONWebToken.encode(sub: user_id, exp: 2.minutes.from_now, role: 'farmer')
     end
   end
 end

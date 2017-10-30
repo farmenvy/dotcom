@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Redirect, Route } from 'react-router-dom';
+import PrivateView from '../PrivateView';
 
 const PrivateRoute = (props) => {
   const { component: Component, ...rest } = props;
@@ -11,7 +12,9 @@ const PrivateRoute = (props) => {
       {...rest}
       render={properties => (
         props.isLoggedIn ? (
-          <Component {...properties} />
+          <PrivateView>
+            <Component {...properties} />
+          </PrivateView>
         ) : (
           <Redirect to={{
             pathname: '/login',
@@ -25,14 +28,12 @@ const PrivateRoute = (props) => {
 };
 
 PrivateRoute.propTypes = {
-  component: PropTypes.node.isRequired,
+  component: PropTypes.func.isRequired,
   isLoggedIn: PropTypes.bool.isRequired,
 };
 
-const mapStateToProps = state => (
-  {
-    isLoggedIn: state.auth.isLoggedIn,
-  }
-);
+const mapStateToProps = state => ({
+  isLoggedIn: state.auth.isLoggedIn,
+});
 
 export default connect(mapStateToProps)(PrivateRoute);
