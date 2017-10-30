@@ -90,6 +90,7 @@ const FarmerText = styled.div`
   width: 95px;
   height: 24px;
   font-size: 14px;
+  text-transform: capitalize;
   line-height: 1.71;
   color: #ffffff;
 `;
@@ -115,8 +116,8 @@ const Sidebar = props => (
       <SidebarHeader>
         <ProfilePic src={anon} alt="profile-picture" />
         <div>
-          <FarmerText>Radish Farms</FarmerText>
-          <FarmerText>John D.</FarmerText>
+          <FarmerText>{props.farmName}</FarmerText>
+          <FarmerText>{`${props.firstName} ${props.lastName[0]}.`}</FarmerText>
         </div>
       </SidebarHeader>
       <SidebarNavigation>
@@ -137,6 +138,9 @@ const Sidebar = props => (
 
 Sidebar.propTypes = ({
   logout: PropTypes.func.isRequired,
+  firstName: PropTypes.string.isRequired,
+  lastName: PropTypes.string.isRequired,
+  farmName: PropTypes.string.isRequired,
 });
 
 

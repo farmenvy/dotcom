@@ -62,6 +62,7 @@ SidebarLayout.propTypes = ({
 });
 
 const mapStateToProps = state => ({
+  ...state.user,
   role: state.auth.role,
 });
 

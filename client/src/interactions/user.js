@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const BEGIN_ASYNC = 'BEGIN_ASYNC';
+const IS_FETCHING = 'IS_FETCHING';
 const RECEIVE_USER = 'RECEIVE_USER';
 const FETCH_USER_ERROR = 'FETCH_USER_ERROR';
 
@@ -13,7 +13,6 @@ const initialState = {
 export const reducer = (state = initialState, action) => {
   switch (action.type) {
     case RECEIVE_USER:
-      debugger; // eslint-disable-line
       return {
         ...state,
         firstName: action.payload.first_name,
@@ -27,9 +26,9 @@ export const reducer = (state = initialState, action) => {
 
 export const fetchUser = () => (
   (dispatch) => {
-    dispatch({ type: BEGIN_ASYNC });
+    dispatch({ type: IS_FETCHING });
     axios.get('/api/me')
-      .then(res => dispatch({ type: RECEIVE_USER, payload: res.data }))
+      .then(res => dispatch({ type: RECEIVE_USER, payload: res.data.user }))
       .catch((err) => {
         if (err.response) {
           dispatch({ type: FETCH_USER_ERROR });
