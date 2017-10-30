@@ -19,18 +19,11 @@ services:
       - RAILS_ENV=production
       - PORT=5000
       - RAILS_LOG_TO_STDOUT=true
-    links:
-      - postgres
     env_file:
       - .env.production
     volumes:
       - ./api/log:/home/app/webapp/log
 
-  # Need to replace with RDS.
-  postgres:
-    image: postgres:9.6
-    volumes:
-      - pg_data:/var/lib/postgresql/data
   client:
     build: ./client
     command: echo 'not running in production'
@@ -42,8 +35,5 @@ services:
       - ./client/build:/usr/src/app/build
     env_file:
       - .env.production
-
-volumes:
-  pg_data:
 
 
