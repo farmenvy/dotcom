@@ -87,7 +87,7 @@ const LandingPageSignup = (props) => {
 
   if (props.verificationStatus === 'verified') {
     return (
-      <Redirect to="/verified" />
+      <Redirect to="/overview" />
     );
   }
 

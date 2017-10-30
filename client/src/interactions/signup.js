@@ -1,14 +1,14 @@
 import axios from 'axios';
 
-const CLICKED_SUBMIT = 'CLICKED_SUBMIT';
-const UPDATE_FIELD = 'UPDATE_FIELD';
+const FAILED_VERIFICATION = 'FAILED_VERIFICATION';
 const UPDATE_EMAIL = 'UPDATE_EMAIL';
+const UPDATE_FIELD = 'UPDATE_FIELD';
 const UPDATE_NAME = 'UPDATE_NAME';
 const UPDATE_PASSWORD = 'UPDATE_PASSWORD';
 const USER_CREATED = 'USER_CREATED';
-const ACCOUNT_VERIFIED = 'ACCOUNT_VERIFIED';
 const VALIDATION_ERROR = 'VALIDATION_ERROR';
-const FAILED_VERIFICATION = 'FAILED_VERIFICATION';
+export const ACCOUNT_VERIFIED = 'ACCOUNT_VERIFIED';
+export const CLICKED_SIGNUP = 'CLICKED_SIGNUP';
 
 const initialState = {
   email: '',
@@ -30,7 +30,7 @@ const handleStateChange = (key, state, action) => (
 
 export const reducer = (state = initialState, action) => {
   switch (action.type) {
-    case CLICKED_SUBMIT:
+    case CLICKED_SIGNUP:
       return { ...state, errors: {}, clickedSubmit: true };
     case UPDATE_FIELD:
       return { ...state, clickedSubmit: false };
@@ -137,7 +137,7 @@ export const updateField = (key, value) => (
 
 export const signup = () => (
   (dispatch, getState) => {
-    dispatch({ type: CLICKED_SUBMIT });
+    dispatch({ type: CLICKED_SIGNUP });
     const state = getState().signup;
     const params = {
       user: {
