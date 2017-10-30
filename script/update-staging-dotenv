@@ -6,6 +6,11 @@ set -e
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}"  )" && pwd  )"
 cd "$DIR/.."
 
+if grep SERVER_HOSTNAME .env.production; then
+  echo 'refusing to update with SERVER_HOSTNAME present on your machine'
+  exit 1
+fi
+
 TARGET_SERVER=$(/bin/bash ./script/determine-staging)
 echo "copying .env.production to $TARGET_SERVER"
 scp ./.env.production "deploy@$TARGET_SERVER:/home/deploy/current"

@@ -46,14 +46,6 @@ abort() {
   info "!!! FAILED: '$*'" >&2
 
   if [ "$DEPLOYABLE" == true ]; then
-    if [ "$STAGING_CHANGE" ]; then
-      # note that the only change should be
-      # the STAGING file.
-      echo "reverting failed release"
-      git revert --no-edit HEAD
-      git push origin HEAD
-    fi
-
     ./script/slack-notify
   fi
 
