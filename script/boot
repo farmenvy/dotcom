@@ -28,5 +28,5 @@ docker-compose -f production.yml stop
 docker-compose -f production.yml build api
 docker-compose -f production.yml run --rm api bin/setup
 
-docker-compose -f production.yml build nginx --remove-orphans
+docker-compose -f production.yml build nginx
 docker-compose -f production.yml up --remove-orphans -d nginx
