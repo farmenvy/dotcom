@@ -31,7 +31,7 @@ module Auth
       {}.tap do |hsh|
         hsh[:sub] = context.user.id
         hsh[:exp] = access_token_exp
-        hsh[:role] = context.user.role unless context.user.pending_verification
+        hsh[:role] = context.user.pending_verification ? 'pending' : context.user.role
       end
     end
 

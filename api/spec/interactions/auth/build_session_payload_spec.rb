@@ -61,8 +61,8 @@ RSpec.describe Auth::BuildSessionPayload do
         build_stubbed(:user, pending_verification: true, role: role)
       end
 
-      it 'does NOT include any role' do
-        expect(payload['role']).to be_nil
+      it 'the role is PENDING' do
+        expect(payload['role']).to eq('pending')
       end
     end
 
