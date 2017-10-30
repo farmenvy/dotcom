@@ -9,7 +9,7 @@ import SignupConfirmation from './components/SignupConfirmation';
 import Login from './components/Login';
 import NotFound from './components/NotFound';
 
-import FarmerRoute from './components/FarmerRoute';
+import PrivateRoute from './components/PrivateRoute';
 import LoginWelcome from './components/LoginWelcome';
 
 const setAxiosDefaults = () => {
@@ -35,7 +35,7 @@ const Routes = (props) => {
       <Route path="/verify/:token" component={SignupConfirmation} />
       <Route exact path="/signup-confirmation" component={SignupConfirmation} />
       <Route exact path="/login" component={Login} />
-      <FarmerRoute exact path="/overview" component={LoginWelcome} />
+      <PrivateRoute exact path="/overview" component={LoginWelcome} />
       <Route path="*" component={NotFound} />
     </Switch>
   );

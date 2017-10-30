@@ -136,7 +136,7 @@ const ProfilePic = styled.img`
   margin-right: 8px;
 `;
 
-const FarmerView = (props) => {
+const SidebarLayout = (props) => {
   if (props.role === 'pending') {
     return (<Redirect to="/verify" />);
   }
@@ -173,7 +173,7 @@ const FarmerView = (props) => {
   );
 };
 
-FarmerView.propTypes = ({
+SidebarLayout.propTypes = ({
   children: PropTypes.node.isRequired,
   role: PropTypes.string.isRequired,
   logout: PropTypes.func.isRequired,
@@ -187,4 +187,4 @@ const mapDispatchToProps = dispatch => ({
   ...bindActionCreators({ logout }, dispatch),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(FarmerView);
+export default connect(mapStateToProps, mapDispatchToProps)(SidebarLayout);
