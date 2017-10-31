@@ -11,6 +11,7 @@ const ManagerContainer = styled.div`
 
 const ProgressContainer = styled.div`
   flex: 0 0 auto;
+  margin-top: 5vh;
 `;
 
 const Stuff = styled.div`
@@ -34,7 +35,7 @@ const CSAManager = () => (
       stuff
     </Stuff>
 
-    <Footer>Footer!</Footer>
+    <Footer />
   </ManagerContainer>
 );
 

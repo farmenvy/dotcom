@@ -1,3 +1,7 @@
+.progressbar {
+  padding: 0;
+}
+
 .progressbar li {
   font-weight: lighter;
   list-style: none;
