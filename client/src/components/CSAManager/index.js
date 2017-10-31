@@ -18,7 +18,6 @@ const ProgressContainer = styled.div`
 const Content = styled.div`
   flex: 1 1 auto;
   position: relative;/* need this to position inner content */
-  overflow-y: auto;
   padding: 20px 80px;
 `;
 
@@ -55,6 +54,7 @@ const PrevStepButton = Button.extend`
   background-color: #ffffff;
   border: 1px solid #C6CACF;
   color: #474B4F;
+  margin-right: 25px;
 `;
 
 

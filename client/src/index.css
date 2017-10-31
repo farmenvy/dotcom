@@ -4,7 +4,6 @@ body {
   font-family: 'Open Sans', sans-serif;
   text-align: center;
   background-color: #f1f8f3;
-  overflow: hidden;
 }
 
 input:focus {

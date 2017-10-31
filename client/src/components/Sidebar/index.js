@@ -14,7 +14,6 @@ const SidebarWrapper = styled.div`
   min-width: 250px;
 
   @media (max-width: 700px) {
-    order: 2;
     width: 100%;
   }
 `;
@@ -81,8 +80,8 @@ const Logo = styled.img`
     bottom: 0;
     width: 30%;
     max-height: 55px;
-    margin-top: 25px;
-    margin-bottom: 25px;
+    margin-top: 8px;
+    margin-bottom: 8px;
   }
 `;
 
