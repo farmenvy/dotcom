@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import PropTypes from 'prop-types';
 import StepProgressBar from '../StepProgressBar';
 
 const ManagerContainer = styled.div`
@@ -14,10 +15,17 @@ const ProgressContainer = styled.div`
   margin-top: 5vh;
 `;
 
-const Stuff = styled.div`
+const Content = styled.div`
   flex: 1 1 auto;
   position: relative;/* need this to position inner content */
   overflow-y: auto;
+  padding: 20px 80px;
+`;
+
+const Step = styled.h1`
+  font-size: 18px;
+  font-weight: 600;
+  text-align: left;
 `;
 
 const Footer = styled.div`
@@ -26,17 +34,26 @@ const Footer = styled.div`
   background-color: #f2f3f4;
 `;
 
-const CSAManager = () => (
+const CSAManager = props => (
   <ManagerContainer>
     <ProgressContainer>
       <StepProgressBar />
     </ProgressContainer>
-    <Stuff>
-      stuff
-    </Stuff>
+    <Content>
+      <Step>{props.title}</Step>
+    </Content>
 
     <Footer />
   </ManagerContainer>
 );
+
+
+CSAManager.propTypes = ({
+  title: PropTypes.string.isRequired,
+});
+
+CSAManager.defaultProps = ({
+  title: 'CSA Manager',
+});
 
 export default CSAManager;
