@@ -6,14 +6,17 @@ import './style.css';
 
 const ProgressContainer = styled.div`
   width: 100%;
+  flex-wrap: nowrap;
 `;
 
 const CSAManager = () => (
   <ProgressContainer>
     <ul className="progressbar">
-      <li>Step 1</li>
-      <li className="active">Step 2</li>
-      <li>Step 3</li>
+      <li>Basics</li>
+      <li>Pickup</li>
+      <li className="active">Bags</li>
+      <li>Extras</li>
+      <li>Members</li>
     </ul>
   </ProgressContainer>
 );
