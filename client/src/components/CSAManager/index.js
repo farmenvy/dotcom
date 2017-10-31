@@ -36,7 +36,7 @@ const Footer = styled.div`
   justify-content: space-between;
 `;
 
-const NextStepButton = styled.button`
+const Button = styled.button`
   width: 170px;
   height: 45px;
   border-radius: 5px;
@@ -44,7 +44,17 @@ const NextStepButton = styled.button`
   color: #fff;
   font-weight: bold;
   border: none;
+  outline: none;
+`;
+
+const NextStepButton = Button.extend`
   margin-left: auto;
+`;
+
+const PrevStepButton = Button.extend`
+  background-color: #ffffff;
+  border: 1px solid #C6CACF;
+  color: #474B4F;
 `;
 
 
@@ -58,6 +68,7 @@ const CSAManager = props => (
     </Content>
 
     <Footer>
+      <PrevStepButton>Previous Step</PrevStepButton>
       <NextStepButton>Next Step</NextStepButton>
     </Footer>
   </ManagerContainer>
