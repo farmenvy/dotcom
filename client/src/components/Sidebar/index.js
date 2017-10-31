@@ -122,7 +122,7 @@ const Sidebar = props => (
       <SidebarNavigation>
         <NavHeader>Menu</NavHeader>
         <NavItem exact to="/overview">Overview</NavItem>
-        <NavItem exact to="/csa-manager" disabled >CSA Manager</NavItem>
+        <NavItem exact to="/manage">CSA Manager</NavItem>
         <NavItem exact to="/billing" disabled >Billing</NavItem>
         <NavItem exact to="/alerts" disabled >Alerts</NavItem>
         <NavItem exact to="/email" disabled >Email</NavItem>

@@ -11,6 +11,7 @@ import NotFound from './components/NotFound';
 
 import PrivateRoute from './components/PrivateRoute';
 import LoginWelcome from './components/LoginWelcome';
+import CSAManager from './components/CSAManager';
 
 const setAxiosDefaults = () => {
   const jwt = window.localStorage.getItem('accessToken');
@@ -36,6 +37,7 @@ const Routes = (props) => {
       <Route exact path="/signup-confirmation" component={SignupConfirmation} />
       <Route exact path="/login" component={Login} />
       <PrivateRoute exact path="/overview" component={LoginWelcome} />
+      <PrivateRoute exact path="/manage" component={CSAManager} />
       <Route path="*" component={NotFound} />
     </Switch>
   );

@@ -21,6 +21,15 @@ const Container = styled.div`
   }
 `;
 
+const MainContainer = styled.div`
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+`;
+
+
 const Main = styled.div`
   background: #ffffff;
   flex-grow: 1;
@@ -47,7 +56,9 @@ class SidebarLayout extends React.Component {
       <Container>
         <Sidebar {...this.props} />
         <Main>
-          {this.props.children}
+          <MainContainer>
+            {this.props.children}
+          </MainContainer>
         </Main>
       </Container>
     );
