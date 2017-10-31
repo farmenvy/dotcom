@@ -30,9 +30,23 @@ const Step = styled.h1`
 
 const Footer = styled.div`
   flex: 0 0 auto;
-  min-height: 80px;
+  padding: 15px 30px;
   background-color: #f2f3f4;
+  display: flex;
+  justify-content: space-between;
 `;
+
+const NextStepButton = styled.button`
+  width: 170px;
+  height: 45px;
+  border-radius: 5px;
+  background-color: #33658a;
+  color: #fff;
+  font-weight: bold;
+  border: none;
+  margin-left: auto;
+`;
+
 
 const CSAManager = props => (
   <ManagerContainer>
@@ -43,7 +57,9 @@ const CSAManager = props => (
       <Step>{props.title}</Step>
     </Content>
 
-    <Footer />
+    <Footer>
+      <NextStepButton>Next Step</NextStepButton>
+    </Footer>
   </ManagerContainer>
 );
 
