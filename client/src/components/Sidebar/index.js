@@ -87,7 +87,6 @@ const Logo = styled.img`
 `;
 
 const FarmerText = styled.div`
-  width: 95px;
   height: 24px;
   font-size: 14px;
   text-transform: capitalize;
