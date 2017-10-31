@@ -1,24 +1,24 @@
 import React from 'react';
-
 import styled from 'styled-components';
+import StepProgressBar from '../StepProgressBar';
 
-import './style.css';
+const ManagerContainer = styled.div`
+  display: relative;
+  width: 100%;
+`;
 
 const ProgressContainer = styled.div`
-  width: 100%;
-  flex-wrap: nowrap;
+  top: 10%;
+  width: 75%;
+  position: absolute;
 `;
 
 const CSAManager = () => (
-  <ProgressContainer>
-    <ul className="progressbar">
-      <li>Basics</li>
-      <li>Pickup</li>
-      <li className="active">Bags</li>
-      <li>Extras</li>
-      <li>Members</li>
-    </ul>
-  </ProgressContainer>
+  <ManagerContainer>
+    <ProgressContainer>
+      <StepProgressBar />
+    </ProgressContainer>
+  </ManagerContainer>
 );
 
 export default CSAManager;
