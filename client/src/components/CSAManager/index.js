@@ -29,6 +29,7 @@ const Step = styled.h1`
   font-size: 18px;
   font-weight: 600;
   text-align: left;
+  text-transform: capitalize;
 `;
 
 const Footer = styled.div`
@@ -68,7 +69,7 @@ const CSAManager = props => (
       <StepProgressBar steps={STEPS} {...props} />
     </ProgressContainer>
     <Content>
-      <Step>{props.title}</Step>
+      <Step>{`Step ${props.activeIndex + 1}: ${STEPS[props.activeIndex]}`}</Step>
     </Content>
 
     <Footer>
