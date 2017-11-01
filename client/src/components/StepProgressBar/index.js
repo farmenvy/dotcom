@@ -1,5 +1,5 @@
 import React from 'react';
-
+import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 import './style.css';
@@ -7,18 +7,26 @@ import './style.css';
 const ProgressContainer = styled.div`
   width: 100%;
   flex-wrap: nowrap;
+  text-transform: capitalize;
 `;
 
-const StepProgressBar = () => (
+const StepProgressBar = props => (
   <ProgressContainer>
     <ul className="progressbar">
-      <li>Basics</li>
-      <li>Pickup</li>
-      <li className="active">Bags</li>
-      <li>Extras</li>
-      <li>Members</li>
+      {
+        props.steps.map((step, i) => (
+          <li key={step} className={props.activeIndex === i && 'active'}>
+            {step}
+          </li>
+        ))
+      }
     </ul>
   </ProgressContainer>
 );
+
+StepProgressBar.propTypes = ({
+  steps: PropTypes.arrayOf(PropTypes.string).isRequired,
+  activeIndex: PropTypes.number.isRequired,
+});
 
 export default StepProgressBar;

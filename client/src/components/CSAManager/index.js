@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import StepProgressBar from '../StepProgressBar';
-import { nextStep, prevStep } from '../../interactions/manageCSA';
+import { nextStep, prevStep, STEPS } from '../../interactions/manageCSA';
 
 
 const ManagerContainer = styled.div`
@@ -65,7 +65,7 @@ const PrevStepButton = Button.extend`
 const CSAManager = props => (
   <ManagerContainer>
     <ProgressContainer>
-      <StepProgressBar />
+      <StepProgressBar steps={STEPS} {...props} />
     </ProgressContainer>
     <Content>
       <Step>{props.title}</Step>

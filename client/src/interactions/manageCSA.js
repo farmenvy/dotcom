@@ -12,15 +12,25 @@ export const STEPS = [
 ];
 
 const initialState = {
-  currentIndex: 0,
+  activeIndex: 0,
+};
+
+const getNextIndex = (i) => {
+  const nextIndex = i + 1;
+  return nextIndex > STEPS.length - 1 ? i : nextIndex;
+};
+
+const getPrevIndex = (i) => {
+  const prevIndex = i - 1;
+  return Math.abs(prevIndex) > i ? i : prevIndex;
 };
 
 export const reducer = (state = initialState, action) => {
   switch (action.type) {
     case NEXT_STEP_CLICK:
-      return { ...state, currentIndex: state.currentIndex + 1 };
+      return { ...state, activeIndex: getNextIndex(state.activeIndex) };
     case PREV_STEP_CLICK:
-      return { ...state, currentIndex: state.currentIndex - 1 };
+      return { ...state, activeIndex: getPrevIndex(state.activeIndex) };
     default:
       return state;
   }
