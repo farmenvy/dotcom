@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import StepProgressBar from '../StepProgressBar';
+import StepOrchestrator from './orchestrator';
 import { nextStep, prevStep, STEPS } from '../../interactions/manageCSA';
 
 
@@ -63,29 +64,34 @@ const PrevStepButton = Button.extend`
 `;
 
 
-const CSAManager = props => (
-  <ManagerContainer>
-    <ProgressContainer>
-      <StepProgressBar steps={STEPS} {...props} />
-    </ProgressContainer>
-    <Content>
-      <Step>{`Step ${props.activeIndex + 1}: ${STEPS[props.activeIndex]}`}</Step>
-    </Content>
+const CSAManager = (props) => {
+  const currentStep = STEPS[props.activeIndex];
 
-    <Footer>
-      {props.activeIndex > 0 && (
+  return (
+    <ManagerContainer>
+      <ProgressContainer>
+        <StepProgressBar steps={STEPS} {...props} />
+      </ProgressContainer>
+      <Content>
+        <Step>{`Step ${props.activeIndex + 1}: ${currentStep}`}</Step>
+        <StepOrchestrator currentStep={currentStep} />
+      </Content>
 
-        <PrevStepButton onClick={() => props.prevStep()}>Previous Step</PrevStepButton>
-      )}
+      <Footer>
+        {props.activeIndex > 0 && (
 
-      {props.activeIndex < STEPS.length - 1 ? (
-        <NextStepButton onClick={() => props.nextStep()}>Next Step</NextStepButton>
-      ) : (
-        <NextStepButton onClick={() => console.log('click')}>Create CSA</NextStepButton>
-      )}
-    </Footer>
-  </ManagerContainer>
-);
+          <PrevStepButton onClick={() => props.prevStep()}>Previous Step</PrevStepButton>
+        )}
+
+        {props.activeIndex < STEPS.length - 1 ? (
+          <NextStepButton onClick={() => props.nextStep()}>Next Step</NextStepButton>
+        ) : (
+          <NextStepButton onClick={() => console.log('click')}>Create CSA</NextStepButton>
+        )}
+      </Footer>
+    </ManagerContainer>
+  );
+};
 
 
 CSAManager.propTypes = ({
