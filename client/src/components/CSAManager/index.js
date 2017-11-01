@@ -1,7 +1,11 @@
 import React from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import StepProgressBar from '../StepProgressBar';
+import { nextStep, prevStep } from '../../interactions/manageCSA';
+
 
 const ManagerContainer = styled.div`
   display: flex;
@@ -68,8 +72,8 @@ const CSAManager = props => (
     </Content>
 
     <Footer>
-      <PrevStepButton>Previous Step</PrevStepButton>
-      <NextStepButton>Next Step</NextStepButton>
+      <PrevStepButton onClick={() => props.prevStep()}>Previous Step</PrevStepButton>
+      <NextStepButton onClick={() => props.nextStep()}>Next Step</NextStepButton>
     </Footer>
   </ManagerContainer>
 );
@@ -77,10 +81,20 @@ const CSAManager = props => (
 
 CSAManager.propTypes = ({
   title: PropTypes.string.isRequired,
+  prevStep: PropTypes.func.isRequired,
+  nextStep: PropTypes.func.isRequired,
 });
 
 CSAManager.defaultProps = ({
   title: 'CSA Manager',
 });
 
-export default CSAManager;
+const mapStateToProps = state => ({
+  ...state.manageCSA,
+});
+
+const mapDispatchToProps = dispatch => ({
+  ...bindActionCreators({ nextStep, prevStep }, dispatch),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(CSAManager);
