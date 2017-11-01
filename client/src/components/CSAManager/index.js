@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import StepProgressBar from '../StepProgressBar';
-import StepOrchestrator from './orchestrator';
+import Orchestrator from './orchestrator';
 import { nextStep, prevStep, STEPS } from '../../interactions/manageCSA';
 
 
@@ -63,6 +63,10 @@ const PrevStepButton = Button.extend`
   margin-right: 25px;
 `;
 
+const OrchestratorContainer = styled.div`
+  margin-top: 30px;
+`;
+
 
 const CSAManager = (props) => {
   const currentStep = STEPS[props.activeIndex];
@@ -74,7 +78,9 @@ const CSAManager = (props) => {
       </ProgressContainer>
       <Content>
         <Step>{`Step ${props.activeIndex + 1}: ${currentStep}`}</Step>
-        <StepOrchestrator currentStep={currentStep} />
+        <OrchestratorContainer>
+          <Orchestrator currentStep={currentStep} />
+        </OrchestratorContainer>
       </Content>
 
       <Footer>

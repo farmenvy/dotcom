@@ -12,7 +12,7 @@ export const STEPS = [
 ];
 
 const initialState = {
-  activeIndex: 0,
+  activeIndex: 1,
 };
 
 const getNextIndex = (i) => {

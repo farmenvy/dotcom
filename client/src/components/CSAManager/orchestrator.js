@@ -1,12 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import Pickup from './pickup';
 
 const Orchestrator = (props) => {
   switch (props.currentStep) {
     case 'basics':
       return (<h1>basics</h1>);
     case 'pickup':
-      return (<h1>pickup</h1>);
+      return (<Pickup />);
     case 'bags':
       return (<h1>bags</h1>);
     case 'extras':
