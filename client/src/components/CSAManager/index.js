@@ -72,8 +72,16 @@ const CSAManager = props => (
     </Content>
 
     <Footer>
-      <PrevStepButton onClick={() => props.prevStep()}>Previous Step</PrevStepButton>
-      <NextStepButton onClick={() => props.nextStep()}>Next Step</NextStepButton>
+      {props.activeIndex > 0 && (
+
+        <PrevStepButton onClick={() => props.prevStep()}>Previous Step</PrevStepButton>
+      )}
+
+      {props.activeIndex < STEPS.length - 1 ? (
+        <NextStepButton onClick={() => props.nextStep()}>Next Step</NextStepButton>
+      ) : (
+        <NextStepButton onClick={() => console.log('click')}>Create CSA</NextStepButton>
+      )}
     </Footer>
   </ManagerContainer>
 );
@@ -81,6 +89,7 @@ const CSAManager = props => (
 
 CSAManager.propTypes = ({
   title: PropTypes.string.isRequired,
+  activeIndex: PropTypes.number.isRequired,
   prevStep: PropTypes.func.isRequired,
   nextStep: PropTypes.func.isRequired,
 });
