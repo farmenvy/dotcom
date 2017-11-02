@@ -41,7 +41,6 @@ const ModalOverlay = styled.div`
 const ModalContent = styled.div`
   position: relative;
   border-radius: 5px;
-  color: red;
   background: rgba(255, 255, 255, 1);
   height: 75%;
   margin-top: 10vh;
@@ -55,6 +54,22 @@ const ModalContent = styled.div`
   }
 `;
 
+const TitleContainer = styled.div`
+  border-bottom: solid 1px #c6c9cf;
+  display: flex;
+  justify-content: center;
+`;
+
+const Title = styled.h3`
+  text-transform: uppercase;
+  font-size: 14px;
+  padding: 25px;
+  margin: 0;
+  color: #aaaeb3;
+  font-weight: bold;
+  letter-spacing: 2px;
+`;
+
 const Pickup = () => {
   // window.document.body.style.overflow = 'hidden';
   window.document.body.style.overflow = '';
@@ -66,7 +81,10 @@ const Pickup = () => {
       </Foo>
 
       <ModalOverlay>
-        <ModalContent>Yo this is content</ModalContent>
+        <ModalContent>
+          <TitleContainer><Title>Create New Location</Title></TitleContainer>
+          Yo this is content
+        </ModalContent>
       </ModalOverlay>
     </div>
   );
