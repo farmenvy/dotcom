@@ -24,11 +24,52 @@ const Foo = styled.button`
   }
 `;
 
+const ModalOverlay = styled.div`
+  position: fixed;
+  display: flex;
+  justify-content: center;
+  top: 0;
+  left: 0;
+  padding: 0;
+  margin: 0;
+  height: 100vh;
+  width: 100vw;
+  z-index: 10;
+  background: rgba(0, 0, 0, 0.4)
+`;
 
-const Pickup = () => (
-  <Foo>
-    Create New Pickup Location
-  </Foo>
-);
+const ModalContent = styled.div`
+  position: relative;
+  border-radius: 5px;
+  color: red;
+  background: rgba(255, 255, 255, 1);
+  height: 75%;
+  margin-top: 10vh;
+  margin-bottom: 10vh;
+  width: 50%;
+  min-height: 650px
+  min-width: 650px;
+
+  @media (max-width: 700px) {
+    width: 100%;
+  }
+`;
+
+const Pickup = () => {
+  // window.document.body.style.overflow = 'hidden';
+  window.document.body.style.overflow = '';
+
+  return (
+    <div>
+      <Foo>
+        Create New Pickup Location
+      </Foo>
+
+      <ModalOverlay>
+        <ModalContent>Yo this is content</ModalContent>
+      </ModalOverlay>
+    </div>
+  );
+};
 
 export default Pickup;
