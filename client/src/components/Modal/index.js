@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
+import { Button } from '../common';
 
 const ModalOverlay = styled.div`
   position: fixed;
@@ -47,8 +48,23 @@ const Title = styled.h3`
   letter-spacing: 2px;
 `;
 
-const ContentBody = styled.div`
+const ContentWrapper = styled.div`
   padding: 30px;
+`;
+
+const Footer = styled.div`
+  margin: 30px;
+`;
+
+const Action = Button.extend`
+  position: absolute;
+  bottom: 30px;
+  right: 50px;
+
+  @media (max-width: 700px) {
+    margin-right: 100px;
+  }
+
 `;
 
 
@@ -71,9 +87,11 @@ const Modal = (props) => {
     <ModalOverlay id="overlay" onClick={e => close(e)}>
       <ModalContent>
         <TitleContainer><Title>Create New Location</Title></TitleContainer>
-        <ContentBody>
+        <ContentWrapper>
           Yo this is content
-        </ContentBody>
+
+          <Footer><Action>Next</Action></Footer>
+        </ContentWrapper>
       </ModalContent>
     </ModalOverlay>
   );
