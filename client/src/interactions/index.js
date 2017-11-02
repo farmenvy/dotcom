@@ -7,11 +7,13 @@ import thunk from 'redux-thunk';
 import { reducer as auth } from './auth';
 import { reducer as signup } from './signup';
 import { reducer as user } from './user';
+import { reducer as manageCSA } from './manageCSA';
 
 const rootReducer = combineReducers({
   auth,
   signup,
   user,
+  manageCSA,
 });
 
 

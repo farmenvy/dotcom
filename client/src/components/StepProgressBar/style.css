@@ -1,0 +1,61 @@
+.progressbar {
+  padding: 0;
+}
+
+.progressbar li {
+  font-weight: lighter;
+  list-style: none;
+  display: inline-block;
+  width: 20%;
+  position: relative;
+  text-align: center;
+  z-index: 1;
+}
+.progressbar li:before {
+  content: "";
+  width: 10px;
+  height: 10px;
+  line-height : 10px;
+  border: 1px solid #33658a;
+  border-radius: 100%;
+  display: block;
+  text-align: center;
+  margin: 0 auto 10px auto;
+  background-color: #33658a;
+}
+.progressbar li:after {
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 1px;
+  background-color: #33658a;
+  top: 5px;
+  left: -50%;
+  z-index : -1;
+}
+.progressbar li:first-child:after {
+  content: none;
+}
+.progressbar li.active {
+  color: black;
+  z-index: 2;
+}
+.progressbar li.active:before {
+  border-color: #33658a;
+  background-color: #33658a;
+  color: #eaeaea;
+}
+
+.progressbar li.active ~ li:before {
+  border-color: #eaeaea;
+  background-color: #eaeaea;
+}
+
+.progressbar li.active ~ li:after {
+  background-color: #eaeaea;
+}
+
+
+.progressbar li.active ~ li {
+  color: #c6c9cf;
+}

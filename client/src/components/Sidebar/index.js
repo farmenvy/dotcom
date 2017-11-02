@@ -14,7 +14,6 @@ const SidebarWrapper = styled.div`
   min-width: 250px;
 
   @media (max-width: 700px) {
-    order: 2;
     width: 100%;
   }
 `;
@@ -81,8 +80,8 @@ const Logo = styled.img`
     bottom: 0;
     width: 30%;
     max-height: 55px;
-    margin-top: 25px;
-    margin-bottom: 25px;
+    margin-top: 8px;
+    margin-bottom: 8px;
   }
 `;
 
@@ -109,6 +108,8 @@ const ProfilePic = styled.img`
   margin-right: 8px;
 `;
 
+const isEnabled = !!window.localStorage.getItem('testing');
+
 const Sidebar = props => (
   <SidebarWrapper>
     <SidebarContainer>
@@ -122,7 +123,7 @@ const Sidebar = props => (
       <SidebarNavigation>
         <NavHeader>Menu</NavHeader>
         <NavItem exact to="/overview">Overview</NavItem>
-        <NavItem exact to="/csa-manager" disabled >CSA Manager</NavItem>
+        <NavItem exact to="/manage" disabled={!isEnabled}>CSA Manager</NavItem>
         <NavItem exact to="/billing" disabled >Billing</NavItem>
         <NavItem exact to="/alerts" disabled >Alerts</NavItem>
         <NavItem exact to="/email" disabled >Email</NavItem>

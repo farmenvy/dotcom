@@ -16,20 +16,27 @@ const Container = styled.div`
   flex-direction: row;
 
   @media (max-width: 700px) {
-    min-height: 200px;
+    min-height: 50px;
     flex-direction: column;
   }
 `;
 
+const MainContainer = styled.div`
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+`;
+
+
 const Main = styled.div`
   background: #ffffff;
   flex-grow: 1;
-  margin-top: -10em;
 
   @media (max-width: 700px) {
     margin-top: 0;
     padding-top: 25px;
-    order: 1;
   }
 `;
 
@@ -47,7 +54,9 @@ class SidebarLayout extends React.Component {
       <Container>
         <Sidebar {...this.props} />
         <Main>
-          {this.props.children}
+          <MainContainer>
+            {this.props.children}
+          </MainContainer>
         </Main>
       </Container>
     );
