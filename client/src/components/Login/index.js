@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { Redirect } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import { Glyphicon } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
@@ -52,6 +52,17 @@ const IconWrapper = styled.span`
   font-size: 12px;
   top: 47%;
 `;
+
+const SignupWrapper = styled.div`
+  margin-top: 20px;
+  font-weight: lighter;
+`;
+
+const SignupLink = styled(Link)`
+  font-weight: bold;
+  text-decoration: underline;
+`;
+
 
 const Login = (props) => {
   const { from } = props.location.state || { from: { pathname: '/' } };
@@ -108,6 +119,11 @@ const Login = (props) => {
           </InputWrapper>
 
           <Button onClick={() => props.login()}>Login</Button>
+
+          <SignupWrapper>
+            Don&apos;t have an account? <SignupLink to="/">Sign up</SignupLink>
+          </SignupWrapper>
+
         </Box>
       </Shaker>
     </Layout>
