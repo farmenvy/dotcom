@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import StepProgressBar from '../StepProgressBar';
+import { Button } from '../common';
 import Orchestrator from './orchestrator';
 import { nextStep, prevStep, STEPS } from '../../interactions/manageCSA';
 
@@ -39,17 +40,6 @@ const Footer = styled.div`
   background-color: #f2f3f4;
   display: flex;
   justify-content: space-between;
-`;
-
-const Button = styled.button`
-  width: 170px;
-  height: 45px;
-  border-radius: 5px;
-  background-color: #33658a;
-  color: #fff;
-  font-weight: bold;
-  border: none;
-  outline: none;
 `;
 
 const NextStepButton = Button.extend`

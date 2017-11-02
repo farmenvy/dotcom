@@ -53,7 +53,10 @@ const ContentBody = styled.div`
 
 
 const Modal = (props) => {
-  const close = () => {
+  const close = (e) => {
+    if (e.target.id !== 'overlay') {
+      return;
+    }
     window.document.body.style.overflow = 'auto';
     props.closeModal();
   };
@@ -65,7 +68,7 @@ const Modal = (props) => {
   window.document.body.style.overflow = 'hidden';
 
   return (
-    <ModalOverlay onClick={() => close()}>
+    <ModalOverlay id="overlay" onClick={e => close(e)}>
       <ModalContent>
         <TitleContainer><Title>Create New Location</Title></TitleContainer>
         <ContentBody>
