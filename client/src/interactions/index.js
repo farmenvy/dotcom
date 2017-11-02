@@ -8,12 +8,14 @@ import { reducer as auth } from './auth';
 import { reducer as signup } from './signup';
 import { reducer as user } from './user';
 import { reducer as manageCSA } from './manageCSA';
+import { reducer as modal } from './modal';
 
 const rootReducer = combineReducers({
   auth,
   signup,
   user,
   manageCSA,
+  modal,
 });
 
 

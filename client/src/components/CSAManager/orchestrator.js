@@ -1,26 +1,44 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+import { openModal, closeModal } from '../../interactions/modal';
 import Pickup from './pickup';
 
-const Orchestrator = (props) => {
-  switch (props.currentStep) {
+const getCurrentComponent = (currentStep) => {
+  switch (currentStep) {
     case 'basics':
-      return (<h1>basics</h1>);
+      return (Pickup);
     case 'pickup':
-      return (<Pickup />);
+      return (Pickup);
     case 'bags':
-      return (<h1>bags</h1>);
+      return (Pickup);
     case 'extras':
-      return (<h1>extras</h1>);
+      return (Pickup);
     case 'members':
-      return (<h1>members</h1>);
+      return (Pickup);
     default:
-      throw new Error('step not recognized', props.currentStep);
+      throw new Error('step not recognized', currentStep);
   }
+};
+
+const Orchestrator = (props) => {
+  const { currentStep, ...otherProps } = props;
+  const CurrentComponent = getCurrentComponent(currentStep);
+  return (<CurrentComponent {...otherProps} />);
 };
 
 Orchestrator.propTypes = ({
   currentStep: PropTypes.string.isRequired,
 });
 
-export default Orchestrator;
+
+const mapStateToProps = state => ({
+  ...state.modal,
+});
+
+const mapDispatchToProps = dispatch => ({
+  ...bindActionCreators({ openModal, closeModal }, dispatch),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Orchestrator);
