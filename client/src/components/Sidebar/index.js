@@ -116,7 +116,7 @@ const Sidebar = props => (
         <ProfilePic src={anon} alt="profile-picture" />
         <div>
           <FarmerText>{props.farmName}</FarmerText>
-          <FarmerText>{`${props.firstName} ${props.lastName[0]}.`}</FarmerText>
+          <FarmerText>{props.lastName && `${props.firstName} ${props.lastName[0]}.`}</FarmerText>
         </div>
       </SidebarHeader>
       <SidebarNavigation>
