@@ -31,6 +31,10 @@ const ContentContainer = styled.div`
 
 const Content = styled.div`
   margin: 0 80px;
+
+  @media (max-width: 700px) {
+    margin: 10px;
+  }
 `;
 
 const Step = styled.h1`
