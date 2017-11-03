@@ -42,7 +42,9 @@ const Main = styled.div`
 
 class SidebarLayout extends React.Component {
   componentDidMount() {
-    this.props.fetchUser();
+    if (!this.props.farmName) {
+      this.props.fetchUser();
+    }
   }
 
   render() {
@@ -67,6 +69,7 @@ SidebarLayout.propTypes = ({
   children: PropTypes.node.isRequired,
   role: PropTypes.string.isRequired,
   logout: PropTypes.func.isRequired,
+  farmName: PropTypes.string.isRequired,
   fetchUser: PropTypes.func.isRequired,
 });
 
