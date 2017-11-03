@@ -20,18 +20,35 @@ const StyledInput = styled.input`
   width: 310px;
   height: 50px;
   border-radius: 5px;
-  border: solid 1px #c6c9cf;
+  border: solid 1px ${props => (props.isErrored ? '#EEADAD' : '#c6c9cf')};
 
   text-indent: 5%;
 `;
 
+const ErrorText = styled.p`
+  margin-top: 10px;
+  font-family: Montserrat;
+  font-size: 12px;
+  font-weight: lighter;
+  text-align: left;
+  color: #e18c8c;
+
+  &:first-letter {
+    text-transform: capitalize;
+  }
+`;
+
+
 const Input = (props) => {
-  const { title, ...properties } = props;
+  const { title, error, ...properties } = props;
 
   return (
     <InputContainer>
       <StyledTitle>{title}</StyledTitle>
-      <StyledInput {...properties} />
+      <StyledInput {...properties} isErrored={!!error} />
+      {
+        error && <ErrorText>This field is required</ErrorText>
+      }
     </InputContainer>
   );
 };
@@ -39,6 +56,11 @@ const Input = (props) => {
 Input.propTypes = ({
   title: PropTypes.string.isRequired,
   value: PropTypes.string.isRequired,
+  error: PropTypes.string,
+});
+
+Input.defaultProps = ({
+  error: '',
 });
 
 export default Input;
