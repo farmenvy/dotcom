@@ -26,13 +26,55 @@ const Foo = styled.button`
   }
 `;
 
+const Row = styled.div`
+  background-color: papayawhip;
+  width: 100%;
+  padding: 10px;
+  display: flex;
+  justify-content: space-between;
+`;
+
+const Col = styled.div`
+  background-color: dodgerblue;
+  flex: auto;
+  display: flex;
+  flex-direction: column;
+  height: 50px;
+  margin: 0 10px;
+
+  &:nth-child(n+2) {
+    background-color: lightsteelblue;
+  }
+
+`;
+
+const Action = Col.extend`
+  flex: none;
+  margin-left: auto;
+  width: 200px;
+  height: 50px;
+`;
+
+
 const Pickup = props => (
   <div>
     <Foo onClick={() => props.openModal()}>
       Create New Pickup Location
     </Foo>
 
-    <Modal {...props} />
+    <Modal {...props} >
+      <Row>
+        <Col>1</Col>
+        <Col>2</Col>
+      </Row>
+      <Row>
+        <Col>3</Col>
+      </Row>
+
+      <Row>
+        <Action>3</Action>
+      </Row>
+    </Modal>
   </div>
 );
 

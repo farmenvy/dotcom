@@ -1,7 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
-import { Button } from '../common';
 
 const ModalOverlay = styled.div`
   position: fixed;
@@ -21,14 +20,13 @@ const ModalContent = styled.div`
   position: relative;
   border-radius: 5px;
   background: rgba(255, 255, 255, 1);
-  height: 75%;
   margin-top: 10vh;
-  margin-bottom: 10vh;
+  margin-bottom: auto;
   width: 50%;
-  min-width: 650px;
 
   @media (max-width: 700px) {
     width: 100%;
+    margin-bottom: 0;
   }
 `;
 
@@ -49,24 +47,8 @@ const Title = styled.h3`
 `;
 
 const ContentWrapper = styled.div`
-  padding: 30px;
+  margin: 15px;
 `;
-
-const Footer = styled.div`
-  margin: 30px;
-`;
-
-const Action = Button.extend`
-  position: absolute;
-  bottom: 30px;
-  right: 50px;
-
-  @media (max-width: 700px) {
-    margin-right: 100px;
-  }
-
-`;
-
 
 const Modal = (props) => {
   const close = (e) => {
@@ -77,7 +59,8 @@ const Modal = (props) => {
     props.closeModal();
   };
 
-  if (!props.active) {
+  // FIXME
+  if (props.active) {
     return (null);
   }
 
@@ -88,9 +71,7 @@ const Modal = (props) => {
       <ModalContent>
         <TitleContainer><Title>Create New Location</Title></TitleContainer>
         <ContentWrapper>
-          Yo this is content
-
-          <Footer><Action>Next</Action></Footer>
+          {props.children}
         </ContentWrapper>
       </ModalContent>
     </ModalOverlay>
@@ -99,6 +80,7 @@ const Modal = (props) => {
 
 Modal.propTypes = ({
   active: PropTypes.bool.isRequired,
+  children: PropTypes.node.isRequired,
   closeModal: PropTypes.func.isRequired,
 });
 
