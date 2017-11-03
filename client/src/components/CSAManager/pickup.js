@@ -1,5 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
+import PropTypes from 'prop-types';
+import Modal from '../Modal';
+import { Row, Col } from '../common';
 
 const Foo = styled.button`
   height: 45px;
@@ -24,11 +27,38 @@ const Foo = styled.button`
   }
 `;
 
+const Action = Col.extend`
+  flex: none;
+  margin-left: auto;
+  width: 200px;
+  height: 50px;
+`;
 
-const Pickup = () => (
-  <Foo>
-    Create New Pickup Location
-  </Foo>
+
+const Pickup = props => (
+  <div>
+    <Foo onClick={() => props.openModal()}>
+      Create New Pickup Location
+    </Foo>
+
+    <Modal {...props} >
+      <Row>
+        <Col>1</Col>
+        <Col>2</Col>
+      </Row>
+      <Row>
+        <Col>3</Col>
+      </Row>
+
+      <Row>
+        <Action>3</Action>
+      </Row>
+    </Modal>
+  </div>
 );
+
+Pickup.propTypes = ({
+  openModal: PropTypes.func.isRequired,
+});
 
 export default Pickup;

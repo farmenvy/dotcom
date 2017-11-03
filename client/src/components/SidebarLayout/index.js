@@ -33,10 +33,10 @@ const MainContainer = styled.div`
 const Main = styled.div`
   background: #ffffff;
   flex-grow: 1;
+  margin-left: 25%;
 
   @media (max-width: 700px) {
-    margin-top: 0;
-    padding-top: 25px;
+    margin: 0;
   }
 `;
 

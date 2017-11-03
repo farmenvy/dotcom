@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import StepProgressBar from '../StepProgressBar';
+import { Button } from '../common';
 import Orchestrator from './orchestrator';
 import { nextStep, prevStep, STEPS } from '../../interactions/manageCSA';
 
@@ -11,6 +12,7 @@ import { nextStep, prevStep, STEPS } from '../../interactions/manageCSA';
 const ManagerContainer = styled.div`
   display: flex;
   flex-direction: column;
+  background-color: #ffffff;
   width: 100%;
   height: 100vh;
 `;
@@ -20,10 +22,19 @@ const ProgressContainer = styled.div`
   margin-top: 5vh;
 `;
 
-const Content = styled.div`
-  flex: 1 1 auto;
+
+const ContentContainer = styled.div`
+  flex: auto;
+  text-align: left;
   position: relative;/* need this to position inner content */
-  padding: 20px 80px;
+`;
+
+const Content = styled.div`
+  margin: 0 80px;
+
+  @media (max-width: 700px) {
+    margin: 10px;
+  }
 `;
 
 const Step = styled.h1`
@@ -39,17 +50,6 @@ const Footer = styled.div`
   background-color: #f2f3f4;
   display: flex;
   justify-content: space-between;
-`;
-
-const Button = styled.button`
-  width: 170px;
-  height: 45px;
-  border-radius: 5px;
-  background-color: #33658a;
-  color: #fff;
-  font-weight: bold;
-  border: none;
-  outline: none;
 `;
 
 const NextStepButton = Button.extend`
@@ -68,37 +68,65 @@ const OrchestratorContainer = styled.div`
 `;
 
 
-const CSAManager = (props) => {
-  const currentStep = STEPS[props.activeIndex];
+class CSAManager extends React.Component {
+  constructor(props) {
+    super(props);
+    this.handleArrowPress = this.handleArrowPress.bind(this);
+  }
 
-  return (
-    <ManagerContainer>
-      <ProgressContainer>
-        <StepProgressBar steps={STEPS} {...props} />
-      </ProgressContainer>
-      <Content>
-        <Step>{`Step ${props.activeIndex + 1}: ${currentStep}`}</Step>
-        <OrchestratorContainer>
-          <Orchestrator currentStep={currentStep} />
-        </OrchestratorContainer>
-      </Content>
+  componentDidMount() {
+    window.addEventListener('keyup', this.handleArrowPress);
+  }
 
-      <Footer>
-        {props.activeIndex > 0 && (
+  componentWillUnmount() {
+    window.removeEventListener('keyup', this.handleArrowPress);
+  }
 
-          <PrevStepButton onClick={() => props.prevStep()}>Previous Step</PrevStepButton>
-        )}
+  handleArrowPress(e) {
+    switch (e.key) {
+      case 'ArrowRight':
+        this.props.nextStep();
+        break;
+      case 'ArrowLeft':
+        this.props.prevStep();
+        break;
+      default:
+    }
+  }
 
-        {props.activeIndex < STEPS.length - 1 ? (
-          <NextStepButton onClick={() => props.nextStep()}>Next Step</NextStepButton>
-        ) : (
-          <NextStepButton onClick={() => console.log('click')}>Create CSA</NextStepButton>
-        )}
-      </Footer>
-    </ManagerContainer>
-  );
-};
+  render() {
+    const currentStep = STEPS[this.props.activeIndex];
 
+    return (
+      <ManagerContainer>
+        <ProgressContainer>
+          <StepProgressBar steps={STEPS} {...this.props} />
+        </ProgressContainer>
+        <ContentContainer>
+          <Content>
+            <Step>{`Step ${this.props.activeIndex + 1}: ${currentStep}`}</Step>
+            <OrchestratorContainer>
+              <Orchestrator currentStep={currentStep} />
+            </OrchestratorContainer>
+          </Content>
+        </ContentContainer>
+
+        <Footer>
+          {this.props.activeIndex > 0 && (
+
+            <PrevStepButton onClick={() => this.props.prevStep()}>Previous Step</PrevStepButton>
+          )}
+
+          {this.props.activeIndex < STEPS.length - 1 ? (
+            <NextStepButton onClick={() => this.props.nextStep()}>Next Step</NextStepButton>
+          ) : (
+            <NextStepButton onClick={() => console.log('click')}>Create CSA</NextStepButton>
+          )}
+        </Footer>
+      </ManagerContainer>
+    );
+  }
+}
 
 CSAManager.propTypes = ({
   title: PropTypes.string.isRequired,

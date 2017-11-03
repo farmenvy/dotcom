@@ -1,9 +1,14 @@
 @import url('https://fonts.googleapis.com/css?family=Open+Sans:300,400');
+@import url('https://fonts.googleapis.com/css?family=Montserrat:300,400');
 
 body {
   font-family: 'Open Sans', sans-serif;
   text-align: center;
   background-color: #f1f8f3;
+}
+
+input {
+  outline: none;
 }
 
 input:focus {
