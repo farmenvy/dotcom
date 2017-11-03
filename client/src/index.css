@@ -6,6 +6,10 @@ body {
   background-color: #f1f8f3;
 }
 
+input {
+  outline: none;
+}
+
 input:focus {
   border-color: #4D8BB8;
 }

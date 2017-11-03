@@ -3,12 +3,13 @@ import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { openModal, closeModal } from '../../interactions/modal';
+import Basics from './basics';
 import Pickup from './pickup';
 
 const getCurrentComponent = (currentStep) => {
   switch (currentStep) {
     case 'basics':
-      return (Pickup);
+      return (Basics);
     case 'pickup':
       return (Pickup);
     case 'bags':

@@ -1,5 +1,7 @@
 import styled from 'styled-components';
 
+export { default as Input } from './input';
+
 export const Button = styled.button`
   width: 170px;
   height: 45px;
@@ -10,3 +12,4 @@ export const Button = styled.button`
   border: none;
   outline: none;
 `;
+

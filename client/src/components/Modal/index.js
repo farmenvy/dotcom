@@ -59,8 +59,7 @@ const Modal = (props) => {
     props.closeModal();
   };
 
-  // FIXME
-  if (props.active) {
+  if (!props.active) {
     return (null);
   }
 
