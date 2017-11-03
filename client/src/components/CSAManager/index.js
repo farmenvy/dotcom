@@ -21,11 +21,16 @@ const ProgressContainer = styled.div`
   margin-top: 5vh;
 `;
 
-const Content = styled.div`
-  flex: 1 1 auto;
+
+const ContentContainer = styled.div`
+  flex: auto;
   text-align: left;
   position: relative;/* need this to position inner content */
-  padding: 10px 80px;
+  background-color: #ffffff
+`;
+
+const Content = styled.div`
+  margin: 0 80px;
 `;
 
 const Step = styled.h1`
@@ -67,12 +72,14 @@ const CSAManager = (props) => {
       <ProgressContainer>
         <StepProgressBar steps={STEPS} {...props} />
       </ProgressContainer>
-      <Content>
-        <Step>{`Step ${props.activeIndex + 1}: ${currentStep}`}</Step>
-        <OrchestratorContainer>
-          <Orchestrator currentStep={currentStep} />
-        </OrchestratorContainer>
-      </Content>
+      <ContentContainer>
+        <Content>
+          <Step>{`Step ${props.activeIndex + 1}: ${currentStep}`}</Step>
+          <OrchestratorContainer>
+            <Orchestrator currentStep={currentStep} />
+          </OrchestratorContainer>
+        </Content>
+      </ContentContainer>
 
       <Footer>
         {props.activeIndex > 0 && (
