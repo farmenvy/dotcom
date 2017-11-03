@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import Modal from '../Modal';
+import { Row, Col } from '../common';
 
 const Foo = styled.button`
   height: 45px;
@@ -24,28 +25,6 @@ const Foo = styled.button`
     border: solid 1px #379f77;
     border-radius: 100%;
   }
-`;
-
-const Row = styled.div`
-  background-color: papayawhip;
-  width: 100%;
-  padding: 10px;
-  display: flex;
-  justify-content: space-between;
-`;
-
-const Col = styled.div`
-  background-color: dodgerblue;
-  flex: auto;
-  display: flex;
-  flex-direction: column;
-  height: 50px;
-  margin: 0 10px;
-
-  &:nth-child(n+2) {
-    background-color: lightsteelblue;
-  }
-
 `;
 
 const Action = Col.extend`

@@ -6,15 +6,17 @@ import logo from '../../assets/imgs/white-logo.svg';
 import anon from '../../assets/imgs/anon.svg';
 
 const SidebarWrapper = styled.div`
-  position: relative;
+  position: fixed;
+  overflow: auto;
   text-align: left;
   background-color: #339871;
   color: #ffffff;
   width: 25%;
   min-width: 250px;
+  height: 100vh;
 
   @media (max-width: 700px) {
-    width: 100%;
+    display: none;
   }
 `;
 
@@ -65,18 +67,17 @@ const NavItem = styled(NavLink)`
   }
 `;
 
+const LogoContainer = styled.div`
+   display: flex;
+   justify-content: center;
+   position: relative;
+`;
+
 const Logo = styled.img`
-  display: block;
-  position: absolute;
-  margin-left: auto;
-  margin-right: auto;
-  left: 0;
-  right: 0;
-  bottom: 2em;
-  width: 30%;
+  height: 100px;
+  width: 100px;
 
   @media (max-width: 700px) {
-    position: relative;
     bottom: 0;
     width: 30%;
     max-height: 55px;
@@ -120,7 +121,7 @@ const Sidebar = props => (
           <FarmerText>{props.lastName && `${props.firstName} ${props.lastName[0]}.`}</FarmerText>
         </div>
       </SidebarHeader>
-      <SidebarNavigation>
+      <SidebarNavigation id="pickme">
         <NavHeader>Menu</NavHeader>
         <NavItem exact to="/overview">Overview</NavItem>
         <NavItem exact to="/manage" disabled={!isEnabled}>CSA Manager</NavItem>
@@ -132,7 +133,9 @@ const Sidebar = props => (
         <NavItem exact to="/" onClick={() => props.logout()}>Logout</NavItem>
       </SidebarNavigation>
     </SidebarContainer>
-    <Link to="/?noredirect"><Logo src={logo} alt="logo" /></Link>
+    <LogoContainer>
+      <Link to="/?noredirect"><Logo src={logo} alt="logo" /></Link>
+    </LogoContainer>
   </SidebarWrapper>
 );
 

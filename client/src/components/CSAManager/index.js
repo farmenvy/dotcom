@@ -23,8 +23,9 @@ const ProgressContainer = styled.div`
 
 const Content = styled.div`
   flex: 1 1 auto;
+  text-align: left;
   position: relative;/* need this to position inner content */
-  padding: 20px 80px;
+  padding: 10px 80px;
 `;
 
 const Step = styled.h1`
