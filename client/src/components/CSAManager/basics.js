@@ -19,7 +19,6 @@ const Basics = () => (
           type="text"
           title="When does this CSA begin?"
           value="Spring 2018"
-          error="this field is required"
           readOnly
         />
       </Col>
@@ -29,7 +28,6 @@ const Basics = () => (
           type="text"
           title="When does this CSA begin?"
           value="Spring 2018"
-          error="this field is required"
           readOnly
         />
       </Col>
@@ -40,7 +38,6 @@ const Basics = () => (
         type="text"
         title="Does this CSA offer weekly, biweekly, or both?"
         value="Spring 2018"
-        error="this field is required"
         readOnly
       />
     </Row>

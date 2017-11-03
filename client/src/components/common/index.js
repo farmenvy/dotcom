@@ -14,9 +14,8 @@ export const Button = styled.button`
 `;
 
 export const Row = styled.div`
-  background-color: papayawhip;
   width: 100%;
-  padding: 10px;
+  margin-bottom: 30px;
   display: flex;
   justify-content: space-between;
 `;
@@ -25,5 +24,4 @@ export const Col = styled.div`
   flex: auto;
   display: flex;
   flex-direction: column;
-  margin: 0 10px;
 `;

@@ -5,6 +5,7 @@ import styled from 'styled-components';
 
 const InputContainer = styled.div`
   display: inline-block;
+  width: 100%;
 `;
 
 const StyledTitle = styled.p`
@@ -17,8 +18,9 @@ const StyledTitle = styled.p`
 `;
 
 const StyledInput = styled.input`
-  width: 310px;
   height: 50px;
+  width: 100%;
+  max-width: 310px;
   border-radius: 5px;
   border: solid 1px ${props => (props.isErrored ? '#EEADAD' : '#c6c9cf')};
 
@@ -27,6 +29,7 @@ const StyledInput = styled.input`
 
 const ErrorText = styled.p`
   margin-top: 10px;
+  margin-bottom: -10px;
   font-family: Montserrat;
   font-size: 12px;
   font-weight: lighter;
