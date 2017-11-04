@@ -9,13 +9,13 @@ gem 'rails', '~> 5.1.4'
 
 gem 'active_model_serializers', '~> 0.10.0'
 gem 'bcrypt', '~> 3.1.7'
+gem 'httparty'
 gem 'interactor'
 gem 'jwt'
 gem 'pg', '~> 0.18'
 gem 'pry-rails'
 gem 'puma', '~> 3.7'
 gem 'sucker_punch'
-gem 'httparty'
 
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
