@@ -17,7 +17,7 @@ class NotifyUserSignup
 
   def call
     context.fail!(error: 'no user') unless context.user
-    GrowBotNotify.call(payload: payload)
+    GrowBotNotify.call(json: payload)
   end
 
   def payload
