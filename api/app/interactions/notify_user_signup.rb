@@ -2,29 +2,32 @@ class NotifyUserSignup
   include Interactor
 
   PAYLOAD = <<~HERE.freeze
-    {
-      attachments: [
-        {
-          fallback: '%<fallback>s',
-          color: 'good',
-          title: '%<title>s',
-          text: '%<text>s',
-          fields: '%<fields>s'
-        }
-      ]
-    }
   HERE
 
   def call
     context.fail!(error: 'no user') unless context.user
-    GrowBotNotify.call(json: payload)
-  end
-
-  def payload
-    format(PAYLOAD, fallback: fallback, title: title, text: text, fields: fields)
+    GrowBotNotify.call(payload: payload)
   end
 
   private
+
+  def payload
+    context.payload ||= build_payload
+  end
+
+  def build_payload
+    {
+      attachments: [
+        {
+          fallback: fallback,
+          color: 'good',
+          title: title,
+          text: text,
+          fields: fields
+        }
+      ]
+    }
+  end
 
   def user
     context.user

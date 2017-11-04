@@ -5,7 +5,7 @@ class GrowBotNotify
 
   def call
     validate_args
-    res = HTTParty.post(GROWBOT_URL, body: context.json)
+    res = HTTParty.post(GROWBOT_URL, body: context.payload.to_json)
     context.response = res.body
 
     context.fail! unless res.success?
@@ -14,7 +14,7 @@ class GrowBotNotify
   private
 
   def validate_args
-    context.fail!(error: 'no payload') unless context.json
+    context.fail!(error: 'no payload') unless context.payload
     context.fail!(error: 'not production') unless Rails.env.production?
   end
 end
