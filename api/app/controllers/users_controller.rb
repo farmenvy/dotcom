@@ -7,6 +7,7 @@ class UsersController < ApplicationController
       SendVerificationEmailJob.perform_later(user)
 
       render json: user, status: :created
+      NotifyUserSignup.call(user: user)
     else
       render json: { errors: user.errors }, status: :unprocessable_entity
     end
