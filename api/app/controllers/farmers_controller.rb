@@ -4,6 +4,7 @@ class FarmersController < ApplicationController
   def create
     user = User.new(user_params.merge(role: 'farmer'))
     if user.save
+      NotifyNewUserJob.perform_later(user)
       SendVerificationEmailJob.perform_later(user)
 
       render json: {
