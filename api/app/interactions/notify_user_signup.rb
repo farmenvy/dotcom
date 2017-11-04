@@ -5,11 +5,11 @@ class NotifyUserSignup
     {
       attachments: [
         {
-          fallback: %<fallback>s,
+          fallback: '%<fallback>s',
           color: 'good',
-          title: %<title>s,
-          text: %<text>s,
-          fields: %<fields>s
+          title: '%<title>s',
+          text: '%<text>s',
+          fields: '%<fields>s'
         }
       ]
     }
