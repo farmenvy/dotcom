@@ -6,9 +6,7 @@ class UsersController < ApplicationController
     if user.save
       SendVerificationEmailJob.perform_later(user)
 
-      render json: {
-        user: user.as_json.except('password_digest')
-      }, status: :created
+      render json: user, status: :created
     else
       render json: { errors: user.errors }, status: :unprocessable_entity
     end
