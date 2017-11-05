@@ -1,10 +1,11 @@
+/* eslint-disable */
 import React from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import FlatButton from 'material-ui/FlatButton';
 import StepProgressBar from '../StepProgressBar';
-import { Button } from '../common';
 import Orchestrator from './orchestrator';
 import { nextStep, prevStep, STEPS } from '../../interactions/manageCSA';
 
@@ -12,9 +13,7 @@ import { nextStep, prevStep, STEPS } from '../../interactions/manageCSA';
 const ManagerContainer = styled.div`
   display: flex;
   flex-direction: column;
-  background-color: #ffffff;
   width: 100%;
-  height: 100vh;
 `;
 
 const ProgressContainer = styled.div`
@@ -26,7 +25,7 @@ const ProgressContainer = styled.div`
 const ContentContainer = styled.div`
   flex: auto;
   text-align: left;
-  position: relative;/* need this to position inner content */
+  margin-top: 20px;
 `;
 
 const Content = styled.div`
@@ -45,18 +44,18 @@ const Step = styled.h1`
 `;
 
 const Footer = styled.div`
-  flex: 0 0 auto;
-  padding: 15px 30px;
-  background-color: #f2f3f4;
+  border-top: 1px solid ${props => props.theme.grey2};
+  padding-top: 8px;
+  margin: 30px 0px 10px 0px;
   display: flex;
   justify-content: space-between;
 `;
 
-const NextStepButton = Button.extend`
+const NextStepButton = styled.span`
   margin-left: auto;
 `;
 
-const PrevStepButton = Button.extend`
+const PrevStepButton = styled.span`
   background-color: #ffffff;
   border: 1px solid #C6CACF;
   color: #474B4F;
@@ -112,16 +111,18 @@ class CSAManager extends React.Component {
         </ContentContainer>
 
         <Footer>
-          {this.props.activeIndex > 0 && (
-
-            <PrevStepButton onClick={() => this.props.prevStep()}>Previous Step</PrevStepButton>
-          )}
-
-          {this.props.activeIndex < STEPS.length - 1 ? (
-            <NextStepButton onClick={() => this.props.nextStep()}>Next Step</NextStepButton>
-          ) : (
-            <NextStepButton onClick={() => console.log('click')}>Create CSA</NextStepButton>
-          )}
+          <FlatButton
+            label="Back"
+            style={{ marginLeft: '10px' }}
+            primary
+            onClick={() => this.props.prevStep()}
+          />
+          <FlatButton
+            label="Continue"
+            style={{ marginRight: '10px' }}
+            primary
+            onClick={() => this.props.nextStep()}
+          />
         </Footer>
       </ManagerContainer>
     );

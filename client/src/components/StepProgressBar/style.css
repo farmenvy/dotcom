@@ -1,5 +1,6 @@
 .progressbar {
   padding: 0;
+  box-shadow: none;
 }
 
 .progressbar li {
