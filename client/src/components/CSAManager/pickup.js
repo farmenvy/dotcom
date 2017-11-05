@@ -7,10 +7,12 @@ import { Row, Col } from '../common';
 const Foo = styled.button`
   height: 45px;
   width: 100%;
-  border-radius: 4px;
-  background-color: rgba(241, 245, 241, 0.25);
-  border: solid 1px #e5f0e7;
+  background-color: #fafafa;
+  border-radius: 2px;
   outline: none;
+  box-shadow: 0 0 2px rgba(0,0,0,0.12), 0 2px 2px rgba(0,0,0,0.24);
+  border: none;
+
 
   &:before {
     content: '+';
@@ -24,10 +26,6 @@ const Foo = styled.button`
     color: #379f77;
     border: solid 1px #379f77;
     border-radius: 100%;
-  }
-
-  &:hover {
-    border: solid 2px ${props => props.theme.grey1};
   }
 `;
 
