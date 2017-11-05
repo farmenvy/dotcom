@@ -5,7 +5,7 @@ import RaisedButton from 'material-ui/RaisedButton';
 import SelectField from 'material-ui/SelectField';
 import TimePicker from 'material-ui/TimePicker';
 import MenuItem from 'material-ui/MenuItem';
-import { Row, Col } from '../common';
+import { Row, Col, Card } from '../common';
 
 // const Foo = styled.button`
 //   height: 45px;
@@ -34,7 +34,7 @@ import { Row, Col } from '../common';
 //
 
 const PickupForm = () => (
-  <div>
+  <Card>
 
     <Row>
       <Col>
@@ -79,11 +79,14 @@ const PickupForm = () => (
     </Row>
 
     <RaisedButton label="Save" style={{ margin: '20px 0 10px 0' }} primary fullWidth />
-  </div>
+  </Card>
 );
 
 const Pickup = () => (
-  <PickupForm />
+  <div>
+    <PickupForm />
+    <PickupForm />
+  </div>
 );
 
 export default Pickup;

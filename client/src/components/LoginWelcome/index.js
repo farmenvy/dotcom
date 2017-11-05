@@ -1,7 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
 import success from '../../assets/imgs/success.svg';
-import { Card } from '../common';
 
 const Logo = styled.img`
   margin-bottom: 30px;
@@ -22,14 +21,12 @@ const Container = styled.div`
 
 
 const LoginWelcome = () => (
-  <Card>
-    <Container>
-      <Logo src={success} alt="success" />
-      <Text>Welcome to Farm Envy!</Text>
-      <Text>For now, this is just a landing page.</Text>
-      <Text>We&#39;ll send you an update as new features are unlocked.</Text>
-    </Container>
-  </Card>
+  <Container>
+    <Logo src={success} alt="success" />
+    <Text>Welcome to Farm Envy!</Text>
+    <Text>For now, this is just a landing page.</Text>
+    <Text>We&#39;ll send you an update as new features are unlocked.</Text>
+  </Container>
 );
 
 export default LoginWelcome;

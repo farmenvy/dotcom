@@ -42,7 +42,6 @@ const Step = styled.h1`
 `;
 
 const Footer = styled.div`
-  padding: 6px 0 6px 0;
   display: flex;
   justify-content: space-between;
 `;
@@ -100,18 +99,16 @@ class CSAManager extends React.Component {
         </Card>
 
         <Step>{`Step ${this.props.activeIndex + 1}: ${currentStep}`}</Step>
-        <Card>
-          <ContentContainer>
-            <Content>
-              <OrchestratorContainer>
-                <Orchestrator currentStep={currentStep} />
-              </OrchestratorContainer>
-            </Content>
-          </ContentContainer>
-
-        </Card>
+        <ContentContainer>
+          <Content>
+            <OrchestratorContainer>
+              <Orchestrator currentStep={currentStep} />
+            </OrchestratorContainer>
+          </Content>
+        </ContentContainer>
 
         <Card>
+
           <Footer>
             <FlatButton
               label="Back"
