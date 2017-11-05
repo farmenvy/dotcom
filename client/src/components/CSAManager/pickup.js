@@ -25,6 +25,10 @@ const Foo = styled.button`
     border: solid 1px #379f77;
     border-radius: 100%;
   }
+
+  &:hover {
+    border: solid 2px ${props => props.theme.grey1};
+  }
 `;
 
 const Action = Col.extend`
