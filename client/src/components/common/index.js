@@ -25,3 +25,10 @@ export const Col = styled.div`
   display: flex;
   flex-direction: column;
 `;
+
+export const Card = styled.div`
+  background: #ffffff;
+  box-shadow: 0 0 2px rgba(0,0,0,0.12), 0 2px 2px rgba(0,0,0,0.24);
+  margin: 8px 0 8px 0;
+  padding: 8px 30px;
+`;

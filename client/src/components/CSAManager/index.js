@@ -7,6 +7,7 @@ import { bindActionCreators } from 'redux';
 import FlatButton from 'material-ui/FlatButton';
 import StepProgressBar from '../StepProgressBar';
 import Orchestrator from './orchestrator';
+import { Card } from '../common';
 import { nextStep, prevStep, STEPS } from '../../interactions/manageCSA';
 
 
@@ -25,12 +26,9 @@ const ProgressContainer = styled.div`
 const ContentContainer = styled.div`
   flex: auto;
   text-align: left;
-  margin-top: 20px;
 `;
 
 const Content = styled.div`
-  margin: 0 80px;
-
   @media (max-width: 700px) {
     margin: 10px;
   }
@@ -44,9 +42,7 @@ const Step = styled.h1`
 `;
 
 const Footer = styled.div`
-  border-top: 1px solid ${props => props.theme.grey2};
-  padding-top: 8px;
-  margin: 30px 0px 10px 0px;
+  padding: 10px 0 10px 0;
   display: flex;
   justify-content: space-between;
 `;
@@ -63,7 +59,6 @@ const PrevStepButton = styled.span`
 `;
 
 const OrchestratorContainer = styled.div`
-  margin-top: 30px;
 `;
 
 
@@ -98,32 +93,35 @@ class CSAManager extends React.Component {
 
     return (
       <ManagerContainer>
-        <ProgressContainer>
-          <StepProgressBar steps={STEPS} {...this.props} />
-        </ProgressContainer>
-        <ContentContainer>
-          <Content>
-            <Step>{`Step ${this.props.activeIndex + 1}: ${currentStep}`}</Step>
-            <OrchestratorContainer>
-              <Orchestrator currentStep={currentStep} />
-            </OrchestratorContainer>
-          </Content>
-        </ContentContainer>
+        <Card>
+          <ProgressContainer>
+            <StepProgressBar steps={STEPS} {...this.props} />
+          </ProgressContainer>
+        </Card>
+
+        <Card>
+          <ContentContainer>
+            <Content>
+              <Step>{`Step ${this.props.activeIndex + 1}: ${currentStep}`}</Step>
+              <OrchestratorContainer>
+                <Orchestrator currentStep={currentStep} />
+              </OrchestratorContainer>
+            </Content>
+          </ContentContainer>
 
         <Footer>
           <FlatButton
             label="Back"
-            style={{ marginLeft: '10px' }}
             primary
             onClick={() => this.props.prevStep()}
           />
           <FlatButton
             label="Continue"
-            style={{ marginRight: '10px' }}
             primary
             onClick={() => this.props.nextStep()}
           />
         </Footer>
+      </Card>
       </ManagerContainer>
     );
   }

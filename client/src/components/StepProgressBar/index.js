@@ -9,7 +9,6 @@ const ProgressContainer = styled.div`
   flex-wrap: nowrap;
   text-transform: capitalize;
   border-radius: 2px;
-  box-shadow: 0 1px 1px rgba(0,0,0,0.12);
   padding-bottom: 10px;
 `;
 
