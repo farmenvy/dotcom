@@ -5,11 +5,14 @@ import DatePicker from 'material-ui/DatePicker';
 import TextField from 'material-ui/TextField';
 import { Row, Col } from '../common';
 
+const currentYear = (new Date()).getFullYear();
+
 const Basics = () => (
   <div>
     <Row>
       <TextField
         floatingLabelText="CSA name"
+        hintText={`${currentYear} CSA`}
       />
     </Row>
 
@@ -24,22 +27,13 @@ const Basics = () => (
     </Row>
 
     <Row>
-      <TextField
-        hintText="Password Field"
-        floatingLabelText="Password"
-        type="password"
-      />
-
       <SelectField
-        floatingLabelText="Frequency"
-        value="2"
+        floatingLabelText="Pickup Frequency"
+        value=""
         multiple
       >
-        <MenuItem value={1} primaryText="Never" />
-        <MenuItem value={2} primaryText="Every Night" />
-        <MenuItem value={3} primaryText="Weeknights" />
-        <MenuItem value={4} primaryText="Weekends" />
-        <MenuItem value={5} primaryText="Weekly" />
+        <MenuItem value={1} primaryText="Weekly" />
+        <MenuItem value={2} primaryText="Bi-Weekly" />
       </SelectField>
     </Row>
   </div>
