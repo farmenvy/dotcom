@@ -15,7 +15,6 @@ export const Button = styled.button`
 
 export const Row = styled.div`
   width: 100%;
-  margin-bottom: 30px;
   display: flex;
   justify-content: space-between;
 `;
@@ -29,6 +28,6 @@ export const Col = styled.div`
 export const Card = styled.div`
   background: #ffffff;
   box-shadow: 0 0 2px rgba(0,0,0,0.12), 0 2px 2px rgba(0,0,0,0.24);
-  margin: 8px 0 8px 0;
+  margin: 6px 0 6px 0;
   padding: 8px 30px;
 `;

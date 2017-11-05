@@ -25,7 +25,7 @@ const Container = styled.div`
 const MainContainer = styled.div`
   display: flex;
   border-radius: 2px;
-  margin: 20px;
+  margin: 10px 20px;
   align-items: center;
   justify-content: center;
   flex-direction: column;

@@ -42,7 +42,7 @@ const Step = styled.h1`
 `;
 
 const Footer = styled.div`
-  padding: 10px 0 10px 0;
+  padding: 6px 0 6px 0;
   display: flex;
   justify-content: space-between;
 `;
@@ -99,29 +99,32 @@ class CSAManager extends React.Component {
           </ProgressContainer>
         </Card>
 
+        <Step>{`Step ${this.props.activeIndex + 1}: ${currentStep}`}</Step>
         <Card>
           <ContentContainer>
             <Content>
-              <Step>{`Step ${this.props.activeIndex + 1}: ${currentStep}`}</Step>
               <OrchestratorContainer>
                 <Orchestrator currentStep={currentStep} />
               </OrchestratorContainer>
             </Content>
           </ContentContainer>
 
-        <Footer>
-          <FlatButton
-            label="Back"
-            primary
-            onClick={() => this.props.prevStep()}
-          />
-          <FlatButton
-            label="Continue"
-            primary
-            onClick={() => this.props.nextStep()}
-          />
-        </Footer>
-      </Card>
+        </Card>
+
+        <Card>
+          <Footer>
+            <FlatButton
+              label="Back"
+              primary
+              onClick={() => this.props.prevStep()}
+            />
+            <FlatButton
+              label="Continue"
+              primary
+              onClick={() => this.props.nextStep()}
+            />
+          </Footer>
+        </Card>
       </ManagerContainer>
     );
   }
