@@ -1,5 +1,5 @@
 import React from 'react';
-// import styled from 'styled-components';
+import styled from 'styled-components';
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
 // import FlatButton from 'material-ui/FlatButton';
@@ -8,6 +8,11 @@ import TimePicker from 'material-ui/TimePicker';
 import MenuItem from 'material-ui/MenuItem';
 import FloatingActionButton from 'material-ui/FloatingActionButton';
 import ContentAdd from 'material-ui/svg-icons/content/add';
+import Divider from 'material-ui/Divider';
+import Avatar from 'material-ui/Avatar';
+import ActionEdit from 'material-ui/svg-icons/content/create';
+import { List, ListItem } from 'material-ui/List';
+import Location from 'material-ui/svg-icons/communication/location-on';
 import { Row, Col, Card, Title, CardContainer } from '../common';
 
 // const Foo = styled.button`
@@ -85,16 +90,41 @@ const PickupForm = () => (
   </Card>
 );
 
+
 const shouldShow = !!window.localStorage.getItem('foo');
+
+const FAB = styled.div`
+  display: flex;
+  justify-content: center;
+`;
 
 const Pickup = () => (
   <CardContainer>
     { shouldShow && <PickupForm /> }
 
     <Title>Pickup Locations</Title>
-    <FloatingActionButton mini secondary >
-      <ContentAdd />
-    </FloatingActionButton>
+
+    <Divider inset />
+    <List>
+      <ListItem
+        leftAvatar={<Avatar icon={<Location />} backgroundColor="orange" />}
+        rightIcon={<ActionEdit />}
+        primaryText="Atherton Market"
+        secondaryText="456 Gingerbread Lane"
+      />
+      <ListItem
+        leftAvatar={<Avatar icon={<Location />} backgroundColor="orange" />}
+        rightIcon={<ActionEdit />}
+        primaryText="The Farm"
+        secondaryText="123 Foobar Ave"
+      />
+    </List>
+
+    <FAB>
+      <FloatingActionButton mini >
+        <ContentAdd />
+      </FloatingActionButton>
+    </FAB>
   </CardContainer>
 );
 
