@@ -1,19 +1,15 @@
 import React from 'react';
-import styled from 'styled-components';
 import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
 import DatePicker from 'material-ui/DatePicker';
 import TextField from 'material-ui/TextField';
 import { Row, Col } from '../common';
+import WizardLayout from '../WizardLayout';
 
 const currentYear = (new Date()).getFullYear();
 
-const Wrapper = styled.div`
-  padding-bottom: 30px;
-`;
-
 const Basics = () => (
-  <Wrapper>
+  <WizardLayout>
     <Row>
       <TextField
         floatingLabelText="CSA name"
@@ -41,7 +37,7 @@ const Basics = () => (
         <MenuItem value={2} primaryText="Bi-Weekly" />
       </SelectField>
     </Row>
-  </Wrapper>
+  </WizardLayout>
 );
 
 export default Basics;

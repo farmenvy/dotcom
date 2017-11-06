@@ -5,7 +5,7 @@ const PREV_STEP_CLICK = 'PREV_STEP_CLICK';
 
 export const STEPS = [
   'basics',
-  'pickup',
+  'pickups',
   'bags',
   'extras',
   'members',
