@@ -7,7 +7,6 @@ import SelectField from 'material-ui/SelectField';
 import TimePicker from 'material-ui/TimePicker';
 import MenuItem from 'material-ui/MenuItem';
 import { Row, Col, Card } from '../common';
-import WizardLayout from '../WizardLayout';
 
 // const Foo = styled.button`
 //   height: 45px;
@@ -93,13 +92,13 @@ const NewButtonWrapper = styled.div`
 
 
 const Pickup = () => (
-  <WizardLayout>
+  <div>
     { shouldShow && <PickupForm /> }
 
     <NewButtonWrapper>
       <FlatButton label="Create Pickup Location" primary fullWidth />
     </NewButtonWrapper>
-  </WizardLayout>
+  </div>
 );
 
 export default Pickup;

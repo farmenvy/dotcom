@@ -3,7 +3,6 @@ import { ThemeProvider } from 'styled-components';
 import { MuiThemeProvider } from 'material-ui/styles';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import {
-  pinkA200,
   grey100, grey300, grey400, grey500,
   white, darkBlack, fullBlack,
 } from 'material-ui/styles/colors';
@@ -35,7 +34,7 @@ const muiTheme = getMuiTheme({
     primary1Color: colors.blue,
     primary2Color: colors.darkestBlue,
     primary3Color: grey400,
-    accent1Color: pinkA200,
+    accent1Color: '#FCBE45',
     accent2Color: grey100,
     accent3Color: grey500,
     textColor: darkBlack,

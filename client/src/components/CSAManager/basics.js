@@ -4,16 +4,12 @@ import MenuItem from 'material-ui/MenuItem';
 import DatePicker from 'material-ui/DatePicker';
 import TextField from 'material-ui/TextField';
 import { Row, Col } from '../common';
-import WizardLayout from '../WizardLayout';
-
-const currentYear = (new Date()).getFullYear();
 
 const Basics = () => (
-  <WizardLayout>
+  <div>
     <Row>
       <TextField
         floatingLabelText="CSA name"
-        hintText={`${currentYear} CSA`}
       />
     </Row>
 
@@ -37,7 +33,7 @@ const Basics = () => (
         <MenuItem value={2} primaryText="Bi-Weekly" />
       </SelectField>
     </Row>
-  </WizardLayout>
+  </div>
 );
 
 export default Basics;
