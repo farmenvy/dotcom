@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import RaisedButton from 'material-ui/RaisedButton';
+import FlatButton from 'material-ui/FlatButton';
 import StepProgressBar from '../StepProgressBar';
 import {Tabs, Tab} from 'material-ui/Tabs';
 import { Card } from '../common';
@@ -53,6 +54,12 @@ const Step = styled.h1`
   font-weight: 600;
   text-align: left;
   text-transform: capitalize;
+`;
+
+const ButtonContainer = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  padding: 8px;
 `;
 
 const Footer = styled.div`
@@ -107,6 +114,18 @@ class WizardLayout extends React.Component {
               <div>
                 <h2 style={styles.headline}>Basic CSA Information</h2>
                 <Basics />
+                <ButtonContainer>
+                  <FlatButton
+                    label="Cancel"
+                    primary
+                    onClick={() => this.props.nextStep()}
+                  />
+                  <RaisedButton
+                    label="Save"
+                    primary
+                    onClick={() => this.props.nextStep()}
+                  />
+                </ButtonContainer>
               </div>
             </Tab>
             <Tab label="Pickups" >
