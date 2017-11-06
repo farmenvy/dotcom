@@ -60,7 +60,11 @@ const Basics = (props) => {
         </SelectField>
       </CardContainer>
 
-      <ContinueContainer showIndicator={!!props.id} inProgress={props.asynchronous} />
+      <ContinueContainer
+        showIndicator={!!props.id}
+        inProgress={props.asynchronous}
+        continue={props.continue}
+      />
     </div>
   );
 };
@@ -70,6 +74,7 @@ Basics.propTypes = ({
   updateCSAStartDate: PropTypes.func.isRequired,
   updateCSAEndDate: PropTypes.func.isRequired,
   updateCSAFreq: PropTypes.func.isRequired,
+  continue: PropTypes.func.isRequired,
   saveCSABasics: PropTypes.func.isRequired, // eslint-disable-line
   name: PropTypes.string.isRequired,
   id: PropTypes.string.isRequired,

@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import styled from 'styled-components';
 import { Tabs, Tab } from 'material-ui/Tabs';
 import { Card } from '../common';
+import { STEPS, changeTab, nextStep } from '../../interactions/manageCSA';
 import { actions as basicsActions } from '../../interactions/CSAbasics';
 import Basics from './basics';
 import Pickups from './pickups';
@@ -57,18 +58,25 @@ class CSAManager extends React.Component {
     return (
       <ManagerContainer>
         <Card>
-          <Tabs>
-            <Tab label="Basics" >
-              <Basics {...this.props.basics} {...this.props.basicsActions} />
+          <Tabs
+            value={this.props.currentTab}
+            onChange={val => this.props.managerActions.changeTab(val)}
+          >
+            <Tab label="Basics" value={STEPS[0]}>
+              <Basics
+                {...this.props.basics}
+                {...this.props.basicsActions}
+                continue={this.props.managerActions.nextStep}
+              />
             </Tab>
-            <Tab label="Pickups" >
+            <Tab label="Pickups" value={STEPS[1]}>
               <div>
                 <Pickups />
               </div>
             </Tab>
             <Tab
               label="Bags"
-              data-route="/home"
+              value={STEPS[2]}
             >
               <div>
                 <h2 style={styles.headline}>Tab Three</h2>
@@ -80,6 +88,7 @@ class CSAManager extends React.Component {
 
             <Tab
               label="Extras"
+              value={STEPS[3]}
             >
               <div>
                 <h2 style={styles.headline}>Tab Three</h2>
@@ -91,6 +100,7 @@ class CSAManager extends React.Component {
 
             <Tab
               label="Members"
+              value={STEPS[4]}
             >
               <div>
                 <h2 style={styles.headline}>Tab Three</h2>
@@ -113,6 +123,12 @@ CSAManager.propTypes = ({
   basics: PropTypes.shape({
     name: PropTypes.string.isRequired,
   }).isRequired,
+  currentTab: PropTypes.string.isRequired,
+
+  managerActions: PropTypes.shape({
+    changeTab: PropTypes.func.isRequired,
+    nextStep: PropTypes.func.isRequired,
+  }).isRequired,
 });
 
 CSAManager.defaultProps = ({
@@ -126,6 +142,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   basicsActions: bindActionCreators(basicsActions, dispatch),
+  managerActions: bindActionCreators({ changeTab, nextStep }, dispatch),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(CSAManager);

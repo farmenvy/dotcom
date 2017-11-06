@@ -36,6 +36,7 @@ const ContinueContainer = props => (
       label="Continue"
       disabled={props.inProgress}
       primary
+      onClick={() => props.continue()}
     />
   </Wrapper>
 );
@@ -43,7 +44,11 @@ const ContinueContainer = props => (
 ContinueContainer.propTypes = ({
   showIndicator: PropTypes.bool.isRequired,
   inProgress: PropTypes.bool.isRequired,
+  continue: PropTypes.func.isRequired,
+});
 
+ContinueContainer.defaultProps = ({
+  continue: (() => {}),
 });
 
 export default ContinueContainer;
