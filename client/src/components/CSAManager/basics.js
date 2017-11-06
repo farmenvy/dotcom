@@ -45,7 +45,7 @@ const Basics = props => (
       <TextField
         floatingLabelText="CSA name"
         onChange={e => props.updateCSAName(e.target.value)}
-        value={props.CSAName}
+        value={props.name}
       />
 
       <DatePicker floatingLabelText="CSA start" />
@@ -83,7 +83,7 @@ const Basics = props => (
 
 Basics.propTypes = ({
   updateCSAName: PropTypes.func.isRequired,
-  CSAName: PropTypes.string.isRequired,
+  name: PropTypes.string.isRequired,
 });
 
 export default Basics;
