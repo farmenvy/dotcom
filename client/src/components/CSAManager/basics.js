@@ -50,12 +50,14 @@ const Basics = props => (
 
       <DatePicker
         floatingLabelText="CSA start"
+        autoOk
         value={props.startDate}
         onChange={(e, date) => props.updateCSAStartDate(date)}
       />
 
       <DatePicker
         floatingLabelText="CSA end"
+        autoOk
         minDate={new Date()}
         value={props.endDate}
         onChange={(e, date) => props.updateCSAEndDate(date)}
@@ -63,11 +65,12 @@ const Basics = props => (
 
       <SelectField
         floatingLabelText="Pickup Frequency"
-        value=""
-        multiple
+        value={props.frequency}
+        onChange={(e, i, val) => props.updateCSAFreq(val)}
       >
-        <MenuItem value={1} primaryText="Weekly" />
-        <MenuItem value={2} primaryText="Bi-Weekly" />
+        <MenuItem value="weekly" primaryText="Weekly" />
+        <MenuItem value="biweekly" primaryText="Bi-Weekly" />
+        <MenuItem value="both" primaryText="Both" />
       </SelectField>
     </CardContainer>
 
@@ -94,7 +97,9 @@ Basics.propTypes = ({
   updateCSAName: PropTypes.func.isRequired,
   updateCSAStartDate: PropTypes.func.isRequired,
   updateCSAEndDate: PropTypes.func.isRequired,
+  updateCSAFreq: PropTypes.func.isRequired,
   name: PropTypes.string.isRequired,
+  frequency: PropTypes.string.isRequired,
   startDate: PropTypes.shape({
     date: PropTypes.string,
   }).isRequired,
