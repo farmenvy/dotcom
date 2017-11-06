@@ -56,11 +56,6 @@ const Step = styled.h1`
   text-transform: capitalize;
 `;
 
-const ButtonContainer = styled.div`
-  display: flex;
-  justify-content: flex-end;
-  padding: 8px;
-`;
 
 const Footer = styled.div`
   flex: 0 1 auto;
@@ -75,6 +70,7 @@ const Footer = styled.div`
   width: 75%;
   padding: 8px;
 `;
+
 
 
 class WizardLayout extends React.Component {
@@ -111,22 +107,7 @@ class WizardLayout extends React.Component {
         <Card>
           <Tabs>
             <Tab label="Basics" >
-              <div>
-                <h2 style={styles.headline}>Basic CSA Information</h2>
-                <Basics />
-                <ButtonContainer>
-                  <FlatButton
-                    label="Cancel"
-                    primary
-                    onClick={() => this.props.nextStep()}
-                  />
-                  <RaisedButton
-                    label="Save"
-                    primary
-                    onClick={() => this.props.nextStep()}
-                  />
-                </ButtonContainer>
-              </div>
+              <Basics />
             </Tab>
             <Tab label="Pickups" >
               <div>
