@@ -1,10 +1,11 @@
 export const UPDATE_CSA_NAME = 'UPDATE_CSA_NAME';
 export const UPDATE_CSA_START_DATE = 'UPDATE_CSA_START_DATE';
+export const UPDATE_CSA_END_DATE = 'UPDATE_CSA_END_DATE';
 
 const initialState = {
   name: '',
-  startDate: '',
-  endDate: '',
+  startDate: {},
+  endDate: {},
   frequency: '',
 };
 
@@ -14,6 +15,8 @@ export const reducer = (state = initialState, action) => {
       return { ...state, name: action.payload };
     case UPDATE_CSA_START_DATE:
       return { ...state, startDate: action.payload };
+    case UPDATE_CSA_END_DATE:
+      return { ...state, endDate: action.payload };
     default:
       return state;
   }
@@ -21,9 +24,11 @@ export const reducer = (state = initialState, action) => {
 
 export const updateCSAName = val => ({ type: UPDATE_CSA_NAME, payload: val });
 export const updateCSAStartDate = val => ({ type: UPDATE_CSA_START_DATE, payload: val });
+export const updateCSAEndDate = val => ({ type: UPDATE_CSA_END_DATE, payload: val });
 
 export const actions = ({
   updateCSAName,
   updateCSAStartDate,
+  updateCSAEndDate,
 });
 

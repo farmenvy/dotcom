@@ -54,7 +54,12 @@ const Basics = props => (
         onChange={(e, date) => props.updateCSAStartDate(date)}
       />
 
-      <DatePicker floatingLabelText="CSA end" minDate={new Date()} />
+      <DatePicker
+        floatingLabelText="CSA end"
+        minDate={new Date()}
+        value={props.endDate}
+        onChange={(e, date) => props.updateCSAEndDate(date)}
+      />
 
       <SelectField
         floatingLabelText="Pickup Frequency"
@@ -88,8 +93,14 @@ const Basics = props => (
 Basics.propTypes = ({
   updateCSAName: PropTypes.func.isRequired,
   updateCSAStartDate: PropTypes.func.isRequired,
+  updateCSAEndDate: PropTypes.func.isRequired,
   name: PropTypes.string.isRequired,
-  startDate: PropTypes.string.isRequired,
+  startDate: PropTypes.shape({
+    date: PropTypes.string,
+  }).isRequired,
+  endDate: PropTypes.shape({
+    date: PropTypes.string,
+  }).isRequired,
 });
 
 export default Basics;
