@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
 import DatePicker from 'material-ui/DatePicker';
@@ -8,7 +9,7 @@ import CircularProgress from 'material-ui/CircularProgress';
 import styled from 'styled-components';
 import { Glyphicon } from 'react-bootstrap';
 
-window.saved = true;
+// window.saved = true;
 
 const Title = styled.h2`
   font-size: 24px;
@@ -36,13 +37,15 @@ const CardContainer = styled.div`
 `;
 
 
-const Basics = () => (
+const Basics = props => (
   <div>
     <CardContainer>
       <Title>Basic CSA Information</Title>
 
       <TextField
         floatingLabelText="CSA name"
+        onChange={e => props.updateCSAName(e.target.value)}
+        value={props.CSAName}
       />
 
       <DatePicker floatingLabelText="CSA start" />
@@ -77,5 +80,10 @@ const Basics = () => (
 
   </div>
 );
+
+Basics.propTypes = ({
+  updateCSAName: PropTypes.func.isRequired,
+  CSAName: PropTypes.string.isRequired,
+});
 
 export default Basics;

@@ -1,11 +1,11 @@
 import React from 'react';
-import styled from 'styled-components';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+import styled from 'styled-components';
 import { Tabs, Tab } from 'material-ui/Tabs';
 import { Card } from '../common';
-import { nextStep, prevStep } from '../../interactions/manageCSA';
+import { updateCSAName } from '../../interactions/CSAbasics';
 import Basics from './basics';
 import Pickups from './pickups';
 
@@ -25,6 +25,7 @@ const ManagerContainer = styled.div`
   width: 100%;
 `;
 
+
 class CSAManager extends React.Component {
   constructor(props) {
     super(props);
@@ -40,15 +41,16 @@ class CSAManager extends React.Component {
   }
 
   handleArrowPress(e) {
-    switch (e.key) {
-      case 'ArrowRight':
-        this.props.nextStep();
-        break;
-      case 'ArrowLeft':
-        this.props.prevStep();
-        break;
-      default:
-    }
+    this.foo = e;
+    // switch (e.key) {
+    //   case 'ArrowRight':
+    //     this.props.nextStep();
+    //     break;
+    //   case 'ArrowLeft':
+    //     this.props.prevStep();
+    //     break;
+    //   default:
+    // }
   }
 
   render() {
@@ -57,7 +59,7 @@ class CSAManager extends React.Component {
         <Card>
           <Tabs>
             <Tab label="Basics" >
-              <Basics />
+              <Basics {...this.props.basics} updateCSAName={this.props.updateCSAName} />
             </Tab>
             <Tab label="Pickups" >
               <div>
@@ -105,8 +107,10 @@ class CSAManager extends React.Component {
 }
 
 CSAManager.propTypes = ({
-  prevStep: PropTypes.func.isRequired,
-  nextStep: PropTypes.func.isRequired,
+  updateCSAName: PropTypes.func.isRequired,
+  basics: PropTypes.shape({
+    name: PropTypes.string.isRequired,
+  }).isRequired,
 });
 
 CSAManager.defaultProps = ({
@@ -115,10 +119,11 @@ CSAManager.defaultProps = ({
 
 const mapStateToProps = state => ({
   ...state.manageCSA,
+  basics: { ...state.CSAbasics },
 });
 
 const mapDispatchToProps = dispatch => ({
-  ...bindActionCreators({ nextStep, prevStep }, dispatch),
+  ...bindActionCreators({ updateCSAName }, dispatch),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(CSAManager);
