@@ -90,13 +90,15 @@ const Basics = (props) => {
       </CardContainer>
 
       <ButtonContainer>
-        <SavedMessage>
-          { props.asynchronous ? (
-            <CircularProgress size={24} thickness={2} color="orange" />
-          ) : (
-            <span>All Changes Saved <Glyphicon glyph="ok" /></span>
-          )}
-        </SavedMessage>
+        { props.id && (
+          <SavedMessage>
+            { props.asynchronous ? (
+              <CircularProgress size={24} thickness={2} color="orange" />
+            ) : (
+              <span>All Changes Saved <Glyphicon glyph="ok" /></span>
+            )}
+          </SavedMessage>
+        )}
 
 
         <FlatButton
@@ -116,6 +118,7 @@ Basics.propTypes = ({
   updateCSAFreq: PropTypes.func.isRequired,
   saveCSABasics: PropTypes.func.isRequired, // eslint-disable-line
   name: PropTypes.string.isRequired,
+  id: PropTypes.string.isRequired,
   asynchronous: PropTypes.bool.isRequired,
   frequency: PropTypes.string.isRequired,
   startDate: PropTypes.shape({

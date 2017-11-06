@@ -7,6 +7,7 @@ export const END_ASYNC = 'END_ASYNC';
 
 
 const initialState = {
+  id: '',
   name: '',
   startDate: {},
   endDate: {},
@@ -18,7 +19,7 @@ const initialState = {
 export const reducer = (state = initialState, action) => {
   switch (action.type) {
     case BEGIN_ASYNC:
-      return { ...state, asynchronous: true };
+      return { ...state, asynchronous: true, id: 1 };
     case END_ASYNC:
       return { ...state, asynchronous: false };
     case UPDATE_CSA_NAME:
