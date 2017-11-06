@@ -2,11 +2,18 @@ import React from 'react';
 import styled from 'styled-components';
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
-import FlatButton from 'material-ui/FlatButton';
+// import FlatButton from 'material-ui/FlatButton';
 import SelectField from 'material-ui/SelectField';
 import TimePicker from 'material-ui/TimePicker';
 import MenuItem from 'material-ui/MenuItem';
-import { Row, Col, Card } from '../common';
+import FloatingActionButton from 'material-ui/FloatingActionButton';
+import ContentAdd from 'material-ui/svg-icons/content/add';
+import Divider from 'material-ui/Divider';
+import Avatar from 'material-ui/Avatar';
+import ActionEdit from 'material-ui/svg-icons/content/create';
+import { List, ListItem } from 'material-ui/List';
+import Location from 'material-ui/svg-icons/communication/location-on';
+import { Row, Col, Card, Title, CardContainer } from '../common';
 
 // const Foo = styled.button`
 //   height: 45px;
@@ -83,22 +90,42 @@ const PickupForm = () => (
   </Card>
 );
 
+
 const shouldShow = !!window.localStorage.getItem('foo');
 
-const NewButtonWrapper = styled.div`
-  margin-left: -20px;
-  margin-right: -20px;
+const FAB = styled.div`
+  display: flex;
+  justify-content: center;
 `;
 
-
 const Pickup = () => (
-  <div>
+  <CardContainer>
     { shouldShow && <PickupForm /> }
 
-    <NewButtonWrapper>
-      <FlatButton label="Create Pickup Location" primary fullWidth />
-    </NewButtonWrapper>
-  </div>
+    <Title>Pickup Locations</Title>
+
+    <Divider inset />
+    <List>
+      <ListItem
+        leftAvatar={<Avatar icon={<Location />} backgroundColor="orange" />}
+        rightIcon={<ActionEdit />}
+        primaryText="Atherton Market"
+        secondaryText="456 Gingerbread Lane"
+      />
+      <ListItem
+        leftAvatar={<Avatar icon={<Location />} backgroundColor="orange" />}
+        rightIcon={<ActionEdit />}
+        primaryText="The Farm"
+        secondaryText="123 Foobar Ave"
+      />
+    </List>
+
+    <FAB>
+      <FloatingActionButton mini >
+        <ContentAdd />
+      </FloatingActionButton>
+    </FAB>
+  </CardContainer>
 );
 
 export default Pickup;
