@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import FlatButton from 'material-ui/FlatButton';
+import RaisedButton from 'material-ui/RaisedButton';
 import StepProgressBar from '../StepProgressBar';
 import Orchestrator from './orchestrator';
 import { Card } from '../common';
@@ -20,10 +20,7 @@ const ManagerContainer = styled.div`
 
 const ProgressContainer = styled.div`
   flex: 0 0 auto;
-  margin: 0;
-  padding-top: 8vh;
-  background-color: #ffffff;
-  box-shadow: 0 0 2px rgba(0,0,0,0.12), 0 2px 2px rgba(0,0,0,0.24);
+  padding: 10px 0 2px 0;
 `;
 
 
@@ -45,14 +42,21 @@ const Step = styled.h1`
   font-size: 18px;
   font-weight: 600;
   text-align: left;
+  margin-left: 24px;
   text-transform: capitalize;
 `;
 
 const Footer = styled.div`
-  margin: 0;
   flex: 0 1 auto;
+  margin-top: auto;
   display: flex;
   justify-content: space-between;
+  position: fixed;
+  left: 25%;
+  background: ${props => props.theme.grey2};
+  bottom: 0;
+  width: 75%;
+  padding: 8px;
 `;
 
 const NextStepButton = styled.span`
@@ -99,36 +103,39 @@ class CSAManager extends React.Component {
   render() {
     const currentStep = STEPS[this.props.activeIndex];
 
+    const Test = styled.div`
+      min-height: 200px;
+    `;
+
     return (
       <ManagerContainer>
-        <ProgressContainer>
-          <StepProgressBar steps={STEPS} {...this.props} />
-        </ProgressContainer>
-
-        <Step>{`Step ${this.props.activeIndex + 1}: ${currentStep}`}</Step>
-        <ContentContainer>
-          <Content>
-            <OrchestratorContainer>
-              <Orchestrator currentStep={currentStep} />
-            </OrchestratorContainer>
-          </Content>
-        </ContentContainer>
-
         <Card>
+          <ProgressContainer>
+            <StepProgressBar steps={STEPS} {...this.props} />
+          </ProgressContainer>
 
-          <Footer>
-            <FlatButton
-              label="Back"
-              primary
-              onClick={() => this.props.prevStep()}
-            />
-            <FlatButton
-              label="Continue"
-              primary
-              onClick={() => this.props.nextStep()}
-            />
-          </Footer>
+          <Step>{`Step ${this.props.activeIndex + 1}: ${currentStep}`}</Step>
+          <ContentContainer>
+            <Content>
+              <OrchestratorContainer>
+                <Orchestrator currentStep={currentStep} />
+              </OrchestratorContainer>
+            </Content>
+          </ContentContainer>
         </Card>
+
+
+        <Footer>
+          <RaisedButton
+            label="Back"
+            onClick={() => this.props.prevStep()}
+          />
+          <RaisedButton
+            label="Continue"
+            primary
+            onClick={() => this.props.nextStep()}
+          />
+        </Footer>
       </ManagerContainer>
     );
   }

@@ -90,15 +90,15 @@ const NewButtonWrapper = styled.div`
   margin-right: -20px;
 `;
 
+
 const Pickup = () => (
   <div>
     { shouldShow && <PickupForm /> }
 
-    <Card>
-      <NewButtonWrapper>
-        <FlatButton label="Create Pickup Location" primary fullWidth />
-      </NewButtonWrapper>
-    </Card>
+
+    <NewButtonWrapper>
+      <FlatButton label="Create Pickup Location" primary fullWidth />
+    </NewButtonWrapper>
   </div>
 );
 

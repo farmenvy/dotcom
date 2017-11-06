@@ -9,7 +9,6 @@ const ProgressContainer = styled.div`
   flex-wrap: nowrap;
   text-transform: capitalize;
   border-radius: 2px;
-  padding-bottom: 10px;
 `;
 
 const StepProgressBar = props => (
