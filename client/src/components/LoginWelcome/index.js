@@ -13,14 +13,20 @@ const Text = styled.p`
   color: #212224;
 `;
 
+const Container = styled.div`
+  padding: 50px;
+  flex: 1 1 auto;
+  margin: auto 0;
+`;
+
 
 const LoginWelcome = () => (
-  <div>
+  <Container>
     <Logo src={success} alt="success" />
     <Text>Welcome to Farm Envy!</Text>
     <Text>For now, this is just a landing page.</Text>
     <Text>We&#39;ll send you an update as new features are unlocked.</Text>
-  </div>
+  </Container>
 );
 
 export default LoginWelcome;

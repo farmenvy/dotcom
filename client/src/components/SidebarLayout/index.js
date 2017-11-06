@@ -12,6 +12,7 @@ const Container = styled.div`
   height: 100%;
   display: flex;
   min-height: 525px;
+  background-color: #f5f5f5;
 
   flex-direction: row;
 
@@ -22,8 +23,8 @@ const Container = styled.div`
 `;
 
 const MainContainer = styled.div`
-  height: 100%;
   display: flex;
+  border-radius: 2px;
   align-items: center;
   justify-content: center;
   flex-direction: column;
@@ -31,7 +32,6 @@ const MainContainer = styled.div`
 
 
 const Main = styled.div`
-  background: #ffffff;
   flex-grow: 1;
   margin-left: 25%;
 

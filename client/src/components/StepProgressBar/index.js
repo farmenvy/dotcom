@@ -8,6 +8,7 @@ const ProgressContainer = styled.div`
   width: 100%;
   flex-wrap: nowrap;
   text-transform: capitalize;
+  border-radius: 2px;
 `;
 
 const StepProgressBar = props => (

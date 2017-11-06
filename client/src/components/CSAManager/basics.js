@@ -1,47 +1,43 @@
 import React from 'react';
-import { Input, Row, Col } from '../common';
+import SelectField from 'material-ui/SelectField';
+import MenuItem from 'material-ui/MenuItem';
+import DatePicker from 'material-ui/DatePicker';
+import TextField from 'material-ui/TextField';
+import { Row, Col } from '../common';
+import WizardLayout from '../WizardLayout';
+
+const currentYear = (new Date()).getFullYear();
 
 const Basics = () => (
-  <div>
+  <WizardLayout>
     <Row>
-      <Input
-        type="text"
-        title="Name of this CSA"
-        value="Spring 2018"
-        error="this field is required"
-        readOnly
+      <TextField
+        floatingLabelText="CSA name"
+        hintText={`${currentYear} CSA`}
       />
     </Row>
 
     <Row>
       <Col>
-        <Input
-          type="text"
-          title="When does this CSA begin?"
-          value="Spring 2018"
-          readOnly
-        />
+        <DatePicker floatingLabelText="CSA start" />
       </Col>
 
       <Col>
-        <Input
-          type="text"
-          title="When does this CSA begin?"
-          value="Spring 2018"
-          readOnly
-        />
+        <DatePicker floatingLabelText="CSA end" minDate={new Date()} />
       </Col>
     </Row>
 
     <Row>
-      <Input
-        type="text"
-        title="Does this CSA offer weekly, biweekly, or both?"
-        value="Spring 2018"
-        readOnly
-      />
+      <SelectField
+        floatingLabelText="Pickup Frequency"
+        value=""
+        multiple
+      >
+        <MenuItem value={1} primaryText="Weekly" />
+        <MenuItem value={2} primaryText="Bi-Weekly" />
+      </SelectField>
     </Row>
-  </div>
+  </WizardLayout>
 );
 
 export default Basics;

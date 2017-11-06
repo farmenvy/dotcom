@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 
 export { default as Input } from './input';
+export { default as Card } from './card';
 
 export const Button = styled.button`
   width: 170px;
@@ -15,7 +16,6 @@ export const Button = styled.button`
 
 export const Row = styled.div`
   width: 100%;
-  margin-bottom: 30px;
   display: flex;
   justify-content: space-between;
 `;
