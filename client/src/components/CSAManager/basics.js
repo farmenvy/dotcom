@@ -48,7 +48,11 @@ const Basics = props => (
         value={props.name}
       />
 
-      <DatePicker floatingLabelText="CSA start" />
+      <DatePicker
+        floatingLabelText="CSA start"
+        value={props.startDate}
+        onChange={(e, date) => props.updateCSAStartDate(date)}
+      />
 
       <DatePicker floatingLabelText="CSA end" minDate={new Date()} />
 
@@ -83,7 +87,9 @@ const Basics = props => (
 
 Basics.propTypes = ({
   updateCSAName: PropTypes.func.isRequired,
+  updateCSAStartDate: PropTypes.func.isRequired,
   name: PropTypes.string.isRequired,
+  startDate: PropTypes.string.isRequired,
 });
 
 export default Basics;

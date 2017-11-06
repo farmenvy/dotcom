@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import styled from 'styled-components';
 import { Tabs, Tab } from 'material-ui/Tabs';
 import { Card } from '../common';
-import { updateCSAName } from '../../interactions/CSAbasics';
+import { actions as basicsActions } from '../../interactions/CSAbasics';
 import Basics from './basics';
 import Pickups from './pickups';
 
@@ -59,7 +59,7 @@ class CSAManager extends React.Component {
         <Card>
           <Tabs>
             <Tab label="Basics" >
-              <Basics {...this.props.basics} updateCSAName={this.props.updateCSAName} />
+              <Basics {...this.props.basics} {...this.props.basicsActions} />
             </Tab>
             <Tab label="Pickups" >
               <div>
@@ -107,7 +107,9 @@ class CSAManager extends React.Component {
 }
 
 CSAManager.propTypes = ({
-  updateCSAName: PropTypes.func.isRequired,
+  basicsActions: PropTypes.shape({
+    updateCSAName: PropTypes.func.isRequired,
+  }).isRequired,
   basics: PropTypes.shape({
     name: PropTypes.string.isRequired,
   }).isRequired,
@@ -123,7 +125,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  ...bindActionCreators({ updateCSAName }, dispatch),
+  basicsActions: bindActionCreators(basicsActions, dispatch),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(CSAManager);
