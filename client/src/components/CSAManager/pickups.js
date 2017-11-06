@@ -1,12 +1,14 @@
 import React from 'react';
-import styled from 'styled-components';
+// import styled from 'styled-components';
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
-import FlatButton from 'material-ui/FlatButton';
+// import FlatButton from 'material-ui/FlatButton';
 import SelectField from 'material-ui/SelectField';
 import TimePicker from 'material-ui/TimePicker';
 import MenuItem from 'material-ui/MenuItem';
-import { Row, Col, Card } from '../common';
+import FloatingActionButton from 'material-ui/FloatingActionButton';
+import ContentAdd from 'material-ui/svg-icons/content/add';
+import { Row, Col, Card, Title, CardContainer } from '../common';
 
 // const Foo = styled.button`
 //   height: 45px;
@@ -85,20 +87,15 @@ const PickupForm = () => (
 
 const shouldShow = !!window.localStorage.getItem('foo');
 
-const NewButtonWrapper = styled.div`
-  margin-left: -20px;
-  margin-right: -20px;
-`;
-
-
 const Pickup = () => (
-  <div>
+  <CardContainer>
     { shouldShow && <PickupForm /> }
 
-    <NewButtonWrapper>
-      <FlatButton label="Create Pickup Location" primary fullWidth />
-    </NewButtonWrapper>
-  </div>
+    <Title>Pickup Locations</Title>
+    <FloatingActionButton mini secondary >
+      <ContentAdd />
+    </FloatingActionButton>
+  </CardContainer>
 );
 
 export default Pickup;

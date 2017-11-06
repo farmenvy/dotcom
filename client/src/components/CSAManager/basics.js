@@ -4,38 +4,9 @@ import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
 import DatePicker from 'material-ui/DatePicker';
 import TextField from 'material-ui/TextField';
-import FlatButton from 'material-ui/FlatButton';
-import CircularProgress from 'material-ui/CircularProgress';
-import styled from 'styled-components';
-import { Glyphicon } from 'react-bootstrap';
-
-// window.saved = true;
-
-const Title = styled.h2`
-  font-size: 24px;
-  padding-top: 16px;
-  margin-bottom: 12px;
-  font-weight: 400px;
-`;
-
-
-const ButtonContainer = styled.div`
-  display: flex;
-  justify-content: flex-end;
-  padding: 8px;
-`;
-
-const SavedMessage = styled.div`
-  align-self: center;
-  color: green;
-  margin-right: 24px;
-  text-transform: uppercase;
-`;
-
-const CardContainer = styled.div`
-  margin: 20px;
-`;
-
+// import styled from 'styled-components';
+import { Title, CardContainer } from '../common';
+import ContinueContainer from '../ContinueContainer';
 
 let timer = 0;
 
@@ -89,24 +60,7 @@ const Basics = (props) => {
         </SelectField>
       </CardContainer>
 
-      <ButtonContainer>
-        { props.id && (
-          <SavedMessage>
-            { props.asynchronous ? (
-              <CircularProgress size={24} thickness={2} color="orange" />
-            ) : (
-              <span>All Changes Saved <Glyphicon glyph="ok" /></span>
-            )}
-          </SavedMessage>
-        )}
-
-
-        <FlatButton
-          label="Continue"
-          primary
-        />
-      </ButtonContainer>
-
+      <ContinueContainer showIndicator={!!props.id} inProgress={props.asynchronous} />
     </div>
   );
 };
