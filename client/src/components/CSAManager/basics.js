@@ -3,9 +3,12 @@ import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
 import DatePicker from 'material-ui/DatePicker';
 import TextField from 'material-ui/TextField';
-import RaisedButton from 'material-ui/RaisedButton';
+import FlatButton from 'material-ui/FlatButton';
+import CircularProgress from 'material-ui/CircularProgress';
 import styled from 'styled-components';
 import { Glyphicon } from 'react-bootstrap';
+
+window.saved = true;
 
 const Title = styled.h2`
   font-size: 24px;
@@ -24,7 +27,8 @@ const ButtonContainer = styled.div`
 const SavedMessage = styled.div`
   align-self: center;
   color: green;
-  margin-right: 20px;
+  margin-right: 24px;
+  text-transform: uppercase;
 `;
 
 const Basics = () => (
@@ -50,10 +54,15 @@ const Basics = () => (
 
     <ButtonContainer>
       <SavedMessage>
-        All Changes Saved <Glyphicon glyph="ok" />
+        { window.saved ? (
+          <span>All Changes Saved <Glyphicon glyph="ok" /></span>
+        ) : (
+          <CircularProgress size={24} thickness={2} color="orange" />
+        )}
       </SavedMessage>
 
-      <RaisedButton
+
+      <FlatButton
         label="Continue"
         primary
       />
