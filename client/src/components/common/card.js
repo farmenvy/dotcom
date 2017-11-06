@@ -9,17 +9,14 @@ const CardWrapper = styled.div`
   margin: 8px 24px;
   min-height: 100%;
 
-`;
-
-const CardContent = styled.div`
-  margin: 10px 20px;
+  @media (max-width: 700px) {
+    margin: 2px 8px;
+  }
 `;
 
 const Card = props => (
   <CardWrapper>
-    <CardContent>
-      { props.children }
-    </CardContent>
+    { props.children }
   </CardWrapper>
 );
 
