@@ -37,68 +37,86 @@ const CardContainer = styled.div`
 `;
 
 
-const Basics = props => (
-  <div>
-    <CardContainer>
-      <Title>Basic CSA Information</Title>
+let timer = 0;
 
-      <TextField
-        floatingLabelText="CSA name"
-        onChange={e => props.updateCSAName(e.target.value)}
-        value={props.name}
-      />
+const Basics = (props) => {
+  const handleChange = (val, func) => {
+    func(val);
+    if (timer) {
+      clearTimeout(timer);
+    }
 
-      <DatePicker
-        floatingLabelText="CSA start"
-        autoOk
-        value={props.startDate}
-        onChange={(e, date) => props.updateCSAStartDate(date)}
-      />
+    timer = setTimeout(() => {
+      props.saveCSABasics();
+      timer = 0;
+    }, 200);
+  };
 
-      <DatePicker
-        floatingLabelText="CSA end"
-        autoOk
-        minDate={new Date()}
-        value={props.endDate}
-        onChange={(e, date) => props.updateCSAEndDate(date)}
-      />
+  return (
+    <div>
+      <CardContainer>
+        <Title>Basic CSA Information</Title>
 
-      <SelectField
-        floatingLabelText="Pickup Frequency"
-        value={props.frequency}
-        onChange={(e, i, val) => props.updateCSAFreq(val)}
-      >
-        <MenuItem value="weekly" primaryText="Weekly" />
-        <MenuItem value="biweekly" primaryText="Bi-Weekly" />
-        <MenuItem value="both" primaryText="Both" />
-      </SelectField>
-    </CardContainer>
+        <TextField
+          floatingLabelText="CSA name"
+          onChange={e => handleChange(e.target.value, props.updateCSAName)}
+          value={props.name}
+        />
 
-    <ButtonContainer>
-      <SavedMessage>
-        { window.saved ? (
-          <span>All Changes Saved <Glyphicon glyph="ok" /></span>
-        ) : (
-          <CircularProgress size={24} thickness={2} color="orange" />
-        )}
-      </SavedMessage>
+        <DatePicker
+          floatingLabelText="CSA start"
+          autoOk
+          value={props.startDate}
+          onChange={(e, date) => handleChange(date, props.updateCSAStartDate)}
+        />
+
+        <DatePicker
+          floatingLabelText="CSA end"
+          autoOk
+          minDate={new Date()}
+          value={props.endDate}
+          onChange={(e, date) => handleChange(date, props.updateCSAEndDate)}
+        />
+
+        <SelectField
+          floatingLabelText="Pickup Frequency"
+          value={props.frequency}
+          onChange={(e, i, val) => handleChange(val, props.updateCSAFreq)}
+        >
+          <MenuItem value="weekly" primaryText="Weekly" />
+          <MenuItem value="biweekly" primaryText="Bi-Weekly" />
+          <MenuItem value="both" primaryText="Both" />
+        </SelectField>
+      </CardContainer>
+
+      <ButtonContainer>
+        <SavedMessage>
+          { props.asynchronous ? (
+            <CircularProgress size={24} thickness={2} color="orange" />
+          ) : (
+            <span>All Changes Saved <Glyphicon glyph="ok" /></span>
+          )}
+        </SavedMessage>
 
 
-      <FlatButton
-        label="Continue"
-        primary
-      />
-    </ButtonContainer>
+        <FlatButton
+          label="Continue"
+          primary
+        />
+      </ButtonContainer>
 
-  </div>
-);
+    </div>
+  );
+};
 
 Basics.propTypes = ({
   updateCSAName: PropTypes.func.isRequired,
   updateCSAStartDate: PropTypes.func.isRequired,
   updateCSAEndDate: PropTypes.func.isRequired,
   updateCSAFreq: PropTypes.func.isRequired,
+  saveCSABasics: PropTypes.func.isRequired, // eslint-disable-line
   name: PropTypes.string.isRequired,
+  asynchronous: PropTypes.bool.isRequired,
   frequency: PropTypes.string.isRequired,
   startDate: PropTypes.shape({
     date: PropTypes.string,
