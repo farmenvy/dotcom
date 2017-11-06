@@ -14,12 +14,16 @@ import { nextStep, prevStep, STEPS } from '../../interactions/manageCSA';
 const ManagerContainer = styled.div`
   display: flex;
   flex-direction: column;
+  min-height: 100vh;
   width: 100%;
 `;
 
 const ProgressContainer = styled.div`
   flex: 0 0 auto;
-  margin-top: 5vh;
+  margin: 0;
+  padding-top: 8vh;
+  background-color: #ffffff;
+  box-shadow: 0 0 2px rgba(0,0,0,0.12), 0 2px 2px rgba(0,0,0,0.24);
 `;
 
 
@@ -29,6 +33,9 @@ const ContentContainer = styled.div`
 `;
 
 const Content = styled.div`
+  display: flex;
+  margin-bottom: 0;
+  flex-direction: column;
   @media (max-width: 700px) {
     margin: 10px;
   }
@@ -42,6 +49,8 @@ const Step = styled.h1`
 `;
 
 const Footer = styled.div`
+  margin: 0;
+  flex: 0 1 auto;
   display: flex;
   justify-content: space-between;
 `;
@@ -92,11 +101,9 @@ class CSAManager extends React.Component {
 
     return (
       <ManagerContainer>
-        <Card>
-          <ProgressContainer>
-            <StepProgressBar steps={STEPS} {...this.props} />
-          </ProgressContainer>
-        </Card>
+        <ProgressContainer>
+          <StepProgressBar steps={STEPS} {...this.props} />
+        </ProgressContainer>
 
         <Step>{`Step ${this.props.activeIndex + 1}: ${currentStep}`}</Step>
         <ContentContainer>
