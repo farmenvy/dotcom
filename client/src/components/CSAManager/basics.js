@@ -31,26 +31,33 @@ const SavedMessage = styled.div`
   text-transform: uppercase;
 `;
 
+const CardContainer = styled.div`
+  margin: 20px;
+`;
+
+
 const Basics = () => (
   <div>
-    <Title>Basic CSA Information</Title>
+    <CardContainer>
+      <Title>Basic CSA Information</Title>
 
-    <TextField
-      floatingLabelText="CSA name"
-    />
+      <TextField
+        floatingLabelText="CSA name"
+      />
 
-    <DatePicker floatingLabelText="CSA start" />
+      <DatePicker floatingLabelText="CSA start" />
 
-    <DatePicker floatingLabelText="CSA end" minDate={new Date()} />
+      <DatePicker floatingLabelText="CSA end" minDate={new Date()} />
 
-    <SelectField
-      floatingLabelText="Pickup Frequency"
-      value=""
-      multiple
-    >
-      <MenuItem value={1} primaryText="Weekly" />
-      <MenuItem value={2} primaryText="Bi-Weekly" />
-    </SelectField>
+      <SelectField
+        floatingLabelText="Pickup Frequency"
+        value=""
+        multiple
+      >
+        <MenuItem value={1} primaryText="Weekly" />
+        <MenuItem value={2} primaryText="Bi-Weekly" />
+      </SelectField>
+    </CardContainer>
 
     <ButtonContainer>
       <SavedMessage>
