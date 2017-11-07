@@ -22,7 +22,7 @@ import Trash from 'material-ui/svg-icons/action/delete';
 import Pencil from 'material-ui/svg-icons/content/create';
 import { grey500 } from 'material-ui/styles/colors';
 import { Row, Col, Card, Title, CardContainer } from '../common';
-import { editPickup, stopEditing } from '../../interactions/CSApickups';
+import { createPickup, editPickup, stopEditing } from '../../interactions/CSApickups';
 
 const PickupForm = () => (
   <Card>
@@ -116,6 +116,8 @@ const Pickup = (props) => {
   );
 
 
+  const isEditing = props.editing !== false;
+
   return (
     <div>
 
@@ -126,21 +128,21 @@ const Pickup = (props) => {
 
         <List style={{ paddingBottom: '0' }}>
           {
-            props.pickups.map(p => (
-              props.editing === p.id ? (
+            props.pickups.map((p, i) => (
+              props.editing === i ? (
                 <EditPickup key={p.id} />
               ) : (
                 <ListItemContainer
                   key={p.id}
-                  onClick={() => (props.editing && props.stopEditing())}
+                  onClick={() => (isEditing && props.stopEditing())}
                 >
                   <ListItem
                     leftAvatar={<Avatar icon={<Location />} backgroundColor="orange" />}
                     primaryText={p.name}
                     secondaryText={p.address}
                     rightIconButton={rightIconMenu}
-                    disabled={!!props.editing}
-                    onClick={() => (props.editing ? props.stopEditing() : props.editPickup(p.id))}
+                    disabled={isEditing}
+                    onClick={() => (isEditing ? props.stopEditing() : props.editPickup(p.id))}
                   />
                   <Divider inset />
                 </ListItemContainer>
@@ -152,9 +154,9 @@ const Pickup = (props) => {
       </CardContainer>
 
       {
-        !props.editing && (
+        props.editing === false && (
           <FAB>
-            <FloatingActionButton mini >
+            <FloatingActionButton mini onClick={() => props.createPickup()}>
               <ContentAdd />
             </FloatingActionButton>
           </FAB>
@@ -172,8 +174,10 @@ Pickup.propTypes = ({
   editing: PropTypes.oneOfType([
     PropTypes.bool,
     PropTypes.number,
+    PropTypes.string,
   ]).isRequired,
   stopEditing: PropTypes.func.isRequired,
+  createPickup: PropTypes.func.isRequired,
   editPickup: PropTypes.func.isRequired, // eslint-disable-line
 });
 
@@ -183,7 +187,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  ...bindActionCreators({ editPickup, stopEditing }, dispatch),
+  ...bindActionCreators({ createPickup, editPickup, stopEditing }, dispatch),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Pickup);

@@ -1,5 +1,6 @@
 export const EDIT_PICKUP = 'EDIT_PICKUP';
 export const STOP_EDITING_PICKUPS = 'STOP_EDITING_PICKUPS';
+export const CREATE_PICKUP = 'CREATE_PICKUP';
 
 const initialState = {
   pickups: [
@@ -14,11 +15,19 @@ const initialState = {
       address: '123 Foobar Ave',
     },
   ],
-  editing: false,
+  editing: 0,
 };
+
+const newPickup = i => ({ id: `indexNotAnID${i}`, name: 'New Pickup', address: '' });
 
 export const reducer = (state = initialState, action) => {
   switch (action.type) {
+    case CREATE_PICKUP:
+      return {
+        ...state,
+        pickups: [...state.pickups, newPickup(state.pickups.length)],
+        editing: state.pickups.length,
+      };
     case EDIT_PICKUP:
       return { ...state, editing: action.payload };
     case STOP_EDITING_PICKUPS:
@@ -31,3 +40,4 @@ export const reducer = (state = initialState, action) => {
 
 export const editPickup = id => ({ type: EDIT_PICKUP, payload: id });
 export const stopEditing = () => ({ type: STOP_EDITING_PICKUPS });
+export const createPickup = () => ({ type: CREATE_PICKUP });
