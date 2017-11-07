@@ -23,6 +23,7 @@ const PickupsForm = props => (
     <Row>
       <Col>
         <TextField
+          id="pickupname"
           floatingLabelText="Pickup Name"
           hintText="At the farm"
           onChange={e => props.updatePickup({ name: e.target.value })}
@@ -31,19 +32,24 @@ const PickupsForm = props => (
         <SelectField
           floatingLabelText="Pickup Frequency"
           style={{ display: 'block' }}
-          multiple
+          onChange={(e, i, val) => props.updatePickup({ frequency: val })}
+          value={props.editing.frequency}
         >
-          <MenuItem value={1} primaryText="Weekly" />
-          <MenuItem value={2} primaryText="Bi-Weekly" />
+          <MenuItem value="weekly" primaryText="Weekly" />
+          <MenuItem value="biweekly" primaryText="Bi-Weekly" />
         </SelectField>
 
         <TimePicker
           floatingLabelText="Start time"
           autoOk
+          onChange={(e, time) => props.updatePickup({ startTime: time })}
+          value={props.editing.startTime}
         />
         <TimePicker
           floatingLabelText="End time"
           autoOk
+          onChange={(e, time) => props.updatePickup({ endTime: time })}
+          value={props.editing.endTime}
         />
       </Col>
 
@@ -55,7 +61,14 @@ const PickupsForm = props => (
           onChange={e => props.updatePickup({ address: e.target.value })}
         />
 
-        <TextField floatingLabelText="Notes to Customer" fullWidth />
+        <TextField
+          floatingLabelText="Notes to Customer"
+          fullWidth
+          multiLine
+          rows={2}
+          onChange={e => props.updatePickup({ notes: e.target.value })}
+          value={props.editing.notes}
+        />
       </Col>
 
 
@@ -76,14 +89,24 @@ const PickupsForm = props => (
 
 PickupsForm.propTypes = ({
   editing: PropTypes.shape({
-    name: PropTypes.string.isRequired,
-    address: PropTypes.string.isRequired,
+    name: PropTypes.string,
+    address: PropTypes.string,
+    frequency: PropTypes.string,
+    notes: PropTypes.string,
+    startTime: PropTypes.instanceOf(Date),
+    endTime: PropTypes.instanceOf(Date),
   }),
   updatePickup: PropTypes.func.isRequired,
 });
 
 PickupsForm.defaultProps = ({
+  name: '',
+  address: '',
+  frequency: '',
+  notes: '',
   editing: {},
+  startTime: {},
+  endTime: {},
 });
 
 export default PickupsForm;

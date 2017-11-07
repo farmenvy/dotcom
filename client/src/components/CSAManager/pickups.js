@@ -1,21 +1,17 @@
 import React from 'react';
+import moment from 'moment';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import styled from 'styled-components';
 // import FlatButton from 'material-ui/FlatButton';
-import MenuItem from 'material-ui/MenuItem';
 import FloatingActionButton from 'material-ui/FloatingActionButton';
 import ContentAdd from 'material-ui/svg-icons/content/add';
-import Divider from 'material-ui/Divider';
 import Avatar from 'material-ui/Avatar';
 import { List, ListItem } from 'material-ui/List';
 import Location from 'material-ui/svg-icons/communication/location-on';
-import IconMenu from 'material-ui/IconMenu';
-import IconButton from 'material-ui/IconButton';
-import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
-import Trash from 'material-ui/svg-icons/action/delete';
-import Pencil from 'material-ui/svg-icons/content/create';
+import Settings from 'material-ui/svg-icons/action/settings';
+// import Pencil from 'material-ui/svg-icons/content/create';
 import { grey500 } from 'material-ui/styles/colors';
 import { Title, CardContainer } from '../common';
 import PickupsForm from '../PickupsForm';
@@ -37,12 +33,6 @@ const FAB = styled.div`
   margin: 16px 0;
 `;
 
-const iconButtonElement = (
-  <IconButton>
-    <MoreVertIcon color={grey500} />
-  </IconButton>
-);
-
 const ListItemContainer = styled.div`
   &:hover {
     cursor: pointer;
@@ -50,18 +40,9 @@ const ListItemContainer = styled.div`
 `;
 
 const Pickup = (props) => {
-  const rightIconMenu = (
-    <IconMenu
-      iconButtonElement={iconButtonElement}
-      onClick={() => (props.editing && props.stopEditing())}
-    >
-      <MenuItem leftIcon={<Pencil />}>Edit</MenuItem>
-      <MenuItem leftIcon={<Trash />}>Delete</MenuItem>
-    </IconMenu>
+  const friendlyTime = dateObj => (
+    moment(dateObj).format('LT')
   );
-
-
-  const isEditing = !!props.editing;
 
   return (
     <div>
@@ -69,9 +50,9 @@ const Pickup = (props) => {
       <CardContainer>
         <Title>Pickup Locations</Title>
 
-        <List style={{ paddingBottom: '0' }}>
+        <List style={{ paddingBottom: '0', textTransform: 'capitalize' }}>
           {
-            props.pickups.map((p, i) => (
+            props.pickups.map(p => (
               props.editing === p ? (
                 <EditPickup key={p.id} >
                   <PickupsForm {...props} />
@@ -79,18 +60,15 @@ const Pickup = (props) => {
               ) : (
                 <ListItemContainer
                   key={p.id}
-                  onClick={() => (isEditing && props.stopEditing())}
                 >
                   <ListItem
                     leftAvatar={<Avatar icon={<Location />} backgroundColor="orange" />}
-                    primaryText={p.name}
+                    primaryText={`${p.name}, ${friendlyTime(p.startTime)} - ${friendlyTime(p.endTime)}`}
                     secondaryText={p.address}
-                    rightIconButton={rightIconMenu}
-                    disabled={isEditing}
-                    onClick={() => (isEditing ? props.stopEditing() : props.editPickup(p))}
+                    rightIcon={<Settings color={grey500} />}
+                    onClick={() => props.editPickup(p)}
                   />
 
-                  { props.pickups.length - 1 !== i && (<Divider inset />) }
                 </ListItemContainer>
               )
             ))
@@ -114,13 +92,13 @@ const Pickup = (props) => {
 
 Pickup.propTypes = ({
   pickups: PropTypes.arrayOf(PropTypes.shape({
-    name: PropTypes.string.isRequired,
-    address: PropTypes.string.isRequired,
+    name: PropTypes.string,
+    address: PropTypes.string,
   })).isRequired,
   editing: PropTypes.shape({
     name: PropTypes.string,
   }),
-  stopEditing: PropTypes.func.isRequired,
+  stopEditing: PropTypes.func.isRequired, // eslint-disable-line
   createPickup: PropTypes.func.isRequired,
   editPickup: PropTypes.func.isRequired, // eslint-disable-line
 });

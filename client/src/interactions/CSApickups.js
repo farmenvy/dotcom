@@ -9,32 +9,31 @@ const initialState = {
       id: 1,
       name: 'Atherton Market',
       address: '456 Gingerbread Lane',
+      frequency: 'weekly',
+      startTime: (new Date()),
+      endTime: (new Date()),
+      notes: 'heyoo this is a note',
     },
     {
       id: 2,
       name: 'The Farm',
       address: '123 Foobar Ave',
-    },
-    {
-      id: 3,
-      name: 'The Farm',
-      address: '123 Foobar Ave',
-    },
-    {
-      id: 4,
-      name: 'The Farm',
-      address: '123 Foobar Ave',
-    },
-    {
-      id: 5,
-      name: 'The Farm',
-      address: '123 Foobar Ave',
+      frequency: 'biweekly',
+      startTime: (new Date()),
+      endTime: (new Date()),
+      notes: 'grandma will be coming around the mountain when she comes',
     },
   ],
   editing: null,
 };
 
-const buildNewPickup = i => ({ id: `indexNotAnID${i}`, name: 'New Pickup', address: '' });
+const buildNewPickup = i => ({
+  id: `indexNotAnID${i}`,
+  name: '',
+  address: '',
+  frequency: '',
+  notes: '',
+});
 
 export const reducer = (state = initialState, action) => {
   switch (action.type) {
