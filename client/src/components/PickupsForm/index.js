@@ -82,7 +82,12 @@ const PickupsForm = props => (
         </MenuItem>
       </IconMenu>
 
-      <RaisedButton label="Save and Close" style={{ alignSelf: 'flex-end' }} primary />
+      <RaisedButton
+        label="Save and Close"
+        style={{ alignSelf: 'flex-end' }}
+        primary
+        onClick={() => props.stopEditing()}
+      />
     </Row>
   </div>
 );
@@ -97,6 +102,7 @@ PickupsForm.propTypes = ({
     endTime: PropTypes.instanceOf(Date),
   }),
   updatePickup: PropTypes.func.isRequired,
+  stopEditing: PropTypes.func.isRequired,
 });
 
 PickupsForm.defaultProps = ({
