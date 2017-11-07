@@ -61,6 +61,7 @@ class CSAManager extends React.Component {
           <Tabs
             value={this.props.currentTab}
             onChange={val => this.props.managerActions.changeTab(val)}
+            tabItemContainerStyle={{ borderRadius: '2px' }}
           >
             <Tab label="Basics" value={STEPS[0]}>
               <Basics
