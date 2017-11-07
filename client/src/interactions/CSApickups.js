@@ -1,6 +1,7 @@
-export const EDIT_PICKUP = 'EDIT_PICKUP';
+export const SELECT_PICKUP_TO_EDIT = 'SELECT_PICKUP_TO_EDIT';
 export const STOP_EDITING_PICKUPS = 'STOP_EDITING_PICKUPS';
 export const CREATE_PICKUP = 'CREATE_PICKUP';
+export const UPDATE_PICKUP = 'UPDATE_PICKUP';
 
 const initialState = {
   pickups: [
@@ -8,51 +9,70 @@ const initialState = {
       id: 1,
       name: 'Atherton Market',
       address: '456 Gingerbread Lane',
+      frequency: 'weekly',
+      startTime: (new Date()),
+      endTime: (new Date()),
+      notes: 'heyoo this is a note',
     },
     {
       id: 2,
       name: 'The Farm',
       address: '123 Foobar Ave',
-    },
-    {
-      id: 3,
-      name: 'The Farm',
-      address: '123 Foobar Ave',
-    },
-    {
-      id: 4,
-      name: 'The Farm',
-      address: '123 Foobar Ave',
-    },
-    {
-      id: 5,
-      name: 'The Farm',
-      address: '123 Foobar Ave',
+      frequency: 'biweekly',
+      startTime: (new Date()),
+      endTime: (new Date()),
+      notes: 'grandma will be coming around the mountain when she comes',
     },
   ],
-  editing: false,
+  editing: null,
 };
 
-const newPickup = i => ({ id: `indexNotAnID${i}`, name: 'New Pickup', address: '' });
+const buildNewPickup = (state) => {
+  const id = Math.min(...state.pickups.map(el => el.id)) - 1;
+  return {
+    id,
+    name: '',
+    address: '',
+    frequency: '',
+    notes: '',
+  };
+};
 
 export const reducer = (state = initialState, action) => {
   switch (action.type) {
-    case CREATE_PICKUP:
+    case CREATE_PICKUP: {
+      const newPickup = buildNewPickup(state);
       return {
         ...state,
-        pickups: [...state.pickups, newPickup(state.pickups.length)],
-        editing: state.pickups.length,
+        pickups: [...state.pickups, newPickup],
+        editing: newPickup,
       };
-    case EDIT_PICKUP:
+    }
+    case SELECT_PICKUP_TO_EDIT:
       return { ...state, editing: action.payload };
+
+    case UPDATE_PICKUP: {
+      const editedPickup = { ...state.editing, ...action.payload };
+      return {
+        ...state,
+        pickups: state.pickups.map(p => (
+          p.id === state.editing.id ? (editedPickup) : (p)
+        )),
+        editing: editedPickup,
+      };
+    }
     case STOP_EDITING_PICKUPS:
-      return { ...state, editing: false };
+      return { ...state, editing: null };
+
     default:
       return state;
   }
 };
 
 
-export const editPickup = id => ({ type: EDIT_PICKUP, payload: id });
+export const editPickup = pickup => ({ type: SELECT_PICKUP_TO_EDIT, payload: pickup });
 export const stopEditing = () => ({ type: STOP_EDITING_PICKUPS });
 export const createPickup = () => ({ type: CREATE_PICKUP });
+
+
+export const updatePickup = attribute => ({ type: UPDATE_PICKUP, payload: attribute });

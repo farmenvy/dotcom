@@ -16,7 +16,7 @@ const SavedMessage = styled.div`
 const Wrapper = styled.div`
   display: flex;
   justify-content: flex-end;
-  padding: 8px;
+  padding: 8px 8px 12px 8px;
 `;
 
 const ContinueContainer = props => (
@@ -31,20 +31,33 @@ const ContinueContainer = props => (
       </SavedMessage>
     )}
 
+    {
+      props.buttonComponent ? props.buttonComponent : (
+        <FlatButton
+          label="Continue"
+          disabled={props.inProgress || props.disabled}
+          primary
+          onClick={() => props.continue()}
+        />
+      )
+    }
 
-    <FlatButton
-      label="Continue"
-      disabled={props.inProgress}
-      primary
-      onClick={() => props.continue()}
-    />
   </Wrapper>
 );
 
 ContinueContainer.propTypes = ({
   showIndicator: PropTypes.bool.isRequired,
-  inProgress: PropTypes.bool.isRequired,
-  continue: PropTypes.func.isRequired,
+  inProgress: PropTypes.bool,
+  disabled: PropTypes.bool,
+  continue: PropTypes.func,
+  buttonComponent: PropTypes.node,
+});
+
+ContinueContainer.defaultProps = ({
+  buttonComponent: null,
+  inProgress: false,
+  disabled: false,
+  continue: (() => {}),
 });
 
 ContinueContainer.defaultProps = ({
