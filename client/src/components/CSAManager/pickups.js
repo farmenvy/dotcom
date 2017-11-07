@@ -10,36 +10,15 @@ import FloatingActionButton from 'material-ui/FloatingActionButton';
 import ContentAdd from 'material-ui/svg-icons/content/add';
 import Divider from 'material-ui/Divider';
 import Avatar from 'material-ui/Avatar';
-import ActionEdit from 'material-ui/svg-icons/content/create';
 import { List, ListItem } from 'material-ui/List';
 import Location from 'material-ui/svg-icons/communication/location-on';
+import IconMenu from 'material-ui/IconMenu';
+import IconButton from 'material-ui/IconButton';
+import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
+import Trash from 'material-ui/svg-icons/action/delete';
+import Pencil from 'material-ui/svg-icons/content/create';
+import { grey500 } from 'material-ui/styles/colors';
 import { Row, Col, Card, Title, CardContainer } from '../common';
-
-// const Foo = styled.button`
-//   height: 45px;
-//   width: 100%;
-//   background-color: #fafafa;
-//   border-radius: 2px;
-//   outline: none;
-//   box-shadow: 0 0 2px rgba(0,0,0,0.12), 0 2px 2px rgba(0,0,0,0.24);
-//   border: none;
-//
-//
-//   &:before {
-//     content: '+';
-//     margin-right: 8px;
-//     display: inline-block;
-//     width: 18px;
-//     height: 18px;
-//     font-size: 12px;
-//     font-weight: bold;
-//     background-color: rgba(51, 152, 113, 0.15);
-//     color: #379f77;
-//     border: solid 1px #379f77;
-//     border-radius: 100%;
-//   }
-// `;
-//
 
 const PickupForm = () => (
   <Card>
@@ -98,23 +77,37 @@ const FAB = styled.div`
   justify-content: center;
 `;
 
+const iconButtonElement = (
+  <IconButton>
+    <MoreVertIcon color={grey500} />
+  </IconButton>
+);
+
+
+const rightIconMenu = (
+  <IconMenu iconButtonElement={iconButtonElement}>
+    <MenuItem leftIcon={<Pencil />}>Edit</MenuItem>
+    <MenuItem leftIcon={<Trash />}>Delete</MenuItem>
+  </IconMenu>
+);
+
 const Pickup = () => (
   <CardContainer>
     { shouldShow && <PickupForm /> }
 
     <Title>Pickup Locations</Title>
 
-    <Divider inset />
+    <Divider />
     <List>
       <ListItem
         leftAvatar={<Avatar icon={<Location />} backgroundColor="orange" />}
-        rightIcon={<ActionEdit />}
         primaryText="Atherton Market"
         secondaryText="456 Gingerbread Lane"
+        rightIconButton={rightIconMenu}
       />
       <ListItem
         leftAvatar={<Avatar icon={<Location />} backgroundColor="orange" />}
-        rightIcon={<ActionEdit />}
+        rightIconButton={rightIconMenu}
         primaryText="The Farm"
         secondaryText="123 Foobar Ave"
       />
