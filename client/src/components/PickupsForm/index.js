@@ -48,7 +48,12 @@ const PickupsForm = props => (
       </Col>
 
       <Col>
-        <TextField floatingLabelText="Address" fullWidth />
+        <TextField
+          floatingLabelText="Address"
+          fullWidth
+          value={props.editing.address}
+          onChange={e => props.updatePickup({ address: e.target.value })}
+        />
 
         <TextField floatingLabelText="Notes to Customer" fullWidth />
       </Col>
@@ -72,6 +77,7 @@ const PickupsForm = props => (
 PickupsForm.propTypes = ({
   editing: PropTypes.shape({
     name: PropTypes.string.isRequired,
+    address: PropTypes.string.isRequired,
   }),
   updatePickup: PropTypes.func.isRequired,
 });
