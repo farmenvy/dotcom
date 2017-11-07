@@ -21,12 +21,26 @@ import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
 import Trash from 'material-ui/svg-icons/action/delete';
 import Pencil from 'material-ui/svg-icons/content/create';
 import { grey500 } from 'material-ui/styles/colors';
-import { Row, Col, Card, Title, CardContainer } from '../common';
+import { Row, Col, Title, CardContainer } from '../common';
 import { createPickup, editPickup, stopEditing } from '../../interactions/CSApickups';
 
-const PickupForm = () => (
-  <Card>
+const EditPickup = styled.div`
+  width: 106%;
+  background-color: #fff;
+  margin-left: -3%;
+  padding: 0 20px 20px 20px;
+  border-radius: 2px;
+  box-shadow: 0 0 6px rgba(0,0,0,.16), 0 6px 12px rgba(0,0,0,.32)
+`;
 
+const deleteButtonElement = (
+  <IconButton>
+    <Trash color={grey500} />
+  </IconButton>
+);
+
+const PickupForm = props => (
+  <EditPickup {...props} >
     <Row>
       <Col>
         <TextField floatingLabelText="Pickup Name" hintText="At the farm" />
@@ -69,8 +83,19 @@ const PickupForm = () => (
       <TextField floatingLabelText="Notes to Customer" fullWidth />
     </Row>
 
-    <RaisedButton label="Save" style={{ margin: '20px 0 10px 0' }} primary fullWidth />
-  </Card>
+
+    <Row style={{ marginTop: '12px' }}>
+      <IconMenu
+        iconButtonElement={deleteButtonElement}
+      >
+        <MenuItem>
+          Confirm
+        </MenuItem>
+      </IconMenu>
+
+      <RaisedButton label="Save and Close" style={{ alignSelf: 'flex-end' }} primary />
+    </Row>
+  </EditPickup>
 );
 
 
@@ -87,16 +112,6 @@ const iconButtonElement = (
     <MoreVertIcon color={grey500} />
   </IconButton>
 );
-
-
-const EditPickup = styled.div`
-  height: 200px;
-  width: 106%;
-  background-color: #fff;
-  margin-left: -3%;
-  border-radius: 2px;
-  box-shadow: 0 0 6px rgba(0,0,0,.16), 0 6px 12px rgba(0,0,0,.32)
-`;
 
 const ListItemContainer = styled.div`
   &:hover {
@@ -130,7 +145,7 @@ const Pickup = (props) => {
           {
             props.pickups.map((p, i) => (
               props.editing === i ? (
-                <EditPickup key={p.id} />
+                <PickupForm key={p.id} />
               ) : (
                 <ListItemContainer
                   key={p.id}
