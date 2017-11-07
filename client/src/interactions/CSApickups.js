@@ -27,18 +27,21 @@ const initialState = {
   editing: null,
 };
 
-const buildNewPickup = i => ({
-  id: `indexNotAnID${i}`,
-  name: '',
-  address: '',
-  frequency: '',
-  notes: '',
-});
+const buildNewPickup = (state) => {
+  const id = Math.min(...state.pickups.map(el => el.id)) - 1;
+  return {
+    id,
+    name: '',
+    address: '',
+    frequency: '',
+    notes: '',
+  };
+};
 
 export const reducer = (state = initialState, action) => {
   switch (action.type) {
     case CREATE_PICKUP: {
-      const newPickup = buildNewPickup(state.pickups.length);
+      const newPickup = buildNewPickup(state);
       return {
         ...state,
         pickups: [...state.pickups, newPickup],

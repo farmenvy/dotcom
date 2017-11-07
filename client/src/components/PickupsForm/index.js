@@ -11,12 +11,32 @@ import IconButton from 'material-ui/IconButton';
 import Trash from 'material-ui/svg-icons/action/delete';
 import { grey500 } from 'material-ui/styles/colors';
 import { Row, Col } from '../common';
+import ContinueContainer from '../ContinueContainer';
 
 const deleteButtonElement = (
   <IconButton>
     <Trash color={grey500} />
   </IconButton>
 );
+
+const SaveAndClose = props => (
+  <RaisedButton
+    label="Close"
+    style={{ alignSelf: 'flex-end' }}
+    primary
+    onClick={() => props.stopEditing()}
+    disabled={props.disabled}
+  />
+);
+
+SaveAndClose.propTypes = ({
+  stopEditing: PropTypes.func.isRequired,
+  disabled: PropTypes.bool,
+});
+
+SaveAndClose.defaultProps = ({
+  disabled: false,
+});
 
 const PickupsForm = props => (
   <div>
@@ -82,18 +102,27 @@ const PickupsForm = props => (
         </MenuItem>
       </IconMenu>
 
-      <RaisedButton
-        label="Save and Close"
-        style={{ alignSelf: 'flex-end' }}
-        primary
-        onClick={() => props.stopEditing()}
+      <ContinueContainer
+        showIndicator={!!props.editing.id}
+        inProgress={props.asynchronous}
+        buttonComponent={
+          <SaveAndClose
+            stopEditing={props.stopEditing}
+            disabled={!props.editing.name || props.asynchronous}
+          />
+        }
       />
+
     </Row>
   </div>
 );
 
 PickupsForm.propTypes = ({
   editing: PropTypes.shape({
+    id: PropTypes.oneOfType([
+      PropTypes.number,
+      PropTypes.string,
+    ]),
     name: PropTypes.string,
     address: PropTypes.string,
     frequency: PropTypes.string,
@@ -103,16 +132,14 @@ PickupsForm.propTypes = ({
   }),
   updatePickup: PropTypes.func.isRequired,
   stopEditing: PropTypes.func.isRequired,
+  asynchronous: PropTypes.bool,
 });
 
 PickupsForm.defaultProps = ({
-  name: '',
-  address: '',
-  frequency: '',
-  notes: '',
   editing: {},
   startTime: {},
   endTime: {},
+  asynchronous: false,
 });
 
 export default PickupsForm;

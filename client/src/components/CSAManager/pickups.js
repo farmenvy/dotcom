@@ -18,12 +18,13 @@ import PickupsForm from '../PickupsForm';
 import { createPickup, editPickup, updatePickup, stopEditing } from '../../interactions/CSApickups';
 
 const EditPickup = styled.div`
-  width: 106%;
+  width: 107%;
   background-color: #fff;
-  margin-left: -3%;
-  padding: 0 20px 20px 20px;
+  margin-left: -3.5%;
+  padding: 0 20px 0px 20px;
   border-radius: 2px;
-  box-shadow: 0 0 6px rgba(0,0,0,.16), 0 6px 12px rgba(0,0,0,.32)
+  border-left: rgba(254, 166, 37, 0.8) solid 3px;
+  box-shadow: 0 -2px 6px rgba(0,0,0,.16), 0 6px 12px rgba(0,0,0,.32);
 `;
 
 
@@ -67,6 +68,7 @@ const Pickup = (props) => {
                     secondaryText={p.address}
                     rightIcon={<Settings color={grey500} />}
                     onClick={() => props.editPickup(p)}
+                    disabled={props.asynchronous}
                   />
 
                 </ListItemContainer>
@@ -98,6 +100,7 @@ Pickup.propTypes = ({
   editing: PropTypes.shape({
     name: PropTypes.string,
   }),
+  asynchronous: PropTypes.bool.isRequired,
   stopEditing: PropTypes.func.isRequired, // eslint-disable-line
   createPickup: PropTypes.func.isRequired,
   editPickup: PropTypes.func.isRequired, // eslint-disable-line
@@ -110,6 +113,7 @@ Pickup.defaultProps = ({
 
 const mapStateToProps = state => ({
   ...state.CSApickups,
+  asynchronous: state.async,
 });
 
 const mapDispatchToProps = dispatch => ({

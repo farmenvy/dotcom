@@ -61,8 +61,9 @@ const Basics = (props) => {
       </CardContainer>
 
       <ContinueContainer
-        showIndicator={!!props.id}
+        showIndicator={!!(props.id && props.name)}
         inProgress={props.asynchronous}
+        disabled={!props.name}
         continue={props.continue}
       />
     </div>

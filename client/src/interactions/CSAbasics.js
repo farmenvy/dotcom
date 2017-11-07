@@ -5,9 +5,8 @@ export const UPDATE_CSA_PICKUP_FREQ = 'UPDATE_CSA_PICKUP_FREQ';
 export const BEGIN_ASYNC = 'BEGIN_ASYNC';
 export const END_ASYNC = 'END_ASYNC';
 
-
 const initialState = {
-  id: '',
+  id: '1',
   name: '',
   startDate: {},
   endDate: {},
@@ -18,10 +17,6 @@ const initialState = {
 
 export const reducer = (state = initialState, action) => {
   switch (action.type) {
-    case BEGIN_ASYNC:
-      return { ...state, asynchronous: true, id: 1 };
-    case END_ASYNC:
-      return { ...state, asynchronous: false };
     case UPDATE_CSA_NAME:
       return { ...state, name: action.payload };
     case UPDATE_CSA_START_DATE:
