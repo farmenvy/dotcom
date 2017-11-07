@@ -46,7 +46,7 @@ const ContinueContainer = props => (
 );
 
 ContinueContainer.propTypes = ({
-  showIndicator: PropTypes.bool.isRequired,
+  showIndicator: PropTypes.bool,
   inProgress: PropTypes.bool,
   disabled: PropTypes.bool,
   continue: PropTypes.func,
@@ -56,6 +56,7 @@ ContinueContainer.propTypes = ({
 ContinueContainer.defaultProps = ({
   buttonComponent: null,
   inProgress: false,
+  showIndicator: false,
   disabled: false,
   continue: (() => {}),
 });
