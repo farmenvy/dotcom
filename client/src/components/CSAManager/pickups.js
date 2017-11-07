@@ -1,4 +1,6 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import styled from 'styled-components';
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
@@ -75,6 +77,7 @@ const shouldShow = !!window.localStorage.getItem('foo');
 const FAB = styled.div`
   display: flex;
   justify-content: center;
+  margin: 16px 0;
 `;
 
 const iconButtonElement = (
@@ -91,34 +94,72 @@ const rightIconMenu = (
   </IconMenu>
 );
 
-const Pickup = () => (
-  <CardContainer>
-    { shouldShow && <PickupForm /> }
+const EditPickup = styled.div`
+  height: 200px;
+  width: 106%;
+  background-color: #fff;
+  margin-left: -3%;
+  border-radius: 2px;
+  box-shadow: 0 0 6px rgba(0,0,0,.16), 0 6px 12px rgba(0,0,0,.32)
+`;
 
-    <Title>Pickup Locations</Title>
+const Pickup = props => (
+  <div>
 
-    <Divider />
-    <List>
-      <ListItem
-        leftAvatar={<Avatar icon={<Location />} backgroundColor="orange" />}
-        primaryText="Atherton Market"
-        secondaryText="456 Gingerbread Lane"
-        rightIconButton={rightIconMenu}
-      />
-      <ListItem
-        leftAvatar={<Avatar icon={<Location />} backgroundColor="orange" />}
-        rightIconButton={rightIconMenu}
-        primaryText="The Farm"
-        secondaryText="123 Foobar Ave"
-      />
-    </List>
+    <CardContainer>
+      { shouldShow && <PickupForm /> }
 
-    <FAB>
-      <FloatingActionButton mini >
-        <ContentAdd />
-      </FloatingActionButton>
-    </FAB>
-  </CardContainer>
+      <Title>Pickup Locations</Title>
+
+      <List style={{ paddingBottom: '0' }}>
+        {
+          props.pickups.map(p => (
+            props.editing === p.id ? (
+              <EditPickup key={p.id} />
+            ) : (
+              <div key={p.id}>
+                <ListItem
+                  leftAvatar={<Avatar icon={<Location />} backgroundColor="orange" />}
+                  primaryText={p.name}
+                  secondaryText={p.address}
+                  rightIconButton={rightIconMenu}
+                  disabled={!!props.editing}
+                />
+                <Divider inset />
+              </div>
+            )
+          ))
+        }
+
+      </List>
+    </CardContainer>
+
+    {
+      !props.editing && (
+        <FAB>
+          <FloatingActionButton mini >
+            <ContentAdd />
+          </FloatingActionButton>
+        </FAB>
+      )
+    }
+  </div>
 );
 
-export default Pickup;
+Pickup.propTypes = ({
+  pickups: PropTypes.arrayOf(PropTypes.shape({
+    name: PropTypes.string.isRequired,
+    address: PropTypes.string.isRequired,
+  })).isRequired,
+  editing: PropTypes.oneOfType([
+    PropTypes.bool,
+    PropTypes.number,
+  ]).isRequired,
+});
+
+const mapStateToProps = state => ({
+  ...state.CSApickups,
+});
+
+
+export default connect(mapStateToProps)(Pickup);

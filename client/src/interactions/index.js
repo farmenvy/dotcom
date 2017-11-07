@@ -9,6 +9,7 @@ import { reducer as signup } from './signup';
 import { reducer as user } from './user';
 import { reducer as manageCSA } from './manageCSA';
 import { reducer as CSAbasics } from './CSAbasics';
+import { reducer as CSApickups } from './CSApickups';
 import { reducer as modal } from './modal';
 
 const rootReducer = combineReducers({
@@ -17,6 +18,7 @@ const rootReducer = combineReducers({
   user,
   manageCSA,
   CSAbasics,
+  CSApickups,
   modal,
 });
 
