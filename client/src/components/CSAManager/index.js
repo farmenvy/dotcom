@@ -70,9 +70,7 @@ class CSAManager extends React.Component {
               />
             </Tab>
             <Tab label="Pickups" value={STEPS[1]}>
-              <div>
-                <Pickups />
-              </div>
+              <Pickups />
             </Tab>
             <Tab
               label="Bags"
@@ -123,6 +121,8 @@ CSAManager.propTypes = ({
   basics: PropTypes.shape({
     name: PropTypes.string.isRequired,
   }).isRequired,
+
+
   currentTab: PropTypes.string.isRequired,
 
   managerActions: PropTypes.shape({

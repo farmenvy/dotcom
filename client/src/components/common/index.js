@@ -34,5 +34,5 @@ export const Title = styled.h2`
 `;
 
 export const CardContainer = styled.div`
-  margin: 20px;
+  margin: 20px 20px 0 20px;
 `;
