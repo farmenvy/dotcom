@@ -142,9 +142,10 @@ const Pickup = (props) => {
                     secondaryText={p.address}
                     rightIconButton={rightIconMenu}
                     disabled={isEditing}
-                    onClick={() => (isEditing ? props.stopEditing() : props.editPickup(p.id))}
+                    onClick={() => (isEditing ? props.stopEditing() : props.editPickup(i))}
                   />
-                  <Divider inset />
+
+                  { props.pickups.length - 1 !== i && (<Divider inset />) }
                 </ListItemContainer>
               )
             ))

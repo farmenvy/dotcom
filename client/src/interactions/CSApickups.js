@@ -14,8 +14,23 @@ const initialState = {
       name: 'The Farm',
       address: '123 Foobar Ave',
     },
+    {
+      id: 3,
+      name: 'The Farm',
+      address: '123 Foobar Ave',
+    },
+    {
+      id: 4,
+      name: 'The Farm',
+      address: '123 Foobar Ave',
+    },
+    {
+      id: 5,
+      name: 'The Farm',
+      address: '123 Foobar Ave',
+    },
   ],
-  editing: 0,
+  editing: false,
 };
 
 const newPickup = i => ({ id: `indexNotAnID${i}`, name: 'New Pickup', address: '' });
