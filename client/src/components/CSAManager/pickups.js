@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import styled from 'styled-components';
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
@@ -21,6 +22,7 @@ import Trash from 'material-ui/svg-icons/action/delete';
 import Pencil from 'material-ui/svg-icons/content/create';
 import { grey500 } from 'material-ui/styles/colors';
 import { Row, Col, Card, Title, CardContainer } from '../common';
+import { editPickup, stopEditing } from '../../interactions/CSApickups';
 
 const PickupForm = () => (
   <Card>
@@ -87,13 +89,6 @@ const iconButtonElement = (
 );
 
 
-const rightIconMenu = (
-  <IconMenu iconButtonElement={iconButtonElement}>
-    <MenuItem leftIcon={<Pencil />}>Edit</MenuItem>
-    <MenuItem leftIcon={<Trash />}>Delete</MenuItem>
-  </IconMenu>
-);
-
 const EditPickup = styled.div`
   height: 200px;
   width: 106%;
@@ -103,48 +98,71 @@ const EditPickup = styled.div`
   box-shadow: 0 0 6px rgba(0,0,0,.16), 0 6px 12px rgba(0,0,0,.32)
 `;
 
-const Pickup = props => (
-  <div>
+const ListItemContainer = styled.div`
+  &:hover {
+    cursor: pointer;
+  }
+`;
 
-    <CardContainer>
-      { shouldShow && <PickupForm /> }
+const Pickup = (props) => {
+  const rightIconMenu = (
+    <IconMenu
+      iconButtonElement={iconButtonElement}
+      onClick={() => (props.editing && props.stopEditing())}
+    >
+      <MenuItem leftIcon={<Pencil />}>Edit</MenuItem>
+      <MenuItem leftIcon={<Trash />}>Delete</MenuItem>
+    </IconMenu>
+  );
 
-      <Title>Pickup Locations</Title>
 
-      <List style={{ paddingBottom: '0' }}>
-        {
-          props.pickups.map(p => (
-            props.editing === p.id ? (
-              <EditPickup key={p.id} />
-            ) : (
-              <div key={p.id}>
-                <ListItem
-                  leftAvatar={<Avatar icon={<Location />} backgroundColor="orange" />}
-                  primaryText={p.name}
-                  secondaryText={p.address}
-                  rightIconButton={rightIconMenu}
-                  disabled={!!props.editing}
-                />
-                <Divider inset />
-              </div>
-            )
-          ))
-        }
+  return (
+    <div>
 
-      </List>
-    </CardContainer>
+      <CardContainer>
+        { shouldShow && <PickupForm /> }
 
-    {
-      !props.editing && (
-        <FAB>
-          <FloatingActionButton mini >
-            <ContentAdd />
-          </FloatingActionButton>
-        </FAB>
-      )
-    }
-  </div>
-);
+        <Title>Pickup Locations</Title>
+
+        <List style={{ paddingBottom: '0' }}>
+          {
+            props.pickups.map(p => (
+              props.editing === p.id ? (
+                <EditPickup key={p.id} />
+              ) : (
+                <ListItemContainer
+                  key={p.id}
+                  onClick={() => (props.editing && props.stopEditing())}
+                >
+                  <ListItem
+                    leftAvatar={<Avatar icon={<Location />} backgroundColor="orange" />}
+                    primaryText={p.name}
+                    secondaryText={p.address}
+                    rightIconButton={rightIconMenu}
+                    disabled={!!props.editing}
+                    onClick={() => (props.editing ? props.stopEditing() : props.editPickup(p.id))}
+                  />
+                  <Divider inset />
+                </ListItemContainer>
+              )
+            ))
+          }
+
+        </List>
+      </CardContainer>
+
+      {
+        !props.editing && (
+          <FAB>
+            <FloatingActionButton mini >
+              <ContentAdd />
+            </FloatingActionButton>
+          </FAB>
+        )
+      }
+    </div>
+  );
+};
 
 Pickup.propTypes = ({
   pickups: PropTypes.arrayOf(PropTypes.shape({
@@ -155,11 +173,17 @@ Pickup.propTypes = ({
     PropTypes.bool,
     PropTypes.number,
   ]).isRequired,
+  stopEditing: PropTypes.func.isRequired,
+  editPickup: PropTypes.func.isRequired, // eslint-disable-line
 });
+
 
 const mapStateToProps = state => ({
   ...state.CSApickups,
 });
 
+const mapDispatchToProps = dispatch => ({
+  ...bindActionCreators({ editPickup, stopEditing }, dispatch),
+});
 
-export default connect(mapStateToProps)(Pickup);
+export default connect(mapStateToProps, mapDispatchToProps)(Pickup);

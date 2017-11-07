@@ -1,3 +1,6 @@
+export const EDIT_PICKUP = 'EDIT_PICKUP';
+export const STOP_EDITING_PICKUPS = 'STOP_EDITING_PICKUPS';
+
 const initialState = {
   pickups: [
     {
@@ -11,12 +14,20 @@ const initialState = {
       address: '123 Foobar Ave',
     },
   ],
-  editing: 2,
+  editing: false,
 };
 
 export const reducer = (state = initialState, action) => {
   switch (action.type) {
+    case EDIT_PICKUP:
+      return { ...state, editing: action.payload };
+    case STOP_EDITING_PICKUPS:
+      return { ...state, editing: false };
     default:
       return state;
   }
 };
+
+
+export const editPickup = id => ({ type: EDIT_PICKUP, payload: id });
+export const stopEditing = () => ({ type: STOP_EDITING_PICKUPS });
