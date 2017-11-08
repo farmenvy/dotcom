@@ -51,21 +51,21 @@ const InboxLayout = (props) => {
 
         <List style={{ paddingBottom: '0', textTransform: 'capitalize' }}>
           {
-            props.pickups.map(p => (
-              props.editing === p ? (
-                <EditItem key={p.id} >
+            props.items.map(item => (
+              props.editing === item ? (
+                <EditItem key={item.id} >
                   <PickupsForm {...props} />
                 </EditItem>
               ) : (
                 <ListItemContainer
-                  key={p.id}
+                  key={item.id}
                 >
                   <ListItem
                     leftAvatar={<Avatar icon={<Location />} backgroundColor="orange" />}
-                    primaryText={`${p.name}, ${friendlyTime(p.startTime)} - ${friendlyTime(p.endTime)}`}
-                    secondaryText={p.address}
+                    primaryText={`${item.name}, ${friendlyTime(item.startTime)} - ${friendlyTime(item.endTime)}`}
+                    secondaryText={item.address}
                     rightIcon={<Settings color={grey500} />}
-                    onClick={() => props.editPickup(p)}
+                    onClick={() => props.editPickup(item)}
                     disabled={props.asynchronous}
                   />
 
@@ -96,7 +96,7 @@ const InboxLayout = (props) => {
 };
 
 InboxLayout.propTypes = ({
-  pickups: PropTypes.arrayOf(PropTypes.shape({
+  items: PropTypes.arrayOf(PropTypes.shape({
     name: PropTypes.string,
     address: PropTypes.string,
   })).isRequired,
