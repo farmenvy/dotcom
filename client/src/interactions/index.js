@@ -11,6 +11,7 @@ import { reducer as manageCSA } from './manageCSA';
 import { reducer as CSAbasics } from './CSAbasics';
 import { reducer as CSApickups } from './CSApickups';
 import { reducer as CSAbags } from './CSAbags';
+import { reducer as CSAextras } from './CSAextras';
 import { reducer as asynchronous } from './async';
 import { reducer as modal } from './modal';
 
@@ -22,6 +23,7 @@ const rootReducer = combineReducers({
   CSAbasics,
   CSApickups,
   CSAbags,
+  CSAextras,
   asynchronous,
   modal,
 });
