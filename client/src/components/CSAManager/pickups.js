@@ -33,6 +33,7 @@ const Pickup = (props) => {
       buildSecondaryText={secondaryText}
       disabled={props.asynchronous}
       rightIcon={<Settings color={grey500} />}
+      edit={props.editPickup}
 
       {...props}
     />
@@ -45,6 +46,7 @@ Pickup.propTypes = ({
     address: PropTypes.string,
   })).isRequired,
   asynchronous: PropTypes.bool.isRequired,
+  editPickup: PropTypes.func.isRequired,
 });
 
 const mapStateToProps = state => ({
