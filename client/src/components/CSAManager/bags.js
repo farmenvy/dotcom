@@ -23,7 +23,7 @@ const primaryText = item => (
 
 const secondaryText = item => (item.address);
 
-const Pickup = (props) => {
+const Bags = (props) => {
   const items = props.pickups;
 
   return (
@@ -43,11 +43,12 @@ const Pickup = (props) => {
       close={props.stopEditing}
       form={PickupsForm}
       accentColor="#AAAEB3"
+      asynchronous={props.asynchronous}
     />
   );
 };
 
-Pickup.propTypes = ({
+Bags.propTypes = ({
   pickups: PropTypes.arrayOf(PropTypes.shape({
     name: PropTypes.string,
     address: PropTypes.string,
@@ -61,13 +62,13 @@ Pickup.propTypes = ({
   stopEditing: PropTypes.func.isRequired,
 });
 
-Pickup.defaultProps = ({
+Bags.defaultProps = ({
   editing: null,
 });
 
 const mapStateToProps = state => ({
   ...state.CSApickups,
-  asynchronous: state.async,
+  asynchronous: state.asynchronous,
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -80,4 +81,4 @@ const mapDispatchToProps = dispatch => ({
   }, dispatch),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(Pickup);
+export default connect(mapStateToProps, mapDispatchToProps)(Bags);

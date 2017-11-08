@@ -1,42 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import TextField from 'material-ui/TextField';
-import RaisedButton from 'material-ui/RaisedButton';
 // import FlatButton from 'material-ui/FlatButton';
 import SelectField from 'material-ui/SelectField';
 import TimePicker from 'material-ui/TimePicker';
 import MenuItem from 'material-ui/MenuItem';
-import IconMenu from 'material-ui/IconMenu';
-import IconButton from 'material-ui/IconButton';
-import Trash from 'material-ui/svg-icons/action/delete';
-import { grey500 } from 'material-ui/styles/colors';
 import { Row, Col } from '../common';
-import ContinueContainer from '../ContinueContainer';
-
-const deleteButtonElement = (
-  <IconButton>
-    <Trash color={grey500} />
-  </IconButton>
-);
-
-const SaveAndClose = props => (
-  <RaisedButton
-    label="Close"
-    style={{ alignSelf: 'flex-end' }}
-    primary
-    onClick={() => props.close()}
-    disabled={props.disabled}
-  />
-);
-
-SaveAndClose.propTypes = ({
-  close: PropTypes.func.isRequired,
-  disabled: PropTypes.bool,
-});
-
-SaveAndClose.defaultProps = ({
-  disabled: false,
-});
 
 const PickupsForm = props => (
   <div>
@@ -90,29 +59,6 @@ const PickupsForm = props => (
           value={props.editing.notes}
         />
       </Col>
-
-
-    </Row>
-    <Row style={{ marginTop: '12px' }}>
-      <IconMenu
-        iconButtonElement={deleteButtonElement}
-      >
-        <MenuItem>
-          Confirm
-        </MenuItem>
-      </IconMenu>
-
-      <ContinueContainer
-        showIndicator={!!props.editing.id}
-        inProgress={props.asynchronous}
-        buttonComponent={
-          <SaveAndClose
-            close={props.close}
-            disabled={!props.editing.name || props.asynchronous}
-          />
-        }
-      />
-
     </Row>
   </div>
 );
@@ -131,8 +77,6 @@ PickupsForm.propTypes = ({
     endTime: PropTypes.instanceOf(Date),
   }),
   update: PropTypes.func.isRequired,
-  close: PropTypes.func.isRequired,
-  asynchronous: PropTypes.bool,
 });
 
 PickupsForm.defaultProps = ({

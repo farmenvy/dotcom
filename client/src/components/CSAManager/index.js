@@ -134,7 +134,7 @@ CSAManager.defaultProps = ({
 
 const mapStateToProps = state => ({
   ...state.manageCSA,
-  basics: { ...state.CSAbasics, asynchronous: state.async },
+  basics: { ...state.CSAbasics, asynchronous: state.asynchronous },
 });
 
 const mapDispatchToProps = dispatch => ({

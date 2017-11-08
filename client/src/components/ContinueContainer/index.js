@@ -9,7 +9,6 @@ const SavedMessage = styled.div`
   color: green;
   margin-right: 24px;
   text-transform: uppercase;
-  min-height: 30px;
 `;
 
 
@@ -31,7 +30,7 @@ const ContinueContainer = (props) => {
       <SavedMessage>
         { props.inProgress ? (
           <CircularProgress
-            style={{ padding: 'none' }}
+            style={{ padding: '0' }}
             size={24}
             thickness={2}
             color="orange"

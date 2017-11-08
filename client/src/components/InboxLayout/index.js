@@ -8,6 +8,7 @@ import { List, ListItem } from 'material-ui/List';
 // import Pencil from 'material-ui/svg-icons/content/create';
 import { Title, CardContainer } from '../common';
 import ContinueContainer from '../ContinueContainer';
+import EditFormNav from '../EditFormNav';
 
 const EditItem = styled.div`
   width: 107%;
@@ -47,6 +48,13 @@ const InboxLayout = (props) => {
               props.editing === item ? (
                 <EditItem key={item.id} accentColor={props.accentColor} >
                   <FormComponent {...props} />
+                  <div>
+                    <EditFormNav
+                      actionHandler={props.close}
+                      showIndicator
+                      inProgress={props.asynchronous}
+                    />
+                  </div>
                 </EditItem>
               ) : (
                 <ListItemContainer
@@ -95,7 +103,12 @@ InboxLayout.propTypes = ({
   })).isRequired,
   leftAvatar: PropTypes.node.isRequired,
   rightIcon: PropTypes.node.isRequired,
-  editing: PropTypes.shape({}),
+  editing: PropTypes.shape({
+    id: PropTypes.oneOfType([
+      PropTypes.string,
+      PropTypes.number,
+    ]),
+  }),
   disabled: PropTypes.bool.isRequired,
   continue: PropTypes.func.isRequired,
   buildPrimaryText: PropTypes.func.isRequired,
@@ -104,11 +117,14 @@ InboxLayout.propTypes = ({
   create: PropTypes.func.isRequired,
   form: PropTypes.func.isRequired,
   accentColor: PropTypes.string,
+  close: PropTypes.func.isRequired,
+  asynchronous: PropTypes.bool,
 });
 
 InboxLayout.defaultProps = ({
   editing: null,
   accentColor: 'orange',
+  asynchronous: false,
 });
 
 

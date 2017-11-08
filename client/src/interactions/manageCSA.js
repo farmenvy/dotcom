@@ -13,7 +13,7 @@ export const STEPS = [
 ];
 
 const initialState = {
-  currentTab: STEPS[2],
+  currentTab: STEPS[1],
 };
 
 const getActiveIndex = val => (STEPS.indexOf(val));
