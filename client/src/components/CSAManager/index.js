@@ -10,6 +10,7 @@ import { actions as basicsActions } from '../../interactions/CSAbasics';
 import Basics from './basics';
 import Pickups from './pickups';
 import Bags from './bags';
+import Extras from './extras';
 
 const styles = {
   headline: {
@@ -85,12 +86,7 @@ class CSAManager extends React.Component {
               label="Extras"
               value={STEPS[3]}
             >
-              <div>
-                <h2 style={styles.headline}>Tab Three</h2>
-                <p>
-                  This is a third example tab.
-                </p>
-              </div>
+              <Extras />
             </Tab>
 
             <Tab
