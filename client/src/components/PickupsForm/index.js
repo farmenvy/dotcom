@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import TextField from 'material-ui/TextField';
-// import FlatButton from 'material-ui/FlatButton';
 import SelectField from 'material-ui/SelectField';
 import TimePicker from 'material-ui/TimePicker';
 import MenuItem from 'material-ui/MenuItem';
