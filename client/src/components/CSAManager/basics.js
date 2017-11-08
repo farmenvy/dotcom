@@ -65,6 +65,7 @@ const Basics = (props) => {
         inProgress={props.asynchronous}
         disabled={!props.name}
         continue={props.continue}
+        buttonComponent={<div />}
       />
     </div>
   );

@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import CircularProgress from 'material-ui/CircularProgress';
-import FlatButton from 'material-ui/FlatButton';
 import { Glyphicon } from 'react-bootstrap';
 
 const SavedMessage = styled.div`
@@ -10,46 +9,48 @@ const SavedMessage = styled.div`
   color: green;
   margin-right: 24px;
   text-transform: uppercase;
+  min-height: 30px;
 `;
 
 
 const Wrapper = styled.div`
   display: flex;
   justify-content: flex-end;
-  padding: 8px 8px 12px 8px;
+  margin: 16px;
 `;
 
-const ContinueContainer = props => (
-  <Wrapper>
-    { props.showIndicator && (
+const ContinueContainer = (props) => {
+  if (!props.showIndicator) {
+    return (
+      <Wrapper><SavedMessage /></Wrapper>
+    );
+  }
+
+  return (
+    <Wrapper>
       <SavedMessage>
         { props.inProgress ? (
-          <CircularProgress size={24} thickness={2} color="orange" />
+          <CircularProgress
+            style={{ padding: 'none' }}
+            size={24}
+            thickness={2}
+            color="orange"
+          />
         ) : (
           <span>All Changes Saved <Glyphicon glyph="ok" /></span>
         )}
       </SavedMessage>
-    )}
 
-    {
-      props.buttonComponent ? props.buttonComponent : (
-        <FlatButton
-          label="Continue"
-          disabled={props.inProgress || props.disabled}
-          primary
-          onClick={() => props.continue()}
-        />
-      )
-    }
 
-  </Wrapper>
-);
+      { props.buttonComponent }
+
+    </Wrapper>
+  );
+};
 
 ContinueContainer.propTypes = ({
   showIndicator: PropTypes.bool,
   inProgress: PropTypes.bool,
-  disabled: PropTypes.bool,
-  continue: PropTypes.func,
   buttonComponent: PropTypes.node,
 });
 
