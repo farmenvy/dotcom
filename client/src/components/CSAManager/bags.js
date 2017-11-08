@@ -4,7 +4,7 @@ import moment from 'moment';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import Avatar from 'material-ui/Avatar';
-import Location from 'material-ui/svg-icons/communication/location-on';
+import Basket from 'material-ui/svg-icons/action/shopping-basket';
 import Settings from 'material-ui/svg-icons/action/settings';
 import { grey500 } from 'material-ui/styles/colors';
 import PickupsForm from '../PickupsForm';
@@ -28,9 +28,9 @@ const Pickup = (props) => {
 
   return (
     <InboxLayout
-      title="Pickup Locations"
+      title="Bag Types"
       items={items}
-      leftAvatar={<Avatar icon={<Location />} backgroundColor="orange" />}
+      leftAvatar={<Avatar icon={<Basket />} backgroundColor="#AAAEB3" />}
       buildPrimaryText={primaryText}
       buildSecondaryText={secondaryText}
       disabled={props.asynchronous}
@@ -42,7 +42,7 @@ const Pickup = (props) => {
       continue={props.continue}
       close={props.stopEditing}
       form={PickupsForm}
-      accentColor="orange"
+      accentColor="#AAAEB3"
     />
   );
 };

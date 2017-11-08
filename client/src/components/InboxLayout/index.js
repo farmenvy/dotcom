@@ -15,7 +15,7 @@ const EditItem = styled.div`
   margin-left: -3.5%;
   padding: 0 20px 0px 20px;
   border-radius: 2px;
-  border-left: rgba(254, 166, 37, 0.8) solid 3px;
+  border-left: ${props => props.accentColor} solid 3px;
   box-shadow: 0 -2px 6px rgba(0,0,0,.16), 0 6px 12px rgba(0,0,0,.32);
 `;
 
@@ -45,7 +45,7 @@ const InboxLayout = (props) => {
           {
             props.items.map(item => (
               props.editing === item ? (
-                <EditItem key={item.id} >
+                <EditItem key={item.id} accentColor={props.accentColor} >
                   <FormComponent {...props} />
                 </EditItem>
               ) : (
@@ -103,10 +103,12 @@ InboxLayout.propTypes = ({
   edit: PropTypes.func.isRequired, // eslint-disable-line
   create: PropTypes.func.isRequired,
   form: PropTypes.func.isRequired,
+  accentColor: PropTypes.string,
 });
 
 InboxLayout.defaultProps = ({
   editing: null,
+  accentColor: 'orange',
 });
 
 
