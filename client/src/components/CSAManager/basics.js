@@ -60,13 +60,15 @@ const Basics = (props) => {
         </SelectField>
       </CardContainer>
 
-      <ContinueContainer
-        showIndicator={!!(props.id && props.name)}
-        inProgress={props.asynchronous}
-        disabled={!props.name}
-        continue={props.continue}
-        buttonComponent={<div />}
-      />
+      <div style={{ minHeight: '30px' }}>
+        <ContinueContainer
+          showIndicator={!!(props.id && props.name)}
+          inProgress={props.asynchronous}
+          disabled={!props.name}
+          continue={props.continue}
+          buttonComponent={<div />}
+        />
+      </div>
     </div>
   );
 };
