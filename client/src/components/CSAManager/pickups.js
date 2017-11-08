@@ -2,6 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import Avatar from 'material-ui/Avatar';
+import Location from 'material-ui/svg-icons/communication/location-on';
 import { createPickup, editPickup, updatePickup, stopEditing } from '../../interactions/CSApickups';
 import { nextStep } from '../../interactions/manageCSA';
 
@@ -13,6 +15,8 @@ const Pickup = (props) => {
   return (
     <InboxLayout
       items={items}
+      leftAvatar={<Avatar icon={<Location />} backgroundColor="orange" />}
+
       {...props}
     />
   );

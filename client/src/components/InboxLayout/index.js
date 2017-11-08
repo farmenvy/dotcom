@@ -5,9 +5,7 @@ import styled from 'styled-components';
 // import FlatButton from 'material-ui/FlatButton';
 import FloatingActionButton from 'material-ui/FloatingActionButton';
 import ContentAdd from 'material-ui/svg-icons/content/add';
-import Avatar from 'material-ui/Avatar';
 import { List, ListItem } from 'material-ui/List';
-import Location from 'material-ui/svg-icons/communication/location-on';
 import Settings from 'material-ui/svg-icons/action/settings';
 // import Pencil from 'material-ui/svg-icons/content/create';
 import { grey500 } from 'material-ui/styles/colors';
@@ -61,7 +59,7 @@ const InboxLayout = (props) => {
                   key={item.id}
                 >
                   <ListItem
-                    leftAvatar={<Avatar icon={<Location />} backgroundColor="orange" />}
+                    leftAvatar={props.leftAvatar}
                     primaryText={`${item.name}, ${friendlyTime(item.startTime)} - ${friendlyTime(item.endTime)}`}
                     secondaryText={item.address}
                     rightIcon={<Settings color={grey500} />}
@@ -100,6 +98,7 @@ InboxLayout.propTypes = ({
     name: PropTypes.string,
     address: PropTypes.string,
   })).isRequired,
+  leftAvatar: PropTypes.node.isRequired,
   editing: PropTypes.shape({
     name: PropTypes.string,
   }),
