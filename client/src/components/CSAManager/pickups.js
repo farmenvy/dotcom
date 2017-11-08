@@ -35,9 +35,11 @@ const Pickup = (props) => {
       disabled={props.asynchronous}
       rightIcon={<Settings color={grey500} />}
       edit={props.editPickup}
+      update={props.updatePickup}
       create={props.createPickup}
       editing={props.editing}
       continue={props.continue}
+      close={props.stopEditing}
       form={PickupsForm}
     />
   );
@@ -53,6 +55,8 @@ Pickup.propTypes = ({
   editPickup: PropTypes.func.isRequired,
   editing: PropTypes.shape({}),
   continue: PropTypes.func.isRequired,
+  updatePickup: PropTypes.func.isRequired,
+  stopEditing: PropTypes.func.isRequired,
 });
 
 Pickup.defaultProps = ({

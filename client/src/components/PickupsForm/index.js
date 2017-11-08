@@ -24,13 +24,13 @@ const SaveAndClose = props => (
     label="Close"
     style={{ alignSelf: 'flex-end' }}
     primary
-    onClick={() => props.stopEditing()}
+    onClick={() => props.close()}
     disabled={props.disabled}
   />
 );
 
 SaveAndClose.propTypes = ({
-  stopEditing: PropTypes.func.isRequired,
+  close: PropTypes.func.isRequired,
   disabled: PropTypes.bool,
 });
 
@@ -46,13 +46,13 @@ const PickupsForm = props => (
           id="pickupname"
           floatingLabelText="Pickup Name"
           hintText="At the farm"
-          onChange={e => props.updatePickup({ name: e.target.value })}
+          onChange={e => props.update({ name: e.target.value })}
           value={props.editing.name}
         />
         <SelectField
           floatingLabelText="Pickup Frequency"
           style={{ display: 'block' }}
-          onChange={(e, i, val) => props.updatePickup({ frequency: val })}
+          onChange={(e, i, val) => props.update({ frequency: val })}
           value={props.editing.frequency}
         >
           <MenuItem value="weekly" primaryText="Weekly" />
@@ -62,13 +62,13 @@ const PickupsForm = props => (
         <TimePicker
           floatingLabelText="Start time"
           autoOk
-          onChange={(e, time) => props.updatePickup({ startTime: time })}
+          onChange={(e, time) => props.update({ startTime: time })}
           value={props.editing.startTime}
         />
         <TimePicker
           floatingLabelText="End time"
           autoOk
-          onChange={(e, time) => props.updatePickup({ endTime: time })}
+          onChange={(e, time) => props.update({ endTime: time })}
           value={props.editing.endTime}
         />
       </Col>
@@ -78,7 +78,7 @@ const PickupsForm = props => (
           floatingLabelText="Address"
           fullWidth
           value={props.editing.address}
-          onChange={e => props.updatePickup({ address: e.target.value })}
+          onChange={e => props.update({ address: e.target.value })}
         />
 
         <TextField
@@ -86,7 +86,7 @@ const PickupsForm = props => (
           fullWidth
           multiLine
           rows={2}
-          onChange={e => props.updatePickup({ notes: e.target.value })}
+          onChange={e => props.update({ notes: e.target.value })}
           value={props.editing.notes}
         />
       </Col>
@@ -107,7 +107,7 @@ const PickupsForm = props => (
         inProgress={props.asynchronous}
         buttonComponent={
           <SaveAndClose
-            stopEditing={props.stopEditing}
+            close={props.close}
             disabled={!props.editing.name || props.asynchronous}
           />
         }
@@ -130,8 +130,8 @@ PickupsForm.propTypes = ({
     startTime: PropTypes.instanceOf(Date),
     endTime: PropTypes.instanceOf(Date),
   }),
-  updatePickup: PropTypes.func.isRequired,
-  stopEditing: PropTypes.func.isRequired,
+  update: PropTypes.func.isRequired,
+  close: PropTypes.func.isRequired,
   asynchronous: PropTypes.bool,
 });
 
