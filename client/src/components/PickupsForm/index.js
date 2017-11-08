@@ -1,42 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import TextField from 'material-ui/TextField';
-import RaisedButton from 'material-ui/RaisedButton';
-// import FlatButton from 'material-ui/FlatButton';
 import SelectField from 'material-ui/SelectField';
 import TimePicker from 'material-ui/TimePicker';
 import MenuItem from 'material-ui/MenuItem';
-import IconMenu from 'material-ui/IconMenu';
-import IconButton from 'material-ui/IconButton';
-import Trash from 'material-ui/svg-icons/action/delete';
-import { grey500 } from 'material-ui/styles/colors';
 import { Row, Col } from '../common';
-import ContinueContainer from '../ContinueContainer';
-
-const deleteButtonElement = (
-  <IconButton>
-    <Trash color={grey500} />
-  </IconButton>
-);
-
-const SaveAndClose = props => (
-  <RaisedButton
-    label="Close"
-    style={{ alignSelf: 'flex-end' }}
-    primary
-    onClick={() => props.stopEditing()}
-    disabled={props.disabled}
-  />
-);
-
-SaveAndClose.propTypes = ({
-  stopEditing: PropTypes.func.isRequired,
-  disabled: PropTypes.bool,
-});
-
-SaveAndClose.defaultProps = ({
-  disabled: false,
-});
 
 const PickupsForm = props => (
   <div>
@@ -46,13 +14,13 @@ const PickupsForm = props => (
           id="pickupname"
           floatingLabelText="Pickup Name"
           hintText="At the farm"
-          onChange={e => props.updatePickup({ name: e.target.value })}
+          onChange={e => props.update({ name: e.target.value })}
           value={props.editing.name}
         />
         <SelectField
           floatingLabelText="Pickup Frequency"
           style={{ display: 'block' }}
-          onChange={(e, i, val) => props.updatePickup({ frequency: val })}
+          onChange={(e, i, val) => props.update({ frequency: val })}
           value={props.editing.frequency}
         >
           <MenuItem value="weekly" primaryText="Weekly" />
@@ -62,13 +30,13 @@ const PickupsForm = props => (
         <TimePicker
           floatingLabelText="Start time"
           autoOk
-          onChange={(e, time) => props.updatePickup({ startTime: time })}
+          onChange={(e, time) => props.update({ startTime: time })}
           value={props.editing.startTime}
         />
         <TimePicker
           floatingLabelText="End time"
           autoOk
-          onChange={(e, time) => props.updatePickup({ endTime: time })}
+          onChange={(e, time) => props.update({ endTime: time })}
           value={props.editing.endTime}
         />
       </Col>
@@ -78,7 +46,7 @@ const PickupsForm = props => (
           floatingLabelText="Address"
           fullWidth
           value={props.editing.address}
-          onChange={e => props.updatePickup({ address: e.target.value })}
+          onChange={e => props.update({ address: e.target.value })}
         />
 
         <TextField
@@ -86,33 +54,10 @@ const PickupsForm = props => (
           fullWidth
           multiLine
           rows={2}
-          onChange={e => props.updatePickup({ notes: e.target.value })}
+          onChange={e => props.update({ notes: e.target.value })}
           value={props.editing.notes}
         />
       </Col>
-
-
-    </Row>
-    <Row style={{ marginTop: '12px' }}>
-      <IconMenu
-        iconButtonElement={deleteButtonElement}
-      >
-        <MenuItem>
-          Confirm
-        </MenuItem>
-      </IconMenu>
-
-      <ContinueContainer
-        showIndicator={!!props.editing.id}
-        inProgress={props.asynchronous}
-        buttonComponent={
-          <SaveAndClose
-            stopEditing={props.stopEditing}
-            disabled={!props.editing.name || props.asynchronous}
-          />
-        }
-      />
-
     </Row>
   </div>
 );
@@ -130,9 +75,7 @@ PickupsForm.propTypes = ({
     startTime: PropTypes.instanceOf(Date),
     endTime: PropTypes.instanceOf(Date),
   }),
-  updatePickup: PropTypes.func.isRequired,
-  stopEditing: PropTypes.func.isRequired,
-  asynchronous: PropTypes.bool,
+  update: PropTypes.func.isRequired,
 });
 
 PickupsForm.defaultProps = ({

@@ -9,6 +9,7 @@ import { STEPS, changeTab, nextStep } from '../../interactions/manageCSA';
 import { actions as basicsActions } from '../../interactions/CSAbasics';
 import Basics from './basics';
 import Pickups from './pickups';
+import Bags from './bags';
 
 const styles = {
   headline: {
@@ -77,12 +78,7 @@ class CSAManager extends React.Component {
               label="Bags"
               value={STEPS[2]}
             >
-              <div>
-                <h2 style={styles.headline}>Tab Three</h2>
-                <p>
-                  This is a third example tab.
-                </p>
-              </div>
+              <Bags />
             </Tab>
 
             <Tab
@@ -138,7 +134,7 @@ CSAManager.defaultProps = ({
 
 const mapStateToProps = state => ({
   ...state.manageCSA,
-  basics: { ...state.CSAbasics, asynchronous: state.async },
+  basics: { ...state.CSAbasics, asynchronous: state.asynchronous },
 });
 
 const mapDispatchToProps = dispatch => ({
