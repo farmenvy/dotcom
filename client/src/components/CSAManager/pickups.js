@@ -7,6 +7,7 @@ import Avatar from 'material-ui/Avatar';
 import Location from 'material-ui/svg-icons/communication/location-on';
 import Settings from 'material-ui/svg-icons/action/settings';
 import { grey500 } from 'material-ui/styles/colors';
+import PickupsForm from '../PickupsForm';
 import { createPickup, editPickup, updatePickup, stopEditing } from '../../interactions/CSApickups';
 import { nextStep } from '../../interactions/manageCSA';
 
@@ -36,8 +37,8 @@ const Pickup = (props) => {
       edit={props.editPickup}
       create={props.createPickup}
       editing={props.editing}
-
-      {...props}
+      continue={props.continue}
+      form={PickupsForm}
     />
   );
 };
@@ -51,6 +52,7 @@ Pickup.propTypes = ({
   createPickup: PropTypes.func.isRequired,
   editPickup: PropTypes.func.isRequired,
   editing: PropTypes.shape({}),
+  continue: PropTypes.func.isRequired,
 });
 
 Pickup.defaultProps = ({
