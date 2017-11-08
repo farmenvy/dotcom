@@ -7,21 +7,15 @@ const initialState = {
   bags: [
     {
       id: 1,
-      name: 'Atherton Market',
-      address: '456 Gingerbread Lane',
-      frequency: 'weekly',
-      startTime: (new Date()),
-      endTime: (new Date()),
-      notes: 'heyoo this is a note',
+      name: 'Standard',
+      cost: 75,
+      description: 'the standard is sweet',
     },
     {
       id: 2,
-      name: 'The Farm',
-      address: '123 Foobar Ave',
-      frequency: 'biweekly',
-      startTime: (new Date()),
-      endTime: (new Date()),
-      notes: 'grandma will be coming around the mountain when she comes',
+      name: 'Mini',
+      cost: 45,
+      description: 'the mini is better tho',
     },
   ],
   editing: null,
@@ -32,9 +26,8 @@ const buildNewBag = (state) => {
   return {
     id,
     name: '',
-    address: '',
-    frequency: '',
-    notes: '',
+    cost: null,
+    description: '',
   };
 };
 

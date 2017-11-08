@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import moment from 'moment';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import Avatar from 'material-ui/Avatar';
@@ -13,18 +12,14 @@ import { nextStep } from '../../interactions/manageCSA';
 
 import InboxLayout from '../InboxLayout';
 
-const friendlyTime = dateObj => (
-  moment(dateObj).format('LT')
-);
-
 const primaryText = item => (
-  `${item.name}, ${friendlyTime(item.startTime)} - ${friendlyTime(item.endTime)}`
+  `${item.name}, $${item.cost}`
 );
 
-const secondaryText = item => (item.address);
+const secondaryText = item => (item.description);
 
 const Bags = (props) => {
-  const items = props.pickups;
+  const items = props.bags;
 
   return (
     <InboxLayout
@@ -49,9 +44,9 @@ const Bags = (props) => {
 };
 
 Bags.propTypes = ({
-  pickups: PropTypes.arrayOf(PropTypes.shape({
+  bags: PropTypes.arrayOf(PropTypes.shape({
     name: PropTypes.string,
-    address: PropTypes.string,
+    price: PropTypes.number,
   })).isRequired,
   asynchronous: PropTypes.bool.isRequired,
   createPickup: PropTypes.func.isRequired,
@@ -67,7 +62,7 @@ Bags.defaultProps = ({
 });
 
 const mapStateToProps = state => ({
-  ...state.CSApickups,
+  ...state.CSAbags,
   asynchronous: state.asynchronous,
 });
 
