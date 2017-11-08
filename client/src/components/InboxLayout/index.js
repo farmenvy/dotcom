@@ -39,7 +39,7 @@ const InboxLayout = (props) => {
     <div>
 
       <CardContainer>
-        <Title>Pickup Locations</Title>
+        <Title>{props.title}</Title>
 
         <List style={{ paddingBottom: '0', textTransform: 'capitalize' }}>
           {
@@ -88,6 +88,7 @@ const InboxLayout = (props) => {
 };
 
 InboxLayout.propTypes = ({
+  title: PropTypes.string.isRequired,
   items: PropTypes.arrayOf(PropTypes.shape({
     name: PropTypes.string,
     address: PropTypes.string,

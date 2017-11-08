@@ -28,6 +28,7 @@ const Pickup = (props) => {
 
   return (
     <InboxLayout
+      title="Pickup Locations"
       items={items}
       leftAvatar={<Avatar icon={<Location />} backgroundColor="orange" />}
       buildPrimaryText={primaryText}
