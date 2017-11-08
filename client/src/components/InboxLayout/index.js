@@ -5,9 +5,7 @@ import styled from 'styled-components';
 import FloatingActionButton from 'material-ui/FloatingActionButton';
 import ContentAdd from 'material-ui/svg-icons/content/add';
 import { List, ListItem } from 'material-ui/List';
-import Settings from 'material-ui/svg-icons/action/settings';
 // import Pencil from 'material-ui/svg-icons/content/create';
-import { grey500 } from 'material-ui/styles/colors';
 import { Title, CardContainer } from '../common';
 import PickupsForm from '../PickupsForm';
 import ContinueContainer from '../ContinueContainer';
@@ -56,7 +54,7 @@ const InboxLayout = props => (
                   leftAvatar={props.leftAvatar}
                   primaryText={props.buildPrimaryText(item)}
                   secondaryText={props.buildSecondaryText(item)}
-                  rightIcon={<Settings color={grey500} />}
+                  rightIcon={props.rightIcon}
                   onClick={() => props.editPickup(item)}
                   disabled={props.disabled}
                 />
@@ -92,6 +90,7 @@ InboxLayout.propTypes = ({
     address: PropTypes.string,
   })).isRequired,
   leftAvatar: PropTypes.node.isRequired,
+  rightIcon: PropTypes.node.isRequired,
   editing: PropTypes.shape({
     name: PropTypes.string,
   }),

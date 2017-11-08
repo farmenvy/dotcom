@@ -5,6 +5,8 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import Avatar from 'material-ui/Avatar';
 import Location from 'material-ui/svg-icons/communication/location-on';
+import Settings from 'material-ui/svg-icons/action/settings';
+import { grey500 } from 'material-ui/styles/colors';
 import { createPickup, editPickup, updatePickup, stopEditing } from '../../interactions/CSApickups';
 import { nextStep } from '../../interactions/manageCSA';
 
@@ -30,6 +32,7 @@ const Pickup = (props) => {
       buildPrimaryText={primaryText}
       buildSecondaryText={secondaryText}
       disabled={props.asynchronous}
+      rightIcon={<Settings color={grey500} />}
 
       {...props}
     />
