@@ -91,9 +91,7 @@ InboxLayout.propTypes = ({
   })).isRequired,
   leftAvatar: PropTypes.node.isRequired,
   rightIcon: PropTypes.node.isRequired,
-  editing: PropTypes.shape({
-    name: PropTypes.string,
-  }),
+  editing: PropTypes.shape({}),
   disabled: PropTypes.bool.isRequired,
   continue: PropTypes.func.isRequired,
   stopEditing: PropTypes.func.isRequired, // eslint-disable-line

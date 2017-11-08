@@ -35,6 +35,7 @@ const Pickup = (props) => {
       rightIcon={<Settings color={grey500} />}
       edit={props.editPickup}
       create={props.createPickup}
+      editing={props.editing}
 
       {...props}
     />
@@ -49,6 +50,11 @@ Pickup.propTypes = ({
   asynchronous: PropTypes.bool.isRequired,
   createPickup: PropTypes.func.isRequired,
   editPickup: PropTypes.func.isRequired,
+  editing: PropTypes.shape({}),
+});
+
+Pickup.defaultProps = ({
+  editing: null,
 });
 
 const mapStateToProps = state => ({
