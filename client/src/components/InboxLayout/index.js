@@ -70,7 +70,7 @@ const InboxLayout = props => (
     {
       !props.editing && (
         <FAB>
-          <FloatingActionButton mini onClick={() => props.createPickup()}>
+          <FloatingActionButton mini onClick={() => props.create()}>
             <ContentAdd />
           </FloatingActionButton>
         </FAB>
@@ -97,10 +97,10 @@ InboxLayout.propTypes = ({
   disabled: PropTypes.bool.isRequired,
   continue: PropTypes.func.isRequired,
   stopEditing: PropTypes.func.isRequired, // eslint-disable-line
-  createPickup: PropTypes.func.isRequired,
   buildPrimaryText: PropTypes.func.isRequired,
   buildSecondaryText: PropTypes.func.isRequired,
   edit: PropTypes.func.isRequired, // eslint-disable-line
+  create: PropTypes.func.isRequired,
 });
 
 InboxLayout.defaultProps = ({

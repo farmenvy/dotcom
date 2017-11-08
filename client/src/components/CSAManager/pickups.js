@@ -34,6 +34,7 @@ const Pickup = (props) => {
       disabled={props.asynchronous}
       rightIcon={<Settings color={grey500} />}
       edit={props.editPickup}
+      create={props.createPickup}
 
       {...props}
     />
@@ -46,6 +47,7 @@ Pickup.propTypes = ({
     address: PropTypes.string,
   })).isRequired,
   asynchronous: PropTypes.bool.isRequired,
+  createPickup: PropTypes.func.isRequired,
   editPickup: PropTypes.func.isRequired,
 });
 
