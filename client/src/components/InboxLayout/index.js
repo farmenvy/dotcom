@@ -1,5 +1,4 @@
 import React from 'react';
-import moment from 'moment';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 // import FlatButton from 'material-ui/FlatButton';
@@ -36,62 +35,56 @@ const ListItemContainer = styled.div`
   }
 `;
 
-const InboxLayout = (props) => {
-  const friendlyTime = dateObj => (
-    moment(dateObj).format('LT')
-  );
+const InboxLayout = props => (
+  <div>
 
-  return (
-    <div>
+    <CardContainer>
+      <Title>Pickup Locations</Title>
 
-      <CardContainer>
-        <Title>Pickup Locations</Title>
+      <List style={{ paddingBottom: '0', textTransform: 'capitalize' }}>
+        {
+          props.items.map(item => (
+            props.editing === item ? (
+              <EditItem key={item.id} >
+                <PickupsForm {...props} />
+              </EditItem>
+            ) : (
+              <ListItemContainer
+                key={item.id}
+              >
+                <ListItem
+                  leftAvatar={props.leftAvatar}
+                  primaryText={props.buildPrimaryText(item)}
+                  secondaryText={item.address}
+                  rightIcon={<Settings color={grey500} />}
+                  onClick={() => props.editPickup(item)}
+                  disabled={props.disabled}
+                />
 
-        <List style={{ paddingBottom: '0', textTransform: 'capitalize' }}>
-          {
-            props.items.map(item => (
-              props.editing === item ? (
-                <EditItem key={item.id} >
-                  <PickupsForm {...props} />
-                </EditItem>
-              ) : (
-                <ListItemContainer
-                  key={item.id}
-                >
-                  <ListItem
-                    leftAvatar={props.leftAvatar}
-                    primaryText={`${item.name}, ${friendlyTime(item.startTime)} - ${friendlyTime(item.endTime)}`}
-                    secondaryText={item.address}
-                    rightIcon={<Settings color={grey500} />}
-                    onClick={() => props.editPickup(item)}
-                    disabled={props.asynchronous}
-                  />
+              </ListItemContainer>
+            )
+          ))
+        }
 
-                </ListItemContainer>
-              )
-            ))
-          }
+      </List>
+    </CardContainer>
 
-        </List>
-      </CardContainer>
+    {
+      !props.editing && (
+        <FAB>
+          <FloatingActionButton mini onClick={() => props.createPickup()}>
+            <ContentAdd />
+          </FloatingActionButton>
+        </FAB>
+      )
+    }
 
-      {
-        !props.editing && (
-          <FAB>
-            <FloatingActionButton mini onClick={() => props.createPickup()}>
-              <ContentAdd />
-            </FloatingActionButton>
-          </FAB>
-        )
-      }
+    <ContinueContainer
+      continue={props.continue}
+    />
 
-      <ContinueContainer
-        continue={props.continue}
-      />
-
-    </div>
-  );
-};
+  </div>
+);
 
 InboxLayout.propTypes = ({
   items: PropTypes.arrayOf(PropTypes.shape({
@@ -102,10 +95,11 @@ InboxLayout.propTypes = ({
   editing: PropTypes.shape({
     name: PropTypes.string,
   }),
-  asynchronous: PropTypes.bool.isRequired,
+  disabled: PropTypes.bool.isRequired,
   continue: PropTypes.func.isRequired,
   stopEditing: PropTypes.func.isRequired, // eslint-disable-line
   createPickup: PropTypes.func.isRequired,
+  buildPrimaryText: PropTypes.func.isRequired,
   editPickup: PropTypes.func.isRequired, // eslint-disable-line
 });
 

@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import moment from 'moment';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import Avatar from 'material-ui/Avatar';
@@ -9,6 +10,14 @@ import { nextStep } from '../../interactions/manageCSA';
 
 import InboxLayout from '../InboxLayout';
 
+const friendlyTime = dateObj => (
+  moment(dateObj).format('LT')
+);
+
+const primaryText = item => (
+  `${item.name}, ${friendlyTime(item.startTime)} - ${friendlyTime(item.endTime)}`
+);
+
 const Pickup = (props) => {
   const items = props.pickups;
 
@@ -16,6 +25,8 @@ const Pickup = (props) => {
     <InboxLayout
       items={items}
       leftAvatar={<Avatar icon={<Location />} backgroundColor="orange" />}
+      buildPrimaryText={primaryText}
+      disabled={props.asynchronous}
 
       {...props}
     />
@@ -27,6 +38,7 @@ Pickup.propTypes = ({
     name: PropTypes.string,
     address: PropTypes.string,
   })).isRequired,
+  asynchronous: PropTypes.bool.isRequired,
 });
 
 const mapStateToProps = state => ({
