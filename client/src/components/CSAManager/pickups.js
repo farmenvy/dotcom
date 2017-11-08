@@ -18,6 +18,8 @@ const primaryText = item => (
   `${item.name}, ${friendlyTime(item.startTime)} - ${friendlyTime(item.endTime)}`
 );
 
+const secondaryText = item => (item.address);
+
 const Pickup = (props) => {
   const items = props.pickups;
 
@@ -26,6 +28,7 @@ const Pickup = (props) => {
       items={items}
       leftAvatar={<Avatar icon={<Location />} backgroundColor="orange" />}
       buildPrimaryText={primaryText}
+      buildSecondaryText={secondaryText}
       disabled={props.asynchronous}
 
       {...props}

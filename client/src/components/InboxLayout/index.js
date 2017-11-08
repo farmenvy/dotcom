@@ -55,7 +55,7 @@ const InboxLayout = props => (
                 <ListItem
                   leftAvatar={props.leftAvatar}
                   primaryText={props.buildPrimaryText(item)}
-                  secondaryText={item.address}
+                  secondaryText={props.buildSecondaryText(item)}
                   rightIcon={<Settings color={grey500} />}
                   onClick={() => props.editPickup(item)}
                   disabled={props.disabled}
@@ -100,6 +100,7 @@ InboxLayout.propTypes = ({
   stopEditing: PropTypes.func.isRequired, // eslint-disable-line
   createPickup: PropTypes.func.isRequired,
   buildPrimaryText: PropTypes.func.isRequired,
+  buildSecondaryText: PropTypes.func.isRequired,
   editPickup: PropTypes.func.isRequired, // eslint-disable-line
 });
 
