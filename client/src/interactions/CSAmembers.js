@@ -22,7 +22,7 @@ const delay = t => (
 );
 
 
-export const saveCSAMembers = () => (
+export const save = () => (
   (dispatch) => {
     dispatch({ type: BEGIN_ASYNC });
     delay(1000)
@@ -31,3 +31,8 @@ export const saveCSAMembers = () => (
 );
 
 export const update = val => ({ type: UPDATE_MEMBERSHIPS, payload: val });
+
+export const actions = {
+  save,
+  update,
+};
