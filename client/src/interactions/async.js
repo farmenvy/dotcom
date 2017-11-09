@@ -14,15 +14,3 @@ export const reducer = (state = initialState, action) => {
   }
 };
 
-let timer = 0;
-export const autoSave = (val, func, save) => {
-  func(val);
-  if (timer) {
-    clearTimeout(timer);
-  }
-
-  timer = setTimeout(() => {
-    save();
-    timer = 0;
-  }, 200);
-};

@@ -12,78 +12,76 @@ import { nextStep } from '../../interactions/manageCSA';
 import { Title, CardContainer } from '../common';
 import ContinueContainer from '../ContinueContainer';
 
-let timer = 0;
 
-const Basics = (props) => {
-  const handleChange = (val, func) => {
-    func(val);
-    if (timer) {
-      clearTimeout(timer);
+class Basics extends React.Component {
+  componentDidUpdate(prevProps) {
+    const { save } = this.props;
+
+    if (this.saveTimeout) {
+      clearTimeout(this.saveTimeout);
     }
 
-    timer = setTimeout(() => {
-      props.saveCSABasics();
-      timer = 0;
-    }, 200);
-  };
+    if (!prevProps.asynchronous && !this.props.asynchronous) {
+      this.saveTimeout = setTimeout(save, 500);
+    }
+  }
 
-  return (
-    <div>
-      <CardContainer>
-        <Title>Basic CSA Information</Title>
+  render() {
+    return (
+      <div>
+        <CardContainer>
+          <Title>Basic CSA Information</Title>
 
-        <TextField
-          floatingLabelText="CSA name"
-          onChange={e => handleChange(e.target.value, props.updateCSAName)}
-          value={props.name}
-        />
+          <TextField
+            floatingLabelText="CSA name"
+            onChange={e => this.props.update({ name: e.target.value })}
+            value={this.props.name}
+          />
 
-        <DatePicker
-          floatingLabelText="CSA start"
-          autoOk
-          value={props.startDate}
-          onChange={(e, date) => handleChange(date, props.updateCSAStartDate)}
-        />
+          <DatePicker
+            floatingLabelText="CSA start"
+            autoOk
+            value={this.props.startDate}
+            onChange={(e, startDate) => this.props.update({ startDate })}
+          />
 
-        <DatePicker
-          floatingLabelText="CSA end"
-          autoOk
-          minDate={new Date()}
-          value={props.endDate}
-          onChange={(e, date) => handleChange(date, props.updateCSAEndDate)}
-        />
+          <DatePicker
+            floatingLabelText="CSA end"
+            autoOk
+            minDate={new Date()}
+            value={this.props.endDate}
+            onChange={(e, endDate) => this.props.update({ endDate })}
+          />
 
-        <SelectField
-          floatingLabelText="Pickup Frequency"
-          value={props.frequency}
-          onChange={(e, i, val) => handleChange(val, props.updateCSAFreq)}
-        >
-          <MenuItem value="weekly" primaryText="Weekly" />
-          <MenuItem value="biweekly" primaryText="Bi-Weekly" />
-          <MenuItem value="both" primaryText="Both" />
-        </SelectField>
-      </CardContainer>
+          <SelectField
+            floatingLabelText="Pickup Frequency"
+            value={this.props.frequency}
+            onChange={(e, i, val) => this.props.update({ frequency: val })}
+          >
+            <MenuItem value="weekly" primaryText="Weekly" />
+            <MenuItem value="biweekly" primaryText="Bi-Weekly" />
+            <MenuItem value="both" primaryText="Both" />
+          </SelectField>
+        </CardContainer>
 
-      <div style={{ minHeight: '30px' }}>
-        <ContinueContainer
-          showIndicator={!!(props.id && props.name)}
-          inProgress={props.asynchronous}
-          disabled={!props.name}
-          continue={props.continue}
-          buttonComponent={<div />}
-        />
+        <div style={{ minHeight: '30px' }}>
+          <ContinueContainer
+            showIndicator={!!(this.props.id && this.props.name)}
+            inProgress={this.props.asynchronous}
+            disabled={!this.props.name}
+            continue={this.props.continue}
+            buttonComponent={<div />}
+          />
+        </div>
       </div>
-    </div>
-  );
-};
+    );
+  }
+}
 
 Basics.propTypes = ({
-  updateCSAName: PropTypes.func.isRequired,
-  updateCSAStartDate: PropTypes.func.isRequired,
-  updateCSAEndDate: PropTypes.func.isRequired,
-  updateCSAFreq: PropTypes.func.isRequired,
+  update: PropTypes.func.isRequired,
   continue: PropTypes.func.isRequired,
-  saveCSABasics: PropTypes.func.isRequired, // eslint-disable-line
+  save: PropTypes.func.isRequired,
   name: PropTypes.string.isRequired,
   id: PropTypes.string.isRequired,
   asynchronous: PropTypes.bool.isRequired,
