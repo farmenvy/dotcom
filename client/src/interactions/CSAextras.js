@@ -44,10 +44,12 @@ export const reducer = (state = initialState, action) => {
         ...state,
         extras: [...state.extras, newExtra],
         editing: newExtra,
+        dirty: false,
+        saved: false,
       };
     }
     case SELECT_EXTRA_TO_EDIT:
-      return { ...state, editing: action.payload };
+      return { ...state, editing: action.payload, dirty: false, saved: false };
 
     case UPDATE_EXTRA: {
       const editedExtra = { ...state.editing, ...action.payload };

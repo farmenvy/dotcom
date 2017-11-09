@@ -51,10 +51,12 @@ export const reducer = (state = initialState, action) => {
         ...state,
         pickups: [...state.pickups, newPickup],
         editing: newPickup,
+        dirty: false,
+        saved: false,
       };
     }
     case SELECT_PICKUP_TO_EDIT:
-      return { ...state, editing: action.payload };
+      return { ...state, editing: action.payload, dirty: false, saved: false };
 
     case UPDATE_PICKUP: {
       const editedPickup = { ...state.editing, ...action.payload };

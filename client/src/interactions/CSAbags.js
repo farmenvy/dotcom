@@ -44,10 +44,12 @@ export const reducer = (state = initialState, action) => {
         ...state,
         bags: [...state.bags, newBag],
         editing: newBag,
+        dirty: false,
+        saved: false,
       };
     }
     case SELECT_BAG_TO_EDIT:
-      return { ...state, editing: action.payload };
+      return { ...state, editing: action.payload, dirty: false, saved: false };
 
     case UPDATE_BAG: {
       const editedBag = { ...state.editing, ...action.payload };
