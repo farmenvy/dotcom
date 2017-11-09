@@ -34,7 +34,6 @@ class Pickups extends React.Component {
       clearTimeout(this.saveTimeout);
     }
 
-
     if (!clickedEdit && !clickedClose && isAsync) {
       this.saveTimeout = setTimeout(save, 250);
     }

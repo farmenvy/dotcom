@@ -7,7 +7,7 @@ import Cart from 'material-ui/svg-icons/action/shopping-cart';
 import Settings from 'material-ui/svg-icons/action/settings';
 import { grey500 } from 'material-ui/styles/colors';
 import ExtrasForm from '../ExtrasForm';
-import { createExtra, editExtra, updateExtra, stopEditing } from '../../interactions/CSAextras';
+import { actions } from '../../interactions/CSAextras';
 import { nextStep } from '../../interactions/manageCSA';
 
 import InboxLayout from '../InboxLayout';
@@ -18,32 +18,50 @@ const primaryText = item => (
 
 const secondaryText = item => (item.description);
 
-const Extras = (props) => {
-  const items = props.extras;
+class Extras extends React.Component {
+  componentDidUpdate(prevProps) {
+    const { save } = this.props;
+    const clickedEdit = !!(!prevProps.editing && this.props.editing);
+    const clickedClose = !!(prevProps.editing && !this.props.editing);
+    const isAsync = (!prevProps.asynchronous && !this.props.asynchronous);
 
-  return (
-    <InboxLayout
-      title="Extra Types"
-      items={items}
-      leftAvatar={<Avatar icon={<Cart />} backgroundColor="#AAAEB3" />}
-      buildPrimaryText={primaryText}
-      buildSecondaryText={secondaryText}
-      disabled={props.asynchronous}
-      rightIcon={<Settings color={grey500} />}
-      edit={props.editExtra}
-      update={props.updateExtra}
-      create={props.createExtra}
-      editing={props.editing}
-      continue={props.continue}
-      close={props.stopEditing}
-      form={ExtrasForm}
-      accentColor="#AAAEB3"
-      asynchronous={props.asynchronous}
-      showIndicator={props.changesMadeThisSession}
-      showButton
-    />
-  );
-};
+    if (this.saveTimeout) {
+      clearTimeout(this.saveTimeout);
+    }
+
+
+    if (!clickedEdit && !clickedClose && isAsync) {
+      this.saveTimeout = setTimeout(save, 250);
+    }
+  }
+
+  render() {
+    const items = this.props.extras;
+
+    return (
+      <InboxLayout
+        title="Extra Types"
+        items={items}
+        leftAvatar={<Avatar icon={<Cart />} backgroundColor="#AAAEB3" />}
+        buildPrimaryText={primaryText}
+        buildSecondaryText={secondaryText}
+        disabled={this.props.asynchronous}
+        rightIcon={<Settings color={grey500} />}
+        edit={this.props.editExtra}
+        update={this.props.updateExtra}
+        create={this.props.createExtra}
+        editing={this.props.editing}
+        continue={this.props.continue}
+        close={this.props.stopEditing}
+        form={ExtrasForm}
+        accentColor="#AAAEB3"
+        asynchronous={this.props.asynchronous}
+        showIndicator={this.props.changesMadeThisSession}
+        showButton
+      />
+    );
+  }
+}
 
 Extras.propTypes = ({
   extras: PropTypes.arrayOf(PropTypes.shape({
@@ -58,6 +76,7 @@ Extras.propTypes = ({
   continue: PropTypes.func.isRequired,
   updateExtra: PropTypes.func.isRequired,
   stopEditing: PropTypes.func.isRequired,
+  save: PropTypes.func.isRequired,
 });
 
 Extras.defaultProps = ({
@@ -71,10 +90,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   ...bindActionCreators({
-    createExtra,
-    editExtra,
-    stopEditing,
-    updateExtra,
+    ...actions,
     continue: nextStep,
   }, dispatch),
 });
