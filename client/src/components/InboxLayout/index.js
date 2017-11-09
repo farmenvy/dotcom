@@ -33,12 +33,17 @@ const ListItemContainer = styled.div`
   }
 `;
 
+const handleEnter = (e, close) => {
+  if (e.key === 'Enter' || e.key === 'Escape') {
+    close();
+  }
+};
+
 const InboxLayout = (props) => {
   const { form: FormComponent } = props;
 
   return (
     <div>
-
       <CardContainer>
         <Title>{props.title}</Title>
 
@@ -47,7 +52,9 @@ const InboxLayout = (props) => {
             props.items.map(item => (
               props.editing === item ? (
                 <EditItem key={item.id} accentColor={props.accentColor} >
-                  <FormComponent {...props} />
+                  <div role="presentation" onKeyUp={e => handleEnter(e, props.close)}>
+                    <FormComponent {...props} />
+                  </div>
                   <div>
                     <EditFormNav
                       actionHandler={props.close}
