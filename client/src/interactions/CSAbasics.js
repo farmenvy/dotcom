@@ -1,6 +1,6 @@
+import { BEGIN_ASYNC, END_ASYNC } from './async';
+
 export const UPDATE_CSA_BASICS = 'UPDATE_CSA_BASICS';
-export const BEGIN_ASYNC = 'BEGIN_ASYNC';
-export const END_ASYNC = 'END_ASYNC';
 
 const initialState = {
   id: '1',

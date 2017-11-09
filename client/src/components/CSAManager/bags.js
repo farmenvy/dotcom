@@ -7,7 +7,7 @@ import Basket from 'material-ui/svg-icons/action/shopping-basket';
 import Settings from 'material-ui/svg-icons/action/settings';
 import { grey500 } from 'material-ui/styles/colors';
 import BagsForm from '../BagsForm';
-import { createBag, editBag, updateBag, stopEditing } from '../../interactions/CSAbags';
+import { actions } from '../../interactions/CSAbags';
 import { nextStep } from '../../interactions/manageCSA';
 
 import InboxLayout from '../InboxLayout';
@@ -18,32 +18,49 @@ const primaryText = item => (
 
 const secondaryText = item => (item.description);
 
-const Bags = (props) => {
-  const items = props.bags;
+class Bags extends React.Component {
+  componentDidUpdate(prevProps) {
+    const { save } = this.props;
+    const clickedEdit = !!(!prevProps.editing && this.props.editing);
+    const clickedClose = !!(prevProps.editing && !this.props.editing);
+    const isAsync = (!prevProps.asynchronous && !this.props.asynchronous);
 
-  return (
-    <InboxLayout
-      title="Bag Types"
-      items={items}
-      leftAvatar={<Avatar icon={<Basket />} backgroundColor="#389872" />}
-      buildPrimaryText={primaryText}
-      buildSecondaryText={secondaryText}
-      disabled={props.asynchronous}
-      rightIcon={<Settings color={grey500} />}
-      edit={props.editBag}
-      update={props.updateBag}
-      create={props.createBag}
-      editing={props.editing}
-      continue={props.continue}
-      close={props.stopEditing}
-      form={BagsForm}
-      accentColor="#389872"
-      asynchronous={props.asynchronous}
-      showIndicator={props.changesMadeThisSession}
-      showButton
-    />
-  );
-};
+    if (this.saveTimeout) {
+      clearTimeout(this.saveTimeout);
+    }
+
+
+    if (!clickedEdit && !clickedClose && isAsync) {
+      this.saveTimeout = setTimeout(save, 250);
+    }
+  }
+  render() {
+    const items = this.props.bags;
+
+    return (
+      <InboxLayout
+        title="Bag Types"
+        items={items}
+        leftAvatar={<Avatar icon={<Basket />} backgroundColor="#389872" />}
+        buildPrimaryText={primaryText}
+        buildSecondaryText={secondaryText}
+        disabled={this.props.asynchronous}
+        rightIcon={<Settings color={grey500} />}
+        edit={this.props.editBag}
+        update={this.props.updateBag}
+        create={this.props.createBag}
+        editing={this.props.editing}
+        continue={this.props.continue}
+        close={this.props.stopEditing}
+        form={BagsForm}
+        accentColor="#389872"
+        asynchronous={this.props.asynchronous}
+        showIndicator={this.props.changesMadeThisSession}
+        showButton
+      />
+    );
+  }
+}
 
 Bags.propTypes = ({
   bags: PropTypes.arrayOf(PropTypes.shape({
@@ -54,6 +71,7 @@ Bags.propTypes = ({
   changesMadeThisSession: PropTypes.bool.isRequired,
   createBag: PropTypes.func.isRequired,
   editBag: PropTypes.func.isRequired,
+  save: PropTypes.func.isRequired,
   editing: PropTypes.shape({}),
   continue: PropTypes.func.isRequired,
   updateBag: PropTypes.func.isRequired,
@@ -71,10 +89,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   ...bindActionCreators({
-    createBag,
-    editBag,
-    stopEditing,
-    updateBag,
+    ...actions,
     continue: nextStep,
   }, dispatch),
 });

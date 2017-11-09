@@ -1,3 +1,5 @@
+import { BEGIN_ASYNC, END_ASYNC } from './async';
+
 export const SELECT_BAG_TO_EDIT = 'SELECT_BAG_TO_EDIT';
 export const STOP_EDITING_BAGS = 'STOP_EDITING_BAGS';
 export const CREATE_BAG = 'CREATE_BAG';
@@ -64,6 +66,19 @@ export const reducer = (state = initialState, action) => {
   }
 };
 
+const delay = t => (
+  new Promise(((resolve) => {
+    setTimeout(resolve, t);
+  }))
+);
+
+export const save = () => (
+  (dispatch) => {
+    dispatch({ type: BEGIN_ASYNC });
+    delay(1000)
+      .then(() => dispatch({ type: END_ASYNC }));
+  }
+);
 
 export const editBag = bag => ({ type: SELECT_BAG_TO_EDIT, payload: bag });
 export const stopEditing = () => ({ type: STOP_EDITING_BAGS });
@@ -71,3 +86,11 @@ export const createBag = () => ({ type: CREATE_BAG });
 
 
 export const updateBag = attribute => ({ type: UPDATE_BAG, payload: attribute });
+
+export const actions = {
+  editBag,
+  stopEditing,
+  createBag,
+  updateBag,
+  save,
+};
