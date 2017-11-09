@@ -1,3 +1,5 @@
+import { BEGIN_ASYNC, END_ASYNC } from './async';
+
 export const SELECT_PICKUP_TO_EDIT = 'SELECT_PICKUP_TO_EDIT';
 export const STOP_EDITING_PICKUPS = 'STOP_EDITING_PICKUPS';
 export const CREATE_PICKUP = 'CREATE_PICKUP';
@@ -69,6 +71,19 @@ export const reducer = (state = initialState, action) => {
   }
 };
 
+const delay = t => (
+  new Promise(((resolve) => {
+    setTimeout(resolve, t);
+  }))
+);
+
+export const save = () => (
+  (dispatch) => {
+    dispatch({ type: BEGIN_ASYNC });
+    delay(1000)
+      .then(() => dispatch({ type: END_ASYNC }));
+  }
+);
 
 export const editPickup = pickup => ({ type: SELECT_PICKUP_TO_EDIT, payload: pickup });
 export const stopEditing = () => ({ type: STOP_EDITING_PICKUPS });
@@ -76,3 +91,11 @@ export const createPickup = () => ({ type: CREATE_PICKUP });
 
 
 export const updatePickup = attribute => ({ type: UPDATE_PICKUP, payload: attribute });
+
+export const actions = {
+  save,
+  editPickup,
+  stopEditing,
+  createPickup,
+  updatePickup,
+};

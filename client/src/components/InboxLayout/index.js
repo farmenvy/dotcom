@@ -53,6 +53,7 @@ const InboxLayout = (props) => {
                       actionHandler={props.close}
                       showIndicator
                       inProgress={props.asynchronous}
+                      disabled={props.asynchronous}
                     />
                   </div>
                 </EditItem>
