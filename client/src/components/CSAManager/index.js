@@ -11,15 +11,7 @@ import Basics from './basics';
 import Pickups from './pickups';
 import Bags from './bags';
 import Extras from './extras';
-
-const styles = {
-  headline: {
-    fontSize: 24,
-    paddingTop: 16,
-    marginBottom: 12,
-    fontWeight: 400,
-  },
-};
+import Members from './members';
 
 const ManagerContainer = styled.div`
   display: flex;
@@ -93,12 +85,7 @@ class CSAManager extends React.Component {
               label="Members"
               value={STEPS[4]}
             >
-              <div>
-                <h2 style={styles.headline}>Tab Three</h2>
-                <p>
-                  This is a third example tab.
-                </p>
-              </div>
+              <Members />
             </Tab>
           </Tabs>
         </Card>
