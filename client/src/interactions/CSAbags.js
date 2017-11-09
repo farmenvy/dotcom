@@ -19,6 +19,7 @@ const initialState = {
     },
   ],
   editing: null,
+  changesMadeThisSession: false,
 };
 
 const buildNewBag = (state) => {
@@ -52,6 +53,7 @@ export const reducer = (state = initialState, action) => {
           p.id === state.editing.id ? (editedBag) : (p)
         )),
         editing: editedBag,
+        changesMadeThisSession: true,
       };
     }
     case STOP_EDITING_BAGS:

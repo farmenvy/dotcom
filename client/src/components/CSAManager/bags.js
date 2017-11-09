@@ -39,6 +39,8 @@ const Bags = (props) => {
       form={BagsForm}
       accentColor="#389872"
       asynchronous={props.asynchronous}
+      showIndicator={props.changesMadeThisSession}
+      showButton
     />
   );
 };
@@ -49,6 +51,7 @@ Bags.propTypes = ({
     price: PropTypes.number,
   })).isRequired,
   asynchronous: PropTypes.bool.isRequired,
+  changesMadeThisSession: PropTypes.bool.isRequired,
   createBag: PropTypes.func.isRequired,
   editBag: PropTypes.func.isRequired,
   editing: PropTypes.shape({}),
