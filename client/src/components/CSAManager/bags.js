@@ -44,7 +44,6 @@ class Bags extends React.Component {
         leftAvatar={<Avatar icon={<Basket />} backgroundColor="#389872" />}
         buildPrimaryText={primaryText}
         buildSecondaryText={secondaryText}
-        disabled={this.props.asynchronous}
         rightIcon={<Settings color={grey500} />}
         edit={this.props.editBag}
         update={this.props.updateBag}
@@ -55,7 +54,8 @@ class Bags extends React.Component {
         form={BagsForm}
         accentColor="#389872"
         asynchronous={this.props.asynchronous}
-        showIndicator={this.props.changesMadeThisSession}
+        showIndicator={this.props.dirty || this.props.saved}
+        inProgress={this.props.dirty}
         showButton
       />
     );
@@ -68,7 +68,8 @@ Bags.propTypes = ({
     price: PropTypes.number,
   })).isRequired,
   asynchronous: PropTypes.bool.isRequired,
-  changesMadeThisSession: PropTypes.bool.isRequired,
+  saved: PropTypes.bool.isRequired,
+  dirty: PropTypes.bool.isRequired,
   createBag: PropTypes.func.isRequired,
   editBag: PropTypes.func.isRequired,
   save: PropTypes.func.isRequired,
