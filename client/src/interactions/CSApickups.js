@@ -4,6 +4,7 @@ export const SELECT_PICKUP_TO_EDIT = 'SELECT_PICKUP_TO_EDIT';
 export const STOP_EDITING_PICKUPS = 'STOP_EDITING_PICKUPS';
 export const CREATE_PICKUP = 'CREATE_PICKUP';
 export const UPDATE_PICKUP = 'UPDATE_PICKUP';
+export const PICKUP_SAVED = 'PICKUP_SAVED';
 
 const initialState = {
   pickups: [
@@ -27,7 +28,8 @@ const initialState = {
     },
   ],
   editing: null,
-  changesMadeThisSession: false,
+  dirty: false,
+  saved: false,
 };
 
 const buildNewPickup = (state) => {
@@ -62,11 +64,13 @@ export const reducer = (state = initialState, action) => {
           p.id === state.editing.id ? (editedPickup) : (p)
         )),
         editing: editedPickup,
-        changesMadeThisSession: true,
+        dirty: true,
       };
     }
     case STOP_EDITING_PICKUPS:
       return { ...state, editing: null };
+    case PICKUP_SAVED:
+      return { ...state, dirty: false, saved: true };
 
     default:
       return state;
@@ -83,6 +87,7 @@ export const save = () => (
   (dispatch) => {
     dispatch({ type: BEGIN_ASYNC });
     delay(1000)
+      .then(() => dispatch({ type: PICKUP_SAVED }))
       .then(() => dispatch({ type: END_ASYNC }));
   }
 );
