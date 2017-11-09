@@ -4,6 +4,7 @@ export const SELECT_EXTRA_TO_EDIT = 'SELECT_EXTRA_TO_EDIT';
 export const STOP_EDITING_EXTRAS = 'STOP_EDITING_EXTRAS';
 export const CREATE_EXTRA = 'CREATE_EXTRA';
 export const UPDATE_EXTRA = 'UPDATE_EXTRA';
+export const SAVED_EXTRA = 'SAVED_EXTRA';
 
 const initialState = {
   extras: [
@@ -21,7 +22,8 @@ const initialState = {
     },
   ],
   editing: null,
-  changesMadeThisSession: false,
+  dirty: false,
+  saved: false,
 };
 
 const buildNewExtra = (state) => {
@@ -55,11 +57,14 @@ export const reducer = (state = initialState, action) => {
           p.id === state.editing.id ? (editedExtra) : (p)
         )),
         editing: editedExtra,
-        changesMadeThisSession: true,
+        dirty: true,
       };
     }
     case STOP_EDITING_EXTRAS:
       return { ...state, editing: null };
+
+    case SAVED_EXTRA:
+      return { ...state, dirty: false, saved: true };
 
     default:
       return state;
@@ -76,6 +81,7 @@ export const save = () => (
   (dispatch) => {
     dispatch({ type: BEGIN_ASYNC });
     delay(1000)
+      .then(() => dispatch({ type: SAVED_EXTRA }))
       .then(() => dispatch({ type: END_ASYNC }));
   }
 );

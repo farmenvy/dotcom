@@ -56,7 +56,8 @@ class Extras extends React.Component {
         form={ExtrasForm}
         accentColor="#AAAEB3"
         asynchronous={this.props.asynchronous}
-        showIndicator={this.props.changesMadeThisSession}
+        showIndicator={this.props.dirty || this.props.saved}
+        inProgress={this.props.dirty}
         showButton
       />
     );
@@ -69,7 +70,8 @@ Extras.propTypes = ({
     price: PropTypes.number,
   })).isRequired,
   asynchronous: PropTypes.bool.isRequired,
-  changesMadeThisSession: PropTypes.bool.isRequired,
+  dirty: PropTypes.bool.isRequired,
+  saved: PropTypes.bool.isRequired,
   createExtra: PropTypes.func.isRequired,
   editExtra: PropTypes.func.isRequired,
   editing: PropTypes.shape({}),
