@@ -21,7 +21,10 @@ const Wrapper = styled.div`
 const ContinueContainer = (props) => {
   if (!props.showIndicator) {
     return (
-      <Wrapper><SavedMessage /></Wrapper>
+      <Wrapper>
+        <SavedMessage />
+        { props.showButton && props.buttonComponent }
+      </Wrapper>
     );
   }
 
@@ -41,7 +44,7 @@ const ContinueContainer = (props) => {
       </SavedMessage>
 
 
-      { props.buttonComponent }
+      { props.showButton && props.buttonComponent }
 
     </Wrapper>
   );
@@ -50,6 +53,7 @@ const ContinueContainer = (props) => {
 ContinueContainer.propTypes = ({
   showIndicator: PropTypes.bool,
   inProgress: PropTypes.bool,
+  showButton: PropTypes.bool,
   buttonComponent: PropTypes.node,
 });
 
@@ -57,6 +61,7 @@ ContinueContainer.defaultProps = ({
   buttonComponent: null,
   inProgress: false,
   showIndicator: false,
+  showButton: false,
   disabled: false,
   continue: (() => {}),
 });

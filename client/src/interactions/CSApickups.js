@@ -27,6 +27,7 @@ const initialState = {
     },
   ],
   editing: null,
+  changesMadeThisSession: false,
 };
 
 const buildNewPickup = (state) => {
@@ -61,6 +62,7 @@ export const reducer = (state = initialState, action) => {
           p.id === state.editing.id ? (editedPickup) : (p)
         )),
         editing: editedPickup,
+        changesMadeThisSession: true,
       };
     }
     case STOP_EDITING_PICKUPS:

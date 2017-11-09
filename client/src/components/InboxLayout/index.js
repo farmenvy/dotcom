@@ -51,9 +51,10 @@ const InboxLayout = (props) => {
                   <div>
                     <EditFormNav
                       actionHandler={props.close}
-                      showIndicator
+                      showIndicator={props.showIndicator}
                       inProgress={props.asynchronous}
                       disabled={props.asynchronous}
+                      showButton={props.showButton}
                     />
                   </div>
                 </EditItem>
@@ -111,6 +112,7 @@ InboxLayout.propTypes = ({
     ]),
   }),
   disabled: PropTypes.bool.isRequired,
+  showIndicator: PropTypes.bool.isRequired,
   continue: PropTypes.func.isRequired,
   buildPrimaryText: PropTypes.func.isRequired,
   buildSecondaryText: PropTypes.func.isRequired,
@@ -120,12 +122,15 @@ InboxLayout.propTypes = ({
   accentColor: PropTypes.string,
   close: PropTypes.func.isRequired,
   asynchronous: PropTypes.bool,
+  showButton: PropTypes.bool,
 });
 
 InboxLayout.defaultProps = ({
   editing: null,
   accentColor: 'orange',
   asynchronous: false,
+  showIndicator: false,
+  showButton: false,
 });
 
 

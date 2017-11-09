@@ -61,6 +61,8 @@ class Pickups extends React.Component {
         form={PickupsForm}
         accentColor="orange"
         asynchronous={this.props.asynchronous}
+        showIndicator={this.props.changesMadeThisSession}
+        showButton
       />
     );
   }
@@ -72,6 +74,7 @@ Pickups.propTypes = ({
     address: PropTypes.string,
   })).isRequired,
   asynchronous: PropTypes.bool.isRequired,
+  changesMadeThisSession: PropTypes.bool.isRequired,
   createPickup: PropTypes.func.isRequired,
   editPickup: PropTypes.func.isRequired,
   editing: PropTypes.shape({}),
