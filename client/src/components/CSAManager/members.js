@@ -18,7 +18,7 @@ class Members extends React.Component {
     }
 
     if (!prevProps.asynchronous && !this.props.asynchronous) {
-      this.saveTimeout = setTimeout(save, 500);
+      this.saveTimeout = setTimeout(save, 250);
     }
   }
 
