@@ -49,8 +49,8 @@ class Members extends React.Component {
 
         <div style={{ minHeight: '30px' }}>
           <ContinueContainer
-            showIndicator={this.props.changesMadeThisSession}
-            inProgress={this.props.asynchronous}
+            showIndicator={this.props.dirty || this.props.saved}
+            inProgress={this.props.dirty}
             continue={this.props.continue}
             buttonComponent={<div />}
           />
@@ -66,7 +66,8 @@ Members.propTypes = ({
   update: PropTypes.func.isRequired,
   fee: PropTypes.number.isRequired,
   asynchronous: PropTypes.bool.isRequired,
-  changesMadeThisSession: PropTypes.bool.isRequired,
+  dirty: PropTypes.bool.isRequired,
+  saved: PropTypes.bool.isRequired,
 });
 
 const mapStateToProps = state => ({
