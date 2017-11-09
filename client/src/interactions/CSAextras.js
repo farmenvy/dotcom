@@ -19,6 +19,7 @@ const initialState = {
     },
   ],
   editing: null,
+  changesMadeThisSession: false,
 };
 
 const buildNewExtra = (state) => {
@@ -52,6 +53,7 @@ export const reducer = (state = initialState, action) => {
           p.id === state.editing.id ? (editedExtra) : (p)
         )),
         editing: editedExtra,
+        changesMadeThisSession: true,
       };
     }
     case STOP_EDITING_EXTRAS:

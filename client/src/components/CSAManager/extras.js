@@ -39,6 +39,8 @@ const Extras = (props) => {
       form={ExtrasForm}
       accentColor="#AAAEB3"
       asynchronous={props.asynchronous}
+      showIndicator={props.changesMadeThisSession}
+      showButton
     />
   );
 };
@@ -49,6 +51,7 @@ Extras.propTypes = ({
     price: PropTypes.number,
   })).isRequired,
   asynchronous: PropTypes.bool.isRequired,
+  changesMadeThisSession: PropTypes.bool.isRequired,
   createExtra: PropTypes.func.isRequired,
   editExtra: PropTypes.func.isRequired,
   editing: PropTypes.shape({}),
