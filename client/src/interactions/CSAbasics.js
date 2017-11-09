@@ -4,18 +4,19 @@ export const END_ASYNC = 'END_ASYNC';
 
 const initialState = {
   id: '1',
-  name: '',
+  name: 'foobar',
   startDate: {},
   endDate: {},
   frequency: '',
   asynchronous: false,
   timer: 0,
+  changesMadeThisSession: false,
 };
 
 export const reducer = (state = initialState, action) => {
   switch (action.type) {
     case UPDATE_CSA_BASICS:
-      return { ...state, ...action.payload };
+      return { ...state, ...action.payload, changesMadeThisSession: true };
     default:
       return state;
   }
