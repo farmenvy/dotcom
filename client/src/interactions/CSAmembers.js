@@ -3,7 +3,7 @@ import { BEGIN_ASYNC, END_ASYNC } from './async';
 export const UPDATE_MEMBERSHIPS = 'UPDATE_MEMBERSHIPS';
 
 const initialState = {
-  fee: 0,
+  fee: 1.00,
 };
 
 export const reducer = (state = initialState, action) => {
