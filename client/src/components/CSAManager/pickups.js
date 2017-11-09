@@ -8,7 +8,7 @@ import Location from 'material-ui/svg-icons/communication/location-on';
 import Settings from 'material-ui/svg-icons/action/settings';
 import { grey500 } from 'material-ui/styles/colors';
 import PickupsForm from '../PickupsForm';
-import { createPickup, editPickup, updatePickup, stopEditing } from '../../interactions/CSApickups';
+import { actions } from '../../interactions/CSApickups';
 import { nextStep } from '../../interactions/manageCSA';
 
 import InboxLayout from '../InboxLayout';
@@ -23,30 +23,49 @@ const primaryText = item => (
 
 const secondaryText = item => (item.address);
 
-const Pickups = (props) => {
-  const items = props.pickups;
+class Pickups extends React.Component {
+  componentDidUpdate(prevProps) {
+    const { save } = this.props;
+    const clickedEdit = !!(!prevProps.editing && this.props.editing);
+    const clickedClose = !!(prevProps.editing && !this.props.editing);
+    const isAsync = (!prevProps.asynchronous && !this.props.asynchronous);
 
-  return (
-    <InboxLayout
-      title="Pickup Locations"
-      items={items}
-      leftAvatar={<Avatar icon={<Location />} backgroundColor="orange" />}
-      buildPrimaryText={primaryText}
-      buildSecondaryText={secondaryText}
-      disabled={props.asynchronous}
-      rightIcon={<Settings color={grey500} />}
-      edit={props.editPickup}
-      update={props.updatePickup}
-      create={props.createPickup}
-      editing={props.editing}
-      continue={props.continue}
-      close={props.stopEditing}
-      form={PickupsForm}
-      accentColor="orange"
-      asynchronous={props.asynchronous}
-    />
-  );
-};
+    if (this.saveTimeout) {
+      clearTimeout(this.saveTimeout);
+    }
+
+    if (!clickedEdit && !clickedClose && isAsync) {
+      this.saveTimeout = setTimeout(save, 250);
+    }
+  }
+
+  render() {
+    const items = this.props.pickups;
+
+    return (
+      <InboxLayout
+        title="Pickup Locations"
+        items={items}
+        leftAvatar={<Avatar icon={<Location />} backgroundColor="orange" />}
+        buildPrimaryText={primaryText}
+        buildSecondaryText={secondaryText}
+        rightIcon={<Settings color={grey500} />}
+        edit={this.props.editPickup}
+        update={this.props.updatePickup}
+        create={this.props.createPickup}
+        editing={this.props.editing}
+        continue={this.props.continue}
+        close={this.props.stopEditing}
+        form={PickupsForm}
+        accentColor="orange"
+        asynchronous={this.props.asynchronous}
+        showIndicator={this.props.dirty || this.props.saved}
+        inProgress={this.props.dirty}
+        showButton
+      />
+    );
+  }
+}
 
 Pickups.propTypes = ({
   pickups: PropTypes.arrayOf(PropTypes.shape({
@@ -54,10 +73,13 @@ Pickups.propTypes = ({
     address: PropTypes.string,
   })).isRequired,
   asynchronous: PropTypes.bool.isRequired,
+  dirty: PropTypes.bool.isRequired,
+  saved: PropTypes.bool.isRequired,
   createPickup: PropTypes.func.isRequired,
   editPickup: PropTypes.func.isRequired,
   editing: PropTypes.shape({}),
   continue: PropTypes.func.isRequired,
+  save: PropTypes.func.isRequired,
   updatePickup: PropTypes.func.isRequired,
   stopEditing: PropTypes.func.isRequired,
 });
@@ -73,10 +95,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   ...bindActionCreators({
-    createPickup,
-    editPickup,
-    stopEditing,
-    updatePickup,
+    ...actions,
     continue: nextStep,
   }, dispatch),
 });

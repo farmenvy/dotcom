@@ -6,7 +6,6 @@ import styled from 'styled-components';
 import { Tabs, Tab } from 'material-ui/Tabs';
 import { Card } from '../common';
 import { STEPS, changeTab, nextStep } from '../../interactions/manageCSA';
-import { actions as basicsActions } from '../../interactions/CSAbasics';
 import Basics from './basics';
 import Pickups from './pickups';
 import Bags from './bags';
@@ -58,11 +57,7 @@ class CSAManager extends React.Component {
             tabItemContainerStyle={{ borderRadius: '2px' }}
           >
             <Tab label="Basics" value={STEPS[0]}>
-              <Basics
-                {...this.props.basics}
-                {...this.props.basicsActions}
-                continue={this.props.managerActions.nextStep}
-              />
+              <Basics />
             </Tab>
             <Tab label="Pickups" value={STEPS[1]}>
               <Pickups />
@@ -95,14 +90,6 @@ class CSAManager extends React.Component {
 }
 
 CSAManager.propTypes = ({
-  basicsActions: PropTypes.shape({
-    updateCSAName: PropTypes.func.isRequired,
-  }).isRequired,
-  basics: PropTypes.shape({
-    name: PropTypes.string.isRequired,
-  }).isRequired,
-
-
   currentTab: PropTypes.string.isRequired,
 
   managerActions: PropTypes.shape({
@@ -121,7 +108,6 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  basicsActions: bindActionCreators(basicsActions, dispatch),
   managerActions: bindActionCreators({ changeTab, nextStep }, dispatch),
 });
 

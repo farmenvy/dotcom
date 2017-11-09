@@ -34,6 +34,7 @@ const EditFormNav = props => (
     <ContinueContainer
       showIndicator={props.showIndicator}
       inProgress={props.inProgress}
+      showButton={props.showButton}
       buttonComponent={
         <RaisedButton
           label="Close"
@@ -50,12 +51,14 @@ EditFormNav.propTypes = ({
   actionHandler: PropTypes.func,
   showIndicator: PropTypes.bool,
   disabled: PropTypes.bool,
+  showButton: PropTypes.bool,
   inProgress: PropTypes.bool,
 });
 
 EditFormNav.defaultProps = ({
   actionHandler: (() => {}),
   showIndicator: false,
+  showButton: false,
   disabled: false,
   inProgress: false,
 });

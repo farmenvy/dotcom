@@ -26,8 +26,9 @@ const ExtrasForm = props => (
       <TextField
         floatingLabelText="Cost Per Extra"
         type="number"
-        value={props.editing.cost}
-        onChange={e => props.update({ cost: e.target.value })}
+        value={props.editing.cost ? props.editing.cost.toString() : ''}
+        onChange={e => props.update({ cost: Number(e.target.value) })}
+
       />
     </Row>
   </div>
