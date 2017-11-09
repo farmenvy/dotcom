@@ -1,9 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
 import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
 import DatePicker from 'material-ui/DatePicker';
 import TextField from 'material-ui/TextField';
+import { actions as basicsActions } from '../../interactions/CSAbasics';
+import { nextStep } from '../../interactions/manageCSA';
 // import styled from 'styled-components';
 import { Title, CardContainer } from '../common';
 import ContinueContainer from '../ContinueContainer';
@@ -92,4 +96,14 @@ Basics.propTypes = ({
   }).isRequired,
 });
 
-export default Basics;
+const mapStateToProps = state => ({
+  ...state.CSAbasics,
+  asynchronous: state.asynchronous,
+});
+
+const mapDispatchToProps = dispatch => ({
+  ...bindActionCreators(basicsActions, dispatch),
+  continue: nextStep,
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Basics);
