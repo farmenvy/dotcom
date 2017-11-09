@@ -66,8 +66,8 @@ class Basics extends React.Component {
 
         <div style={{ minHeight: '30px' }}>
           <ContinueContainer
-            showIndicator={this.props.changesMadeThisSession}
-            inProgress={this.props.asynchronous}
+            showIndicator={this.props.dirty || this.props.saved}
+            inProgress={this.props.dirty}
             disabled={!this.props.name}
             continue={this.props.continue}
             buttonComponent={<div />}
@@ -84,7 +84,8 @@ Basics.propTypes = ({
   save: PropTypes.func.isRequired,
   name: PropTypes.string.isRequired,
   asynchronous: PropTypes.bool.isRequired,
-  changesMadeThisSession: PropTypes.bool.isRequired,
+  dirty: PropTypes.bool.isRequired,
+  saved: PropTypes.bool.isRequired,
   frequency: PropTypes.string.isRequired,
   startDate: PropTypes.shape({
     date: PropTypes.string,
