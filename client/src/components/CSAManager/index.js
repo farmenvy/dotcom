@@ -1,8 +1,13 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
 import styled from 'styled-components';
 import FloatingActionButton from 'material-ui/FloatingActionButton';
 import ContentAdd from 'material-ui/svg-icons/content/add';
-import ReactTooltip from 'react-tooltip';
+
+import { actions } from '../../interactions/manageCSA';
+import CSAWizard from '../CSAWizard';
 import CSACard from '../CSACard';
 
 const CardContainer = styled.div`
@@ -35,30 +40,48 @@ const CSAList = [
 
 ];
 
-const CSAManager = () => (
-  <CardContainer>
-    {
-      CSAList.map(() => (
-        <CSACard />
-      ))
-    }
+const CSAManager = (props) => {
+  if (props.isEditing) {
+    return (<CSAWizard csa={props.csa} />);
+  }
 
-    <NoCSAMessage>
-      Looks like there isn&apos;t a CSA in the system yet.
-      <br />
-      Create one below!
-    </NoCSAMessage>
+  return (
+    <CardContainer>
+      {
+        CSAList.map(() => (
+          <CSACard />
+        ))
+      }
 
-    <FAB data-tip="Create CSA" >
-      <FloatingActionButton>
-        <ContentAdd />
-      </FloatingActionButton>
-    </FAB>
+      <NoCSAMessage>
+        Looks like there isn&apos;t a CSA in the system yet.
+        <br />
+        Create one below!
+      </NoCSAMessage>
 
-    <ReactTooltip place="left" effect="solid" />
+      <FAB>
+        <FloatingActionButton onClick={() => props.newCSA()}>
+          <ContentAdd />
+        </FloatingActionButton>
+      </FAB>
+    </CardContainer>
 
-  </CardContainer>
+  );
+};
 
-);
+CSAManager.propTypes = ({
+  csa: PropTypes.shape({}).isRequired,
+  isEditing: PropTypes.bool.isRequired,
+  newCSA: PropTypes.func.isRequired,
+});
 
-export default CSAManager;
+const mapStateToProps = state => ({
+  ...state.manageCSA,
+});
+
+
+const mapDispatchToProps = dispatch => ({
+  ...bindActionCreators(actions, dispatch),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(CSAManager);

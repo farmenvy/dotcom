@@ -2,6 +2,7 @@
 
 export const NEXT_STEP_CLICK = 'NEXT_STEP_CLICK';
 export const PREV_STEP_CLICK = 'PREV_STEP_CLICK';
+export const CLICK_NEW_CSA = 'CLICK_NEW_CSA';
 export const CHANGE_CSA_MANAGER_TAB = 'CHANGE_CSA_MANAGER_TAB';
 
 export const STEPS = [
@@ -14,6 +15,7 @@ export const STEPS = [
 
 const initialState = {
   currentTab: STEPS[0],
+  isEditing: true,
 };
 
 const getActiveIndex = val => (STEPS.indexOf(val));
@@ -39,6 +41,9 @@ export const reducer = (state = initialState, action) => {
       return { ...state, currentTab: STEPS[getPrevIndex(state.currentTab)] };
     case CHANGE_CSA_MANAGER_TAB:
       return { ...state, currentTab: action.payload };
+
+    case CLICK_NEW_CSA:
+      return { ...state, isEditing: true };
     default:
       return state;
   }
@@ -48,4 +53,12 @@ export const changeTab = step => ({ type: CHANGE_CSA_MANAGER_TAB, payload: step 
 
 export const nextStep = () => ({ type: NEXT_STEP_CLICK });
 export const prevStep = () => ({ type: PREV_STEP_CLICK });
+export const newCSA = () => ({ type: CLICK_NEW_CSA });
+
+export const actions = {
+  changeTab,
+  nextStep,
+  prevStep,
+  newCSA,
+};
 

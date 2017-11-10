@@ -1,9 +1,13 @@
+/* eslint-disable */
 import React from 'react';
 import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import styled from 'styled-components';
+import FlatButton from 'material-ui/FlatButton';
+import { grey600 } from 'material-ui/styles/colors';
 import { Tabs, Tab } from 'material-ui/Tabs';
+import BackArrow from 'material-ui/svg-icons/navigation/arrow-back';
 import { Card } from '../common';
 import { STEPS, changeTab, nextStep } from '../../interactions/manageCSA';
 import Basics from './basics';
@@ -17,6 +21,25 @@ const ManagerContainer = styled.div`
   flex-direction: column;
   min-height: 100vh;
   width: 100%;
+`;
+
+const Back = styled.div`
+  display: flex;
+  flex-direction: row;
+  flex: 1 0 auto;
+  height: 100%;
+  align-self: flex-start;
+  align-items: flex-end;
+  margin: 24px;
+
+  span {
+    text-transform: uppercase;
+    vertical-align: middle;
+    font-size: 14px;
+    font-weight: bold;
+    color: ${grey600};
+    line-height: 22px;
+  }
 `;
 
 
@@ -84,6 +107,13 @@ class CSAWizard extends React.Component {
             </Tab>
           </Tabs>
         </Card>
+        <Back>
+          <FlatButton
+            label="Back"
+            icon={<BackArrow color={grey600}/>}
+          />
+        </Back>
+
       </ManagerContainer>
     );
   }
@@ -104,7 +134,6 @@ CSAWizard.defaultProps = ({
 
 const mapStateToProps = state => ({
   ...state.manageCSA,
-  basics: { ...state.CSAbasics, asynchronous: state.asynchronous },
 });
 
 const mapDispatchToProps = dispatch => ({
