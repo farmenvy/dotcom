@@ -45,7 +45,7 @@ const MoreContainer = styled.div`
   z-index: 9;
 `;
 
-const CardExampleWithAvatar = () => (
+const CSACard = () => (
   <div>
     <MoreContainer>
       <MoreActions>
@@ -54,7 +54,7 @@ const CardExampleWithAvatar = () => (
         </IconMenu>
       </MoreActions>
     </MoreContainer>
-    <Card style={{ margin: '20px', maxWidth: '400px' }} >
+    <Card style={{ margin: '20px', maxWidth: '400px' }} zDepth={2}>
       <CardTitle
         style={{ textAlign: 'left' }}
         title="Spring CSA"
@@ -96,4 +96,4 @@ const CardExampleWithAvatar = () => (
   </div>
 );
 
-export default CardExampleWithAvatar;
+export default CSACard;
