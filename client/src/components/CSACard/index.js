@@ -1,5 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
+import FloatingActionButton from 'material-ui/FloatingActionButton';
+import ContentAdd from 'material-ui/svg-icons/content/add';
+import ReactTooltip from 'react-tooltip';
 import {
   Card,
   CardActions,
@@ -45,6 +48,7 @@ const MoreContainer = styled.div`
   z-index: 9;
 `;
 
+
 const CSACard = () => (
   <div>
     <MoreContainer>
@@ -54,7 +58,7 @@ const CSACard = () => (
         </IconMenu>
       </MoreActions>
     </MoreContainer>
-    <Card style={{ margin: '20px', maxWidth: '400px' }} zDepth={2}>
+    <Card style={{ margin: '16px', maxWidth: '400px' }} zDepth={2}>
       <CardTitle
         style={{ textAlign: 'left' }}
         title="Spring CSA"
@@ -96,4 +100,33 @@ const CSACard = () => (
   </div>
 );
 
-export default CSACard;
+const CardContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  flex-wrap: wrap;
+  margin: 8px;
+`;
+
+const FAB = styled.div`
+  position: fixed;
+  bottom: 20px;
+  right: 24px;
+`;
+
+const Foo = () => (
+  <CardContainer>
+    <CSACard />
+
+    <FAB data-tip="Create CSA" >
+      <FloatingActionButton>
+        <ContentAdd />
+      </FloatingActionButton>
+    </FAB>
+
+    <ReactTooltip place="left" effect="solid" />
+
+  </CardContainer>
+);
+
+export default Foo;
