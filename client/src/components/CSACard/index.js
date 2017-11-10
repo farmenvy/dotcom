@@ -1,5 +1,6 @@
 import React from 'react';
 // import styled from 'styled-components';
+import ContentAdd from 'material-ui/svg-icons/content/add';
 import {
   Card,
   CardActions,
@@ -19,7 +20,7 @@ import {
 import FlatButton from 'material-ui/FlatButton';
 
 const data = [
-  { id: 1, name: 'Standard Bag', sold: 20, max: 50 },
+  { id: 1, name: 'Some Crazy Super Duper Really Long Name', sold: 20, max: 50 },
   { id: 2, name: 'Mini', sold: 20, max: 50 },
   { id: 3, name: 'Juicer', sold: 20, max: 20 },
 ];
@@ -27,11 +28,13 @@ const data = [
 
 const CardExampleWithAvatar = () => (
   <div>
-    <Card style={{ margin: '20px', maxWidth: '400' }}>
+    <Card style={{ margin: '20px', maxWidth: '400px' }} expanded >
       <CardTitle
         style={{ textAlign: 'left' }}
         title="Spring CSA"
         subtitle="April 1st - August 31st"
+        showExpandableButton
+        openIcon={<ContentAdd />}
       />
       <CardText>
         <Table selectable={false} >
@@ -48,8 +51,6 @@ const CardExampleWithAvatar = () => (
           </TableHeader>
           <TableBody
             displayRowCheckbox={false}
-            displaySelectAll={false}
-            adjustForCheckbox={false}
             style={{ textAlign: 'center' }}
           >
             {
