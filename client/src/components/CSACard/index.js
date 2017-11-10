@@ -1,13 +1,16 @@
 import React from 'react';
-// import styled from 'styled-components';
-import ContentAdd from 'material-ui/svg-icons/content/add';
+import styled from 'styled-components';
 import {
   Card,
   CardActions,
   CardTitle,
   CardText,
 } from 'material-ui/Card';
-
+import { grey500 } from 'material-ui/styles/colors';
+import IconButton from 'material-ui/IconButton';
+import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
+import IconMenu from 'material-ui/IconMenu';
+import MenuItem from 'material-ui/MenuItem';
 import {
   Table,
   TableBody,
@@ -25,16 +28,37 @@ const data = [
   { id: 3, name: 'Juicer', sold: 20, max: 20 },
 ];
 
+const iconButtonElement = (
+  <IconButton touch >
+    <MoreVertIcon color={grey500} />
+  </IconButton>
+);
+
+const MoreActions = styled.div`
+  position: absolute;
+  top: 24px;
+  right: 24px;
+`;
+
+const MoreContainer = styled.div`
+  position: relative;
+  z-index: 9;
+`;
 
 const CardExampleWithAvatar = () => (
   <div>
-    <Card style={{ margin: '20px', maxWidth: '400px' }} expanded >
+    <MoreContainer>
+      <MoreActions>
+        <IconMenu iconButtonElement={iconButtonElement}>
+          <MenuItem>Delete</MenuItem>
+        </IconMenu>
+      </MoreActions>
+    </MoreContainer>
+    <Card style={{ margin: '20px', maxWidth: '400px' }} >
       <CardTitle
         style={{ textAlign: 'left' }}
         title="Spring CSA"
         subtitle="April 1st - August 31st"
-        showExpandableButton
-        openIcon={<ContentAdd />}
       />
       <CardText>
         <Table selectable={false} >
