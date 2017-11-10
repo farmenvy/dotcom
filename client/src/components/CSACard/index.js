@@ -1,8 +1,5 @@
 import React from 'react';
 import styled from 'styled-components';
-import FloatingActionButton from 'material-ui/FloatingActionButton';
-import ContentAdd from 'material-ui/svg-icons/content/add';
-import ReactTooltip from 'react-tooltip';
 import {
   Card,
   CardActions,
@@ -100,37 +97,4 @@ const CSACard = () => (
   </div>
 );
 
-const CardContainer = styled.div`
-  display: flex;
-  flex-direction: row;
-  justify-content: space-around;
-  flex-wrap: wrap;
-  margin: 8px;
-`;
-
-const FAB = styled.div`
-  position: fixed;
-  bottom: 20px;
-  right: 24px;
-`;
-
-const Foo = () => (
-  <CardContainer>
-    <CSACard />
-    <CSACard />
-    <CSACard />
-    <CSACard />
-    <CSACard />
-
-    <FAB data-tip="Create CSA" >
-      <FloatingActionButton>
-        <ContentAdd />
-      </FloatingActionButton>
-    </FAB>
-
-    <ReactTooltip place="left" effect="solid" />
-
-  </CardContainer>
-);
-
-export default Foo;
+export default CSACard;

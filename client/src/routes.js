@@ -11,7 +11,7 @@ import NotFound from './components/NotFound';
 
 import PrivateRoute from './components/PrivateRoute';
 import LoginWelcome from './components/LoginWelcome';
-import CSAWizard from './components/CSAWizard';
+import CSAManager from './components/CSAManager';
 import CSACard from './components/CSACard';
 
 const setAxiosDefaults = () => {
@@ -38,7 +38,7 @@ const Routes = (props) => {
       <Route exact path="/signup-confirmation" component={SignupConfirmation} />
       <Route exact path="/login" component={Login} />
       <PrivateRoute exact path="/overview" component={LoginWelcome} />
-      <PrivateRoute exact path="/manage" component={CSAWizard} />
+      <PrivateRoute exact path="/manage" component={CSAManager} />
       <PrivateRoute exact path="/foo" component={CSACard} />
       <Route path="*" component={NotFound} />
     </Switch>
