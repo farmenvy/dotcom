@@ -20,7 +20,7 @@ const ManagerContainer = styled.div`
 `;
 
 
-class CSAManager extends React.Component {
+class CSAWizard extends React.Component {
   constructor(props) {
     super(props);
     this.handleArrowPress = this.handleArrowPress.bind(this);
@@ -89,7 +89,7 @@ class CSAManager extends React.Component {
   }
 }
 
-CSAManager.propTypes = ({
+CSAWizard.propTypes = ({
   currentTab: PropTypes.string.isRequired,
 
   managerActions: PropTypes.shape({
@@ -98,7 +98,7 @@ CSAManager.propTypes = ({
   }).isRequired,
 });
 
-CSAManager.defaultProps = ({
+CSAWizard.defaultProps = ({
   title: 'CSA Manager',
 });
 
@@ -111,4 +111,4 @@ const mapDispatchToProps = dispatch => ({
   managerActions: bindActionCreators({ changeTab, nextStep }, dispatch),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(CSAManager);
+export default connect(mapStateToProps, mapDispatchToProps)(CSAWizard);
